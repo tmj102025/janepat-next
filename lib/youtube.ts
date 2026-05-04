@@ -73,11 +73,26 @@ function extract(s: string, re: RegExp): string | null {
 export type LatestVideo = {
   videoId: string;
   title: string;
+  description?: string;
   publishedAt: string;
   thumbnail: string;
   durationSec: number;
   viewCount: number;
 };
+
+/** Convert channel ID UCxxx → uploads playlist UUxxx */
+export function uploadsPlaylistId(channelId: string): string {
+  return channelId.startsWith("UC") ? "UU" + channelId.slice(2) : channelId;
+}
+
+/** Fetch latest long-form videos by channel ID (handles UC→UU + duration filter) */
+export async function fetchLatestLongByChannel(
+  channelId: string,
+  count = 1,
+  apiKey?: string,
+): Promise<LatestVideo[]> {
+  return fetchLatestLongVideos(uploadsPlaylistId(channelId), count, apiKey);
+}
 
 /**
  * Fetch latest long-form (>60s) videos from a channel uploads playlist.
@@ -117,12 +132,13 @@ export async function fetchLatestLongVideos(
   const items: LatestVideo[] = (detailsData.items ?? []).map(
     (v: {
       id: string;
-      snippet: { title: string; publishedAt: string };
+      snippet: { title: string; description?: string; publishedAt: string };
       contentDetails: { duration: string };
       statistics?: { viewCount?: string };
     }) => ({
       videoId: v.id,
       title: v.snippet.title,
+      description: v.snippet.description,
       publishedAt: v.snippet.publishedAt,
       thumbnail: `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`,
       durationSec: parseDurationSeconds(v.contentDetails.duration),
@@ -130,10 +146,8 @@ export async function fetchLatestLongVideos(
     }),
   );
 
-  // Long-form = > 3 minutes
-  return items
-    .filter((v) => v.durationSec > 180)
-    .slice(0, count);
+  // Long-form = > 3 minutes (filter out Shorts and brief clips)
+  return items.filter((v) => v.durationSec > 180).slice(0, count);
 }
 
 function parseDurationSeconds(iso: string): number {

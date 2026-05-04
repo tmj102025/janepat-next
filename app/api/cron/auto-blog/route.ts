@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { SOURCE_CHANNELS } from "@/lib/channels";
-import { fetchChannelFeed, fetchTranscript } from "@/lib/youtube";
+import { fetchLatestLongByChannel, fetchTranscript } from "@/lib/youtube";
 import { rewriteToBlog } from "@/lib/llm";
 import { authAsAdmin, createPost, findPostByVideoId } from "@/lib/pocketbase";
 import { pushDraftNotification } from "@/lib/telegram";
@@ -10,7 +10,13 @@ export const maxDuration = 300; // 5 min
 type RunResult = {
   channel: string;
   videoId: string;
-  status: "skipped:exists" | "skipped:no-transcript" | "created:auto" | "created:draft" | "error";
+  status:
+    | "skipped:exists"
+    | "skipped:no-source"
+    | "created:auto"
+    | "created:draft"
+    | "error";
+  source?: "transcript" | "description";
   error?: string;
   postId?: string;
 };
@@ -27,20 +33,28 @@ export async function GET(req: NextRequest) {
   try {
     await authAsAdmin();
   } catch (err) {
-    return Response.json({ ok: false, error: `PB auth: ${(err as Error).message}` }, { status: 500 });
+    return Response.json(
+      { ok: false, error: `PB auth: ${(err as Error).message}` },
+      { status: 500 },
+    );
   }
 
   for (const channel of SOURCE_CHANNELS) {
-    let feed;
+    let videos;
     try {
-      feed = await fetchChannelFeed(channel.id);
+      // Use API uploads playlist (filters Shorts via duration > 180s)
+      videos = await fetchLatestLongByChannel(channel.id, limit);
     } catch (err) {
-      results.push({ channel: channel.name, videoId: "", status: "error", error: (err as Error).message });
+      results.push({
+        channel: channel.name,
+        videoId: "",
+        status: "error",
+        error: (err as Error).message,
+      });
       continue;
     }
 
-    const newest = feed.slice(0, limit);
-    for (const v of newest) {
+    for (const v of videos) {
       try {
         const existing = await findPostByVideoId(v.videoId);
         if (existing) {
@@ -48,17 +62,33 @@ export async function GET(req: NextRequest) {
           continue;
         }
 
+        // Try transcript first; fall back to description
+        let sourceText = "";
+        let sourceKind: "transcript" | "description" = "description";
         const transcript = await fetchTranscript(v.videoId);
-        if (!transcript) {
-          results.push({ channel: channel.name, videoId: v.videoId, status: "skipped:no-transcript" });
+        if (transcript && transcript.text.length > 200) {
+          sourceText = transcript.text;
+          sourceKind = "transcript";
+        } else if (v.description && v.description.length > 200) {
+          sourceText = v.description;
+          sourceKind = "description";
+        }
+
+        if (!sourceText) {
+          results.push({
+            channel: channel.name,
+            videoId: v.videoId,
+            status: "skipped:no-source",
+          });
           continue;
         }
 
+        const videoUrl = `https://www.youtube.com/watch?v=${v.videoId}`;
         const post = await rewriteToBlog({
           videoTitle: v.title,
-          videoUrl: v.url,
+          videoUrl,
           channelName: channel.name,
-          transcript: transcript.text,
+          transcript: sourceText,
           category: channel.defaultCategory,
           mode: channel.mode,
         });
@@ -82,15 +112,23 @@ export async function GET(req: NextRequest) {
           seo_description: post.excerpt,
           faq_jsonld: post.faq_jsonld,
           citations: isAuto
-            ? [{ label: `วิดีโอต้นฉบับ — ${channel.name}`, url: v.url }]
+            ? [{ label: `วิดีโอต้นฉบับ — ${channel.name}`, url: videoUrl }]
             : [
-                { label: `Source video — ${channel.name}`, url: v.url },
-                { label: `Original channel — ${channel.handle}`, url: `https://www.youtube.com/${channel.handle}` },
+                { label: `Source video — ${channel.name}`, url: videoUrl },
+                {
+                  label: `Original channel — ${channel.handle}`,
+                  url: `https://www.youtube.com/${channel.handle}`,
+                },
               ],
         });
 
         if (!create.ok || !create.id) {
-          results.push({ channel: channel.name, videoId: v.videoId, status: "error", error: create.error });
+          results.push({
+            channel: channel.name,
+            videoId: v.videoId,
+            status: "error",
+            error: create.error,
+          });
           continue;
         }
 
@@ -107,6 +145,7 @@ export async function GET(req: NextRequest) {
           channel: channel.name,
           videoId: v.videoId,
           status: isAuto ? "created:auto" : "created:draft",
+          source: sourceKind,
           postId: create.id,
         });
       } catch (err) {
