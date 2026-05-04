@@ -7,7 +7,15 @@
  * Alternatives: meta-llama/llama-3.3-70b-instruct:free, qwen/qwq-32b:free
  */
 
-const DEFAULT_MODEL = "google/gemini-2.0-flash-exp:free";
+// Primary + fallback chain — ทุกตัวฟรีและตอบไทยได้
+// (ทดสอบเมื่อ 2026-05-04 — gpt-oss-120b ตอบไทยคล่องที่สุด)
+const DEFAULT_MODEL = "openai/gpt-oss-120b:free";
+const FALLBACK_MODELS = [
+  "openai/gpt-oss-20b:free",
+  "z-ai/glm-4.5-air:free",
+  "nvidia/nemotron-3-super-120b-a12b:free",
+  "meta-llama/llama-3.3-70b-instruct:free",
+];
 
 export type RewriteInput = {
   videoTitle: string;
@@ -40,7 +48,8 @@ export async function rewriteToBlog(input: RewriteInput): Promise<RewriteOutput>
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) throw new Error("OPENROUTER_API_KEY env var required");
 
-  const model = process.env.OPENROUTER_MODEL ?? DEFAULT_MODEL;
+  const primary = process.env.OPENROUTER_MODEL ?? DEFAULT_MODEL;
+  const chain = [primary, ...FALLBACK_MODELS.filter((m) => m !== primary)];
   const isAuto = input.mode === "auto";
 
   const userPrompt = `**งาน:** ${
@@ -69,33 +78,44 @@ ${input.transcript.slice(0, 25000)}
   "reading_minutes": 6
 }`;
 
-  const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-      "HTTP-Referer": "https://janepat.com",
-      "X-Title": "Janepat Auto-Blog",
-    },
-    body: JSON.stringify({
-      model,
-      messages: [
-        { role: "system", content: TIM_VOICE },
-        { role: "user", content: userPrompt },
-      ],
-      temperature: 0.7,
-      response_format: { type: "json_object" },
-    }),
-  });
+  let text: string | undefined;
+  let lastError = "";
+  for (const model of chain) {
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+        "HTTP-Referer": "https://janepat.com",
+        "X-Title": "Janepat Auto-Blog",
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: TIM_VOICE },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.7,
+        response_format: { type: "json_object" },
+      }),
+    });
 
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`OpenRouter ${res.status}: ${err.slice(0, 500)}`);
+    if (!res.ok) {
+      lastError = `${model} → ${res.status} ${(await res.text()).slice(0, 200)}`;
+      // 429 = rate-limited upstream → ลองตัวถัดไป; 4xx อื่น = หยุด
+      if (res.status !== 429 && res.status < 500) break;
+      continue;
+    }
+
+    const json = await res.json();
+    const content: string | undefined = json?.choices?.[0]?.message?.content;
+    if (content) {
+      text = content;
+      break;
+    }
+    lastError = `${model} → empty content`;
   }
-
-  const json = await res.json();
-  const text: string | undefined = json?.choices?.[0]?.message?.content;
-  if (!text) throw new Error("OpenRouter returned empty content");
+  if (!text) throw new Error(`OpenRouter all models failed. Last: ${lastError}`);
 
   const cleaned = text.replace(/^```(?:json)?\s*/, "").replace(/\s*```\s*$/, "");
   const parsed = JSON.parse(cleaned) as RewriteOutput;
