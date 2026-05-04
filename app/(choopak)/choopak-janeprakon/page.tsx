@@ -85,6 +85,27 @@ export default function ChoopakPage() {
                   ติดต่อร่วมงาน
                 </a>
               </div>
+
+              {/* Section nav — single page anchors */}
+              <nav className="mt-10 flex flex-wrap gap-2" aria-label="Sections">
+                {[
+                  { href: "#showreel", label: "Showreel" },
+                  { href: "#about", label: "About" },
+                  { href: "#skills", label: "Skills" },
+                  { href: "#experience", label: "Experience" },
+                  { href: "#portfolio", label: "Portfolio" },
+                  { href: "#education", label: "Education" },
+                  { href: "#contact", label: "Contact" },
+                ].map((s) => (
+                  <a
+                    key={s.href}
+                    href={s.href}
+                    className="nk-mono rounded-full border border-stone-900/10 bg-white/60 px-3 py-1.5 text-[10px] text-stone-700 backdrop-blur transition hover:border-[#d4a373] hover:bg-[#d4a373]/15 hover:text-[#92400e]"
+                  >
+                    ↓ {s.label}
+                  </a>
+                ))}
+              </nav>
             </div>
 
             <div className="relative">
@@ -98,6 +119,24 @@ export default function ChoopakPage() {
                 <div className="text-stone-600">Video & Design</div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Showreel */}
+      <section id="showreel" className="border-t border-stone-900/[0.06] px-6 py-16">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex items-end justify-between gap-4 flex-wrap">
+            <div>
+              <div className="nk-mono text-[11px] text-[#0e7490]">Featured</div>
+              <h2 className="mt-2 text-[24px] font-bold text-stone-900 md:text-[32px]">
+                {CHOOPAK.showreel.title}
+              </h2>
+            </div>
+            <span className="nk-tag nk-tag-forest">● Available for projects</span>
+          </div>
+          <div className="mt-8">
+            <YouTubeCard videoId={CHOOPAK.showreel.id} title={CHOOPAK.showreel.title} client="Showreel" />
           </div>
         </div>
       </section>
@@ -121,7 +160,7 @@ export default function ChoopakPage() {
       </div>
 
       {/* About / Summary */}
-      <section className="border-t border-stone-900/[0.06] px-6 py-20">
+      <section id="about" className="border-t border-stone-900/[0.06] px-6 py-20">
         <div className="mx-auto max-w-4xl">
           <div className="nk-mono text-[11px] text-[#0e7490]">
             Professional Summary
@@ -135,7 +174,7 @@ export default function ChoopakPage() {
       </section>
 
       {/* Skills */}
-      <section className="border-t border-stone-900/[0.06] bg-[#fbf6ec] px-6 py-20">
+      <section id="skills" className="border-t border-stone-900/[0.06] bg-[#fbf6ec] px-6 py-20">
         <div className="mx-auto max-w-5xl">
           <div className="nk-mono text-[11px] text-[#0e7490]">Skills</div>
           <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[36px]">เครื่องมือที่ใช้</h2>
@@ -163,7 +202,7 @@ export default function ChoopakPage() {
       </section>
 
       {/* Experience */}
-      <section className="border-t border-stone-900/[0.06] px-6 py-20">
+      <section id="experience" className="border-t border-stone-900/[0.06] px-6 py-20">
         <div className="mx-auto max-w-4xl">
           <div className="nk-mono text-[11px] text-[#0e7490]">
             Experience
@@ -217,23 +256,16 @@ export default function ChoopakPage() {
             </div>
           </div>
 
-          {CHOOPAK.portfolio.length > 0 ? (
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {CHOOPAK.portfolio.map((v) => (
-                <YouTubeCard key={v.id} videoId={v.id} title={v.title} client={v.client} />
-              ))}
-            </div>
-          ) : (
-            <div className="mt-12 nk-card p-10 text-center">
-              <div className="text-[40px]">✺</div>
-              <p className="mt-3 text-[14px] text-stone-600">Portfolio videos coming soon</p>
-            </div>
-          )}
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {CHOOPAK.portfolio.map((v) => (
+              <YouTubeCard key={v.id} videoId={v.id} title={v.title} client={v.client} />
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Education */}
-      <section className="border-t border-stone-900/[0.06] px-6 py-20">
+      <section id="education" className="border-t border-stone-900/[0.06] px-6 py-20">
         <div className="mx-auto max-w-4xl">
           <div className="nk-mono text-[11px] text-[#0e7490]">Education</div>
           <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[36px]">การศึกษา</h2>

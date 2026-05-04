@@ -1,9 +1,9 @@
 import { NextRequest } from "next/server";
 import { SOURCE_CHANNELS } from "@/lib/channels";
 import { fetchChannelFeed, fetchTranscript } from "@/lib/youtube";
-import { rewriteToBlog } from "@/lib/gemini";
+import { rewriteToBlog } from "@/lib/llm";
 import { authAsAdmin, createPost, findPostByVideoId } from "@/lib/pocketbase";
-import { pushDraftNotification } from "@/lib/line";
+import { pushDraftNotification } from "@/lib/telegram";
 
 export const maxDuration = 300; // 5 min
 
