@@ -43,7 +43,7 @@ export default async function VideosPage() {
             >
               {SITE.youtubeHandle}
             </a>{" "}
-            รับความรู้ AI ใหม่ทุกอาทิตย์ — Long-form เท่านั้น (เกิน 3 นาที)
+            รับความรู้ AI ใหม่ทุกอาทิตย์
           </p>
           <a
             href={SITE.social.youtube}
