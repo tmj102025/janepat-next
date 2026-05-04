@@ -10,6 +10,20 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "yt3.ggpht.com" },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/choopak-janeprakon",
+        destination: "https://choopak.aiceo.im",
+        permanent: true,
+      },
+      {
+        source: "/choopak-janeprakon/:path*",
+        destination: "https://choopak.aiceo.im/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
