@@ -123,9 +123,9 @@ ${input.transcript.slice(0, 25000)}
       continue;
     }
 
-    let wrapper;
+    let wrapper: { choices?: Array<{ message?: { content?: string } }> };
     try {
-      wrapper = safeJsonParse(rawBody);
+      wrapper = safeJsonParse(rawBody) as typeof wrapper;
     } catch (e) {
       lastError = `${model} → wrapper parse fail: ${(e as Error).message} | body: ${rawBody.slice(0, 200)}`;
       continue;
