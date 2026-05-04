@@ -1,0 +1,129 @@
+/* NomadKit — sand · ocean · forest on warm cream */
+.choopak-root {
+  background: #fffdf7;
+  color: #1c1917;
+
+  --nk-sand: #d4a373;
+  --nk-sand-soft: #e8c9a8;
+  --nk-sand-deep: #b8854f;
+  --nk-ocean: #0891b2;
+  --nk-ocean-soft: #67e8f9;
+  --nk-forest: #166534;
+  --nk-warning: #ca8a04;
+  --nk-error: #dc2626;
+
+  --nk-bg: #fffdf7;
+  --nk-surface: #ffffff;
+  --nk-ink: #1c1917;
+  --nk-ink-soft: #57534e;
+  --nk-ink-mute: #78716c;
+  --nk-border: rgba(28, 25, 23, 0.08);
+  --nk-border-strong: rgba(212, 163, 115, 0.45);
+}
+
+.choopak-root body {
+  background: var(--nk-bg);
+  color: var(--nk-ink);
+}
+
+.choopak-root ::selection {
+  background: var(--nk-sand);
+  color: #1c1917;
+}
+
+/* Subtle paper grain — feels like a travel journal */
+.nk-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: radial-gradient(circle at 1px 1px, rgba(184, 133, 79, 0.45) 1px, transparent 0);
+  background-size: 22px 22px;
+  z-index: 0;
+}
+
+/* Hero — warm horizon glow */
+.nk-hero {
+  background:
+    radial-gradient(ellipse 75% 55% at 50% -10%, rgba(212, 163, 115, 0.28), transparent 65%),
+    radial-gradient(ellipse 60% 40% at 90% 110%, rgba(8, 145, 178, 0.12), transparent 65%),
+    linear-gradient(180deg, #fffdf7 0%, #fbf6ec 100%);
+}
+
+.nk-text-gradient {
+  background: linear-gradient(135deg, #b8854f 0%, #d4a373 50%, #ca8a04 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nk-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(212, 163, 115, 0.6) 50%, transparent 100%);
+}
+
+.nk-card {
+  background: var(--nk-surface);
+  border: 1px solid var(--nk-border);
+  border-radius: 18px;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nk-card:hover {
+  border-color: var(--nk-border-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px -24px rgba(184, 133, 79, 0.35);
+}
+
+.nk-mono {
+  font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.nk-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  background: rgba(8, 145, 178, 0.08);
+  color: #075985;
+  border: 1px solid rgba(8, 145, 178, 0.25);
+}
+
+.nk-tag-sand {
+  background: rgba(212, 163, 115, 0.14);
+  color: #92400e;
+  border-color: rgba(184, 133, 79, 0.35);
+}
+
+.nk-tag-forest {
+  background: rgba(22, 101, 52, 0.08);
+  color: #166534;
+  border-color: rgba(22, 101, 52, 0.25);
+}
+
+.nk-marquee {
+  background: var(--nk-sand);
+  color: #1c1917;
+  font-weight: 800;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 12px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.nk-marquee-track {
+  display: inline-block;
+  animation: nk-scroll 40s linear infinite;
+}
+
+@keyframes nk-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

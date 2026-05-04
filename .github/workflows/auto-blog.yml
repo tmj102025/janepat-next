@@ -1,0 +1,30 @@
+name: Auto-blog from YouTube
+
+on:
+  schedule:
+    # ทุก 6 ชม. (00:17, 06:17, 12:17, 18:17 UTC)
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Videos per channel to check (default 1)"
+        required: false
+        default: "1"
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger /api/cron/auto-blog
+        run: |
+          LIMIT="${{ github.event.inputs.limit || '1' }}"
+          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" \
+            "https://janepat.com/api/cron/auto-blog?secret=${{ secrets.CRON_SECRET }}&limit=$LIMIT")
+          BODY=$(echo "$RESPONSE" | sed -n '1,/^HTTP_STATUS:/p' | sed '$d')
+          STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS" | cut -d':' -f2)
+          echo "Status: $STATUS"
+          echo "Body: $BODY"
+          if [ "$STATUS" -ne 200 ]; then
+            echo "::error::Cron failed with status $STATUS"
+            exit 1
+          fi

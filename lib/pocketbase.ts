@@ -130,6 +130,33 @@ export async function listServices(): Promise<ServiceRecord[]> {
   }
 }
 
+export async function findPostByVideoId(videoId: string): Promise<PostRecord | null> {
+  try {
+    return await pb()
+      .collection("janepat_posts")
+      .getFirstListItem<PostRecord>(`slug ~ "${videoId}"`);
+  } catch {
+    return null;
+  }
+}
+
+export async function createPost(post: Partial<PostRecord>): Promise<{ ok: boolean; id?: string; error?: string }> {
+  try {
+    const record = await pb().collection("janepat_posts").create(post);
+    return { ok: true, id: record.id };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "unknown error";
+    return { ok: false, error: message };
+  }
+}
+
+export async function authAsAdmin(): Promise<void> {
+  const email = process.env.PB_ADMIN_EMAIL;
+  const password = process.env.PB_ADMIN_PASSWORD;
+  if (!email || !password) throw new Error("PB_ADMIN_EMAIL / PB_ADMIN_PASSWORD required");
+  await pb().admins.authWithPassword(email, password);
+}
+
 export async function createLead(lead: LeadRecord): Promise<{ ok: boolean; id?: string; error?: string }> {
   try {
     const record = await pb().collection("janepat_leads").create(lead);
