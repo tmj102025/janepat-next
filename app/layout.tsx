@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0a",
+  themeColor: "#fafaf9",
   width: "device-width",
   initialScale: 1,
 };
@@ -24,6 +24,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="th" className="h-full antialiased">
       <head>
+        <link rel="preconnect" href="https://fonts.cdnfonts.com" crossOrigin="" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.cdnfonts.com/css/line-seed-sans-th"
+        />
         <script {...jsonLdScriptProps(personSchema())} />
         <script {...jsonLdScriptProps(organizationSchema())} />
         <script {...jsonLdScriptProps(websiteSchema())} />

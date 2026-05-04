@@ -19,7 +19,7 @@ export async function pushDraftNotification(input: {
     return { ok: false, error: "TELEGRAM env vars not set" };
   }
 
-  const adminUrl = `https://db.aiceo.im/_/#/collections?collection=janepat_posts&recordId=${input.postId}`;
+  const adminUrl = `${process.env.POCKETBASE_URL ?? 'https://db.aiceo.im'}/_/#/collections?collection=janepat_posts&recordId=${input.postId}`;
 
   const text = [
     "📝 <b>DRAFT รอ review</b>",

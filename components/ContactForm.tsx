@@ -47,13 +47,13 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-2xl border border-teal-400/30 bg-teal-400/5 p-8 text-center">
+      <div className="rounded-2xl border border-teal-300 bg-teal-600/5 p-8 text-center">
         <div className="text-[32px]">✓</div>
-        <h3 className="mt-3 text-[20px] font-bold text-white">ส่งข้อความเรียบร้อย</h3>
-        <p className="mt-2 text-[14px] text-zinc-400">ผมหรือทีมจะตอบกลับภายใน 24 ชั่วโมง ขอบคุณครับ</p>
+        <h3 className="mt-3 text-[20px] font-bold text-stone-900">ส่งข้อความเรียบร้อย</h3>
+        <p className="mt-2 text-[14px] text-stone-600">ผมหรือทีมจะตอบกลับภายใน 24 ชั่วโมง ขอบคุณครับ</p>
         <button
           onClick={() => setStatus("idle")}
-          className="mt-6 inline-flex items-center rounded-full border border-white/15 px-5 py-2 text-[13px] text-white hover:border-teal-400/30"
+          className="mt-6 inline-flex items-center rounded-full border border-stone-300 px-5 py-2 text-[13px] text-stone-900 hover:border-teal-300"
         >
           ส่งอีกครั้ง
         </button>
@@ -68,11 +68,11 @@ export function ContactForm() {
       <Field label="โทรศัพท์ (ถ้ามี)" name="phone" />
 
       <div>
-        <label className="block text-[13px] font-medium text-zinc-300">ประเภทงาน</label>
+        <label className="block text-[13px] font-medium text-stone-700">ประเภทงาน</label>
         <select
           name="type"
           required
-          className="mt-2 w-full rounded-xl border border-white/[0.08] bg-[#0f1011] px-4 py-3 text-[14px] text-white outline-none transition focus:border-teal-400/40"
+          className="mt-2 w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-[14px] text-stone-900 outline-none transition focus:border-teal-400"
         >
           {TYPES.map((t) => (
             <option key={t.value} value={t.value}>{t.label}</option>
@@ -81,18 +81,18 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-[13px] font-medium text-zinc-300">รายละเอียดโปรเจกต์</label>
+        <label className="block text-[13px] font-medium text-stone-700">รายละเอียดโปรเจกต์</label>
         <textarea
           name="brief"
           rows={5}
           required
           placeholder="เล่าให้ฟังหน่อยว่าอยากทำอะไร ใช้กับธุรกิจประเภทไหน timeline ประมาณไหน budget เท่าไหร่..."
-          className="mt-2 w-full rounded-xl border border-white/[0.08] bg-[#0f1011] px-4 py-3 text-[14px] text-white outline-none transition placeholder:text-zinc-600 focus:border-teal-400/40"
+          className="mt-2 w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-[14px] text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-teal-400"
         />
       </div>
 
       {error && (
-        <div className="rounded-xl border border-rose-400/30 bg-rose-400/10 px-4 py-3 text-[13px] text-rose-200">
+        <div className="rounded-xl border border-rose-300 bg-rose-50 px-4 py-3 text-[13px] text-rose-700">
           {error}
         </div>
       )}
@@ -100,7 +100,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="inline-flex items-center rounded-full bg-teal-400 px-6 py-3 text-[14px] font-semibold text-zinc-900 transition hover:bg-teal-300 disabled:opacity-50"
+        className="inline-flex items-center rounded-full bg-teal-600 px-6 py-3 text-[14px] font-semibold text-white transition hover:bg-teal-700 disabled:opacity-50"
       >
         {status === "submitting" ? "กำลังส่ง..." : "ส่งข้อความ"}
       </button>
@@ -121,15 +121,15 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-[13px] font-medium text-zinc-300">
+      <label className="block text-[13px] font-medium text-stone-700">
         {label}
-        {required && <span className="ml-1 text-teal-300">*</span>}
+        {required && <span className="ml-1 text-teal-600">*</span>}
       </label>
       <input
         type={type}
         name={name}
         required={required}
-        className="mt-2 w-full rounded-xl border border-white/[0.08] bg-[#0f1011] px-4 py-3 text-[14px] text-white outline-none transition placeholder:text-zinc-600 focus:border-teal-400/40"
+        className="mt-2 w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-[14px] text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-teal-400"
       />
     </div>
   );

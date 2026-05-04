@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     q: "ใช้ AI ทำธุรกิจได้จริงไหม?",
-    a: "ได้แน่นอน — ในปี 2026 ธุรกิจไทยจำนวนมากใช้ AI เพื่อ ลดต้นทุน customer service ผ่าน chatbot, สร้าง content ทางการตลาดอัตโนมัติ, วิเคราะห์ข้อมูลลูกค้า, และ automate งาน operations Tim สอนวิธีใช้ AI ทำธุรกิจจริงในคอร์สที่ AiCEO Academy",
+    a: "ได้แน่นอน — ในปี 2026 ธุรกิจไทยจำนวนมากใช้ AI เพื่อ ลดต้นทุน customer service ผ่าน chatbot, สร้าง content ทางการตลาดอัตโนมัติ, วิเคราะห์ข้อมูลลูกค้า, และ automate งาน operations Tim สอนวิธีใช้ AI ทำธุรกิจจริงผ่านบริการ Corporate Training และ AI Consulting",
   },
   {
     q: "ChatGPT vs Claude vs Gemini ตัวไหนดีสุด?",
@@ -29,7 +29,7 @@ const faqs = [
   },
   {
     q: "เรียน AI ฟรีได้ที่ไหน?",
-    a: "janepat.com มีบทความ AI ภาษาไทยฟรีทุกหัวข้อ — ครอบคลุม ChatGPT, Claude, AI Marketing, AI Automation, Prompt Engineering สำหรับคอร์สเรียนเต็มแบบ structured ลองดูที่ AiCEO Academy (next.aiceo.im)",
+    a: "janepat.com มีบทความ AI ภาษาไทยฟรีทุกหัวข้อ — ครอบคลุม ChatGPT, Claude, AI Marketing, AI Automation, Prompt Engineering อ่านได้ทันทีโดยไม่ต้อง subscribe",
   },
 ];
 
@@ -47,15 +47,15 @@ export default function AIPillarPage() {
 
       <section className="gradient-hero">
         <div className="mx-auto max-w-5xl px-6 pt-20 pb-16 md:pt-28">
-          <div className="text-[11px] font-mono uppercase tracking-widest text-teal-300">
+          <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">
             Pillar Hub
           </div>
-          <h1 className="mt-4 text-[40px] font-semibold leading-[1.1] tracking-[-0.02em] text-white md:text-[60px]">
+          <h1 className="mt-4 text-[40px] font-semibold leading-[1.1] tracking-[-0.02em] text-stone-900 md:text-[60px]">
             <span className="text-gradient">ความรู้ AI</span>
             <br />
             ภาษาไทย ครบทุกหัวข้อ
           </h1>
-          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-zinc-300">
+          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-stone-700">
             แหล่งรวมความรู้ AI สำหรับคนไทย — ตั้งแต่พื้นฐาน ChatGPT, Claude, Gemini ไปจนถึง
             AI Marketing, AI Automation, Prompt Engineering และ AI Tools เลือกหัวข้อที่อยากเรียนรู้
           </p>
@@ -64,22 +64,22 @@ export default function AIPillarPage() {
 
       <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-[28px] font-bold text-white md:text-[36px]">หัวข้อ AI ทั้งหมด</h2>
-          <p className="mt-3 text-[15px] text-zinc-400">เลือกหัวข้อเพื่อดูบทความและ tutorial ทั้งหมดของแต่ละ topic</p>
+          <h2 className="text-[28px] font-bold text-stone-900 md:text-[36px]">หัวข้อ AI ทั้งหมด</h2>
+          <p className="mt-3 text-[15px] text-stone-600">เลือกหัวข้อเพื่อดูบทความและ tutorial ทั้งหมดของแต่ละ topic</p>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {AI_CATEGORIES.map((cat) => (
               <Link
                 key={cat.slug}
                 href={`/ai/${cat.slug}`}
-                className="group rounded-2xl border border-white/[0.08] bg-[#0f1011] p-7 transition hover:border-teal-400/30"
+                className="group rounded-2xl border border-stone-200 bg-white p-7 transition hover:border-teal-300"
               >
                 <div className={`inline-block rounded-full bg-gradient-to-r ${cat.color} bg-clip-text text-[12px] font-mono uppercase tracking-widest text-transparent`}>
                   /ai/{cat.slug}
                 </div>
-                <h3 className="mt-3 text-[22px] font-bold text-white">{cat.name}</h3>
-                <p className="mt-3 text-[14px] leading-[1.75] text-zinc-400">{cat.description}</p>
-                <div className="mt-6 inline-flex items-center gap-1 text-[13px] text-teal-300 transition group-hover:gap-2">
+                <h3 className="mt-3 text-[22px] font-bold text-stone-900">{cat.name}</h3>
+                <p className="mt-3 text-[14px] leading-[1.75] text-stone-600">{cat.description}</p>
+                <div className="mt-6 inline-flex items-center gap-1 text-[13px] text-teal-600 transition group-hover:gap-2">
                   ดูบทความทั้งหมด <span>→</span>
                 </div>
               </Link>
@@ -88,21 +88,21 @@ export default function AIPillarPage() {
         </div>
       </section>
 
-      <section className="border-t border-white/[0.06] bg-[#0b0b0d] px-6 py-20">
+      <section className="border-t border-stone-200 bg-stone-100 px-6 py-20">
         <div className="mx-auto max-w-3xl">
-          <div className="text-[11px] font-mono uppercase tracking-widest text-teal-300">FAQ</div>
-          <h2 className="mt-3 text-[28px] font-bold text-white md:text-[36px]">คำถามที่พบบ่อยเรื่อง AI</h2>
+          <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">FAQ</div>
+          <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[36px]">คำถามที่พบบ่อยเรื่อง AI</h2>
           <div className="mt-10 space-y-4">
             {faqs.map((f) => (
               <details
                 key={f.q}
-                className="group rounded-xl border border-white/[0.08] bg-[#0f1011] p-6 open:border-teal-400/20"
+                className="group rounded-xl border border-stone-200 bg-white p-6 open:border-teal-300"
               >
-                <summary className="cursor-pointer list-none text-[16px] font-semibold text-white">
-                  <span className="mr-3 text-teal-300">Q.</span>
+                <summary className="cursor-pointer list-none text-[16px] font-semibold text-stone-900">
+                  <span className="mr-3 text-teal-600">Q.</span>
                   {f.q}
                 </summary>
-                <div className="mt-4 text-[15px] leading-[1.85] text-zinc-300">{f.a}</div>
+                <div className="mt-4 text-[15px] leading-[1.85] text-stone-700">{f.a}</div>
               </details>
             ))}
           </div>

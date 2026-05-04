@@ -1,9 +1,53 @@
 /* NomadKit — sand · ocean · forest on warm cream */
-/* Override globals.css dark bg when on /choopak-* routes */
+
+/* LINE Seed Sans TH (Thai+Latin) */
+@font-face {
+  font-family: 'LINESeedSansTH';
+  src: url('/fonts/LINESeedSansTH_Th.ttf') format('truetype');
+  font-weight: 100;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'LINESeedSansTH';
+  src: url('/fonts/LINESeedSansTH_Rg.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'LINESeedSansTH';
+  src: url('/fonts/LINESeedSansTH_Bd.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'LINESeedSansTH';
+  src: url('/fonts/LINESeedSansTH_XBd.ttf') format('truetype');
+  font-weight: 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'LINESeedSansTH';
+  src: url('/fonts/LINESeedSansTH_He.ttf') format('truetype');
+  font-weight: 900;
+  font-display: swap;
+}
+
+/* Override globals.css dark bg + apply LINE Seed font when on /choopak-* routes */
 html:has(.choopak-root),
 html:has(.choopak-root) body {
   background: #fffdf7 !important;
   color: #1c1917 !important;
+  font-family: 'LINESeedSansTH', 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+.choopak-root,
+.choopak-root * {
+  font-family: 'LINESeedSansTH', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Keep mono utility for label/caption only */
+.choopak-root .nk-mono {
+  font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace !important;
 }
 
 .choopak-root {

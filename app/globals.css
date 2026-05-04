@@ -1,30 +1,33 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #0a0a0a;
-  --color-bg-elevated: #111113;
-  --color-bg-card: #0f1011;
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-strong: rgba(255, 255, 255, 0.14);
+  --color-bg: #fafaf9;
+  --color-bg-elevated: #ffffff;
+  --color-bg-card: #ffffff;
+  --color-border: rgba(28, 25, 23, 0.08);
+  --color-border-strong: rgba(28, 25, 23, 0.14);
 
-  --color-ink: #f5f5f5;
-  --color-ink-muted: #a1a1aa;
-  --color-ink-dim: #71717a;
+  --color-ink: #1c1917;
+  --color-ink-muted: #57534e;
+  --color-ink-dim: #78716c;
 
   --color-teal-300: #5eead4;
   --color-teal-400: #2dd4bf;
   --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+  --color-teal-700: #0f766e;
   --color-teal-900: #134e4a;
 
   --color-amber-300: #fcd34d;
+  --color-amber-500: #f59e0b;
 
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "IBM Plex Sans Thai", "Noto Sans Thai", "Sarabun", sans-serif;
+  --font-sans: "LINE Seed Sans TH", "LINE Seed Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
 }
 
 html {
-  background: #0a0a0a;
-  color: #f5f5f5;
+  background: #fafaf9;
+  color: #1c1917;
 }
 
 body {
@@ -37,8 +40,8 @@ body {
 }
 
 ::selection {
-  background: rgba(45, 212, 191, 0.3);
-  color: #f5f5f5;
+  background: rgba(13, 148, 136, 0.2);
+  color: #134e4a;
 }
 
 a {
@@ -47,36 +50,37 @@ a {
 
 .gradient-hero {
   background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(45, 212, 191, 0.18), transparent 60%),
-    linear-gradient(180deg, #0a0a0a 0%, #0a0a0a 60%, #0d2725 100%);
+    radial-gradient(ellipse 80% 55% at 50% -10%, rgba(13, 148, 136, 0.10), transparent 65%),
+    radial-gradient(ellipse 50% 35% at 90% 110%, rgba(245, 158, 11, 0.08), transparent 65%),
+    linear-gradient(180deg, #ffffff 0%, #fafaf9 60%, #f5f5f4 100%);
 }
 
 .text-gradient {
-  background: linear-gradient(90deg, #5eead4 0%, #fcd34d 100%);
+  background: linear-gradient(90deg, #0d9488 0%, #f59e0b 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(28, 25, 23, 0.08);
 }
 
 .text-stroke {
-  -webkit-text-stroke: 1px rgba(94, 234, 212, 0.45);
+  -webkit-text-stroke: 1.2px rgba(13, 148, 136, 0.55);
   color: transparent;
 }
 
 .text-stroke-faint {
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.08);
+  -webkit-text-stroke: 1.2px rgba(28, 25, 23, 0.12);
   color: transparent;
 }
 
 .dotted-grid {
-  background-image: radial-gradient(circle at 1px 1px, rgba(94, 234, 212, 0.18) 1px, transparent 0);
+  background-image: radial-gradient(circle at 1px 1px, rgba(13, 148, 136, 0.2) 1px, transparent 0);
   background-size: 28px 28px;
 }
 
@@ -85,9 +89,9 @@ a {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle 600px at 80% 20%, rgba(45, 212, 191, 0.18), transparent 60%),
-    radial-gradient(circle 500px at 20% 80%, rgba(252, 211, 77, 0.12), transparent 60%);
-  filter: blur(20px);
+    radial-gradient(circle 600px at 80% 20%, rgba(13, 148, 136, 0.14), transparent 60%),
+    radial-gradient(circle 500px at 20% 80%, rgba(245, 158, 11, 0.10), transparent 60%);
+  filter: blur(24px);
 }
 
 @keyframes pulse-soft {
@@ -121,7 +125,7 @@ a {
   content: "";
   position: absolute;
   inset: -2px;
-  background: conic-gradient(from 180deg at 50% 50%, rgba(45, 212, 191, 0) 0deg, rgba(45, 212, 191, 0.35) 90deg, rgba(252, 211, 77, 0.25) 180deg, rgba(45, 212, 191, 0) 270deg);
+  background: conic-gradient(from 180deg at 50% 50%, rgba(13, 148, 136, 0) 0deg, rgba(13, 148, 136, 0.45) 90deg, rgba(245, 158, 11, 0.35) 180deg, rgba(13, 148, 136, 0) 270deg);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 0;
@@ -139,7 +143,7 @@ a {
 .prose-th h2 {
   font-size: 28px;
   font-weight: 700;
-  color: #f5f5f5;
+  color: #1c1917;
   margin-top: 2.5rem;
   margin-bottom: 1rem;
   letter-spacing: -0.01em;
@@ -148,7 +152,7 @@ a {
 .prose-th h3 {
   font-size: 22px;
   font-weight: 600;
-  color: #f5f5f5;
+  color: #1c1917;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
 }
@@ -156,7 +160,7 @@ a {
 .prose-th p {
   font-size: 16px;
   line-height: 1.85;
-  color: #d4d4d8;
+  color: #44403c;
   margin-bottom: 1.25rem;
 }
 
@@ -164,7 +168,7 @@ a {
 .prose-th ol {
   margin-bottom: 1.25rem;
   padding-left: 1.5rem;
-  color: #d4d4d8;
+  color: #44403c;
   line-height: 1.85;
 }
 
@@ -179,26 +183,26 @@ a {
 }
 
 .prose-th a {
-  color: #5eead4;
+  color: #0d9488;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
 .prose-th a:hover {
-  color: #2dd4bf;
+  color: #0f766e;
 }
 
 .prose-th blockquote {
-  border-left: 3px solid #2dd4bf;
+  border-left: 3px solid #0d9488;
   padding-left: 1rem;
-  color: #a1a1aa;
+  color: #57534e;
   font-style: italic;
   margin: 1.5rem 0;
 }
 
 .prose-th code {
-  background: rgba(45, 212, 191, 0.1);
-  color: #5eead4;
+  background: rgba(13, 148, 136, 0.10);
+  color: #0f766e;
   padding: 2px 6px;
   border-radius: 4px;
   font-family: var(--font-mono);
@@ -206,8 +210,8 @@ a {
 }
 
 .prose-th pre {
-  background: #0f1011;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #1c1917;
+  border: 1px solid rgba(28, 25, 23, 0.08);
   border-radius: 8px;
   padding: 1rem;
   overflow-x: auto;
@@ -217,7 +221,7 @@ a {
 .prose-th pre code {
   background: transparent;
   padding: 0;
-  color: #d4d4d8;
+  color: #f5f5f4;
 }
 
 .prose-th table {
@@ -229,13 +233,13 @@ a {
 
 .prose-th table th,
 .prose-th table td {
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(28, 25, 23, 0.10);
   padding: 0.75rem 1rem;
   text-align: left;
 }
 
 .prose-th table th {
-  background: rgba(45, 212, 191, 0.08);
-  color: #f5f5f5;
+  background: rgba(13, 148, 136, 0.08);
+  color: #1c1917;
   font-weight: 600;
 }

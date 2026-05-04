@@ -11,7 +11,7 @@ export const SITE = {
     name: "Tim Janepat",
     fullName: "Timothy Janepat",
     role: "AI Expert & Digital Marketing Strategist",
-    bio: "ผู้เชี่ยวชาญด้าน AI และการตลาดดิจิทัลของไทย ผู้ก่อตั้ง AiCEO Academy — สอน AI ภาษาไทยให้คนไทยใช้ AI สร้างรายได้จริง",
+    bio: "ผู้เชี่ยวชาญด้าน AI และการตลาดดิจิทัลของไทย — สอน AI ภาษาไทยให้คนไทยใช้ AI สร้างรายได้จริง",
     avatar: "/images/tim-janepat.jpg",
     email: "hello@janepat.com",
   },
@@ -24,22 +24,17 @@ export const SITE = {
     linkedin: "https://www.linkedin.com/in/timjanepat",
     tiktok: "https://www.tiktok.com/@timjanepat",
   },
-  related: {
-    aiceoAcademy: "https://next.aiceo.im",
-    aiceo: "https://aiceo.im",
-  },
   // Latest showreel/featured video on YouTube — สลับ id ได้เมื่อมีเนื้อหาใหม่
   featuredVideoId: "hw_Jg1J94uk",
-  // Brands ที่เคยร่วมงาน (ใส่เป็น text — เปลี่ยนเป็นโลโก้จริงเมื่อมีไฟล์)
   brandsWorkedWith: [
     "Hostinger",
     "Zoer.ai",
     "Google Gemini",
     "AhaCreator",
-    "AiCEO Academy",
     "OpenAI",
     "Anthropic",
     "Make.com",
+    "n8n",
   ],
   testimonials: [
     {
@@ -55,7 +50,7 @@ export const SITE = {
     {
       author: "Content Creator",
       company: "1.2M followers",
-      quote: "คอร์สของ Tim ที่ AiCEO ช่วยให้ผม 10x จำนวนคอนเทนต์ในเวลาเท่าเดิม",
+      quote: "คอร์สของ Tim ช่วยให้ผม 10x จำนวนคอนเทนต์ในเวลาเท่าเดิม",
     },
   ],
   geo: {

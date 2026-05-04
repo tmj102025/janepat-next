@@ -42,29 +42,29 @@ export default async function CategoryPage({ params }: { params: Params }) {
 
       <section className="gradient-hero">
         <div className="mx-auto max-w-5xl px-6 pt-20 pb-16 md:pt-28">
-          <Link href="/ai" className="text-[12px] font-mono text-teal-300 hover:text-teal-200">
+          <Link href="/ai" className="text-[12px] font-mono text-teal-600 hover:text-teal-700">
             ← /ai
           </Link>
           <div className={`mt-6 inline-block rounded-full bg-gradient-to-r ${cat.color} bg-clip-text text-[11px] font-mono uppercase tracking-widest text-transparent`}>
             Category · /ai/{cat.slug}
           </div>
-          <h1 className="mt-4 text-[40px] font-semibold leading-[1.1] tracking-[-0.02em] text-white md:text-[58px]">
+          <h1 className="mt-4 text-[40px] font-semibold leading-[1.1] tracking-[-0.02em] text-stone-900 md:text-[58px]">
             {cat.name}
           </h1>
-          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-zinc-300">{cat.description}</p>
+          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-stone-700">{cat.description}</p>
         </div>
       </section>
 
       <section className="px-6 py-16">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-[24px] font-bold text-white md:text-[28px]">บทความทั้งหมด</h2>
+          <h2 className="text-[24px] font-bold text-stone-900 md:text-[28px]">บทความทั้งหมด</h2>
 
           {posts.length === 0 ? (
-            <div className="mt-8 rounded-2xl border border-dashed border-white/10 bg-[#0f1011] p-10 text-center">
-              <p className="text-[14px] text-zinc-400">บทความหัวข้อนี้กำลังจะมาเร็ว ๆ นี้</p>
+            <div className="mt-8 rounded-2xl border border-dashed border-stone-200 bg-white p-10 text-center">
+              <p className="text-[14px] text-stone-600">บทความหัวข้อนี้กำลังจะมาเร็ว ๆ นี้</p>
               <Link
                 href="/ai"
-                className="mt-4 inline-flex items-center text-[13px] text-teal-300 hover:text-teal-200"
+                className="mt-4 inline-flex items-center text-[13px] text-teal-600 hover:text-teal-700"
               >
                 ดูหัวข้ออื่น →
               </Link>
@@ -75,18 +75,18 @@ export default async function CategoryPage({ params }: { params: Params }) {
                 <Link
                   key={p.id}
                   href={`/ai/${cat.slug}/${p.slug}`}
-                  className="group rounded-2xl border border-white/[0.08] bg-[#0f1011] overflow-hidden transition hover:border-teal-400/30"
+                  className="group rounded-2xl border border-stone-200 bg-white overflow-hidden transition hover:border-teal-300"
                 >
                   {p.cover && (
-                    <div className="aspect-video overflow-hidden bg-zinc-900">
+                    <div className="aspect-video overflow-hidden bg-white">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={p.cover} alt={p.title_th} className="h-full w-full object-cover transition group-hover:scale-105" />
                     </div>
                   )}
                   <div className="p-6">
-                    <div className="text-[11px] font-mono uppercase tracking-widest text-teal-300">{cat.name}</div>
-                    <h3 className="mt-2 text-[18px] font-bold text-white line-clamp-2">{p.title_th}</h3>
-                    <p className="mt-2 text-[13px] leading-[1.7] text-zinc-400 line-clamp-3">{p.excerpt}</p>
+                    <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">{cat.name}</div>
+                    <h3 className="mt-2 text-[18px] font-bold text-stone-900 line-clamp-2">{p.title_th}</h3>
+                    <p className="mt-2 text-[13px] leading-[1.7] text-stone-600 line-clamp-3">{p.excerpt}</p>
                   </div>
                 </Link>
               ))}

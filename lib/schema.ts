@@ -43,11 +43,7 @@ export function personSchema() {
       "n8n",
       "AI for Business",
     ],
-    worksFor: {
-      "@type": "Organization",
-      name: "AiCEO Academy",
-      url: SITE.related.aiceoAcademy,
-    },
+    // removed external worksFor reference
     knowsLanguage: ["th", "en"],
   };
 }

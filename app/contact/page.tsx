@@ -21,11 +21,11 @@ export default function ContactPage() {
 
       <section className="gradient-hero">
         <div className="mx-auto max-w-3xl px-6 pt-20 pb-12 md:pt-28">
-          <div className="text-[11px] font-mono uppercase tracking-widest text-teal-300">Contact</div>
-          <h1 className="mt-4 text-[40px] font-semibold leading-[1.1] tracking-[-0.02em] text-white md:text-[56px]">
+          <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">Contact</div>
+          <h1 className="mt-4 text-[40px] font-semibold leading-[1.1] tracking-[-0.02em] text-stone-900 md:text-[56px]">
             ติดต่อ <span className="text-gradient">Tim</span>
           </h1>
-          <p className="mt-6 text-[16px] leading-[1.85] text-zinc-300">
+          <p className="mt-6 text-[16px] leading-[1.85] text-stone-700">
             กรอกฟอร์มด้านล่าง ผมหรือทีมจะตอบกลับภายใน 24 ชั่วโมง สำหรับงานเร่งด่วน LINE หรืออีเมลโดยตรงเร็วกว่า
           </p>
         </div>
@@ -36,30 +36,30 @@ export default function ContactPage() {
           <ContactForm />
 
           <aside className="space-y-4">
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0f1011] p-5">
-              <div className="text-[11px] font-mono uppercase tracking-widest text-teal-300">Direct</div>
+            <div className="rounded-2xl border border-stone-200 bg-white p-5">
+              <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">Direct</div>
               <ul className="mt-3 space-y-3 text-[14px]">
                 <li>
-                  <a href={`mailto:${SITE.author.email}`} className="text-white hover:text-teal-300">
+                  <a href={`mailto:${SITE.author.email}`} className="text-stone-900 hover:text-teal-600">
                     {SITE.author.email}
                   </a>
                 </li>
                 <li>
-                  <a href={SITE.social.line} target="_blank" rel="noopener" className="text-white hover:text-teal-300">
+                  <a href={SITE.social.line} target="_blank" rel="noopener" className="text-stone-900 hover:text-teal-600">
                     LINE: @timjanepat
                   </a>
                 </li>
               </ul>
             </div>
 
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0f1011] p-5">
-              <div className="text-[11px] font-mono uppercase tracking-widest text-teal-300">Social</div>
+            <div className="rounded-2xl border border-stone-200 bg-white p-5">
+              <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">Social</div>
               <ul className="mt-3 space-y-2 text-[14px]">
-                <li><a href={SITE.social.youtube} target="_blank" rel="noopener" className="text-zinc-300 hover:text-white">YouTube ↗</a></li>
-                <li><a href={SITE.social.facebook} target="_blank" rel="noopener" className="text-zinc-300 hover:text-white">Facebook ↗</a></li>
-                <li><a href={SITE.social.instagram} target="_blank" rel="noopener" className="text-zinc-300 hover:text-white">Instagram ↗</a></li>
-                <li><a href={SITE.social.x} target="_blank" rel="noopener" className="text-zinc-300 hover:text-white">X (Twitter) ↗</a></li>
-                <li><a href={SITE.social.tiktok} target="_blank" rel="noopener" className="text-zinc-300 hover:text-white">TikTok ↗</a></li>
+                <li><a href={SITE.social.youtube} target="_blank" rel="noopener" className="text-stone-700 hover:text-stone-900">YouTube ↗</a></li>
+                <li><a href={SITE.social.facebook} target="_blank" rel="noopener" className="text-stone-700 hover:text-stone-900">Facebook ↗</a></li>
+                <li><a href={SITE.social.instagram} target="_blank" rel="noopener" className="text-stone-700 hover:text-stone-900">Instagram ↗</a></li>
+                <li><a href={SITE.social.x} target="_blank" rel="noopener" className="text-stone-700 hover:text-stone-900">X (Twitter) ↗</a></li>
+                <li><a href={SITE.social.tiktok} target="_blank" rel="noopener" className="text-stone-700 hover:text-stone-900">TikTok ↗</a></li>
               </ul>
             </div>
           </aside>
