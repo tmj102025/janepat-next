@@ -39,30 +39,36 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  for (const channel of SOURCE_CHANNELS) {
+  const channelFilter = req.nextUrl.searchParams.get("channel");
+  const channels = channelFilter
+    ? SOURCE_CHANNELS.filter((c) => c.handle === channelFilter || c.id === channelFilter || c.name === channelFilter)
+    : SOURCE_CHANNELS;
+
+  // Run all channels in parallel — Cloudflare proxy times out at 100s
+  const channelTasks = channels.map(async (channel) => {
+    const channelResults: RunResult[] = [];
     let videos;
     try {
-      // Use API uploads playlist (filters Shorts via duration > 180s)
       videos = await fetchLatestLongByChannel(channel.id, limit);
     } catch (err) {
-      results.push({
+      channelResults.push({
         channel: channel.name,
         videoId: "",
         status: "error",
         error: (err as Error).message,
       });
-      continue;
+      return channelResults;
     }
 
+    // Each video processed sequentially within a channel (limit usually = 1)
     for (const v of videos) {
       try {
         const existing = await findPostByVideoId(v.videoId);
         if (existing) {
-          results.push({ channel: channel.name, videoId: v.videoId, status: "skipped:exists" });
+          channelResults.push({ channel: channel.name, videoId: v.videoId, status: "skipped:exists" });
           continue;
         }
 
-        // Try transcript first; fall back to description
         let sourceText = "";
         let sourceKind: "transcript" | "description" = "description";
         const transcript = await fetchTranscript(v.videoId);
@@ -75,11 +81,7 @@ export async function GET(req: NextRequest) {
         }
 
         if (!sourceText) {
-          results.push({
-            channel: channel.name,
-            videoId: v.videoId,
-            status: "skipped:no-source",
-          });
+          channelResults.push({ channel: channel.name, videoId: v.videoId, status: "skipped:no-source" });
           continue;
         }
 
@@ -115,20 +117,12 @@ export async function GET(req: NextRequest) {
             ? [{ label: `วิดีโอต้นฉบับ — ${channel.name}`, url: videoUrl }]
             : [
                 { label: `Source video — ${channel.name}`, url: videoUrl },
-                {
-                  label: `Original channel — ${channel.handle}`,
-                  url: `https://www.youtube.com/${channel.handle}`,
-                },
+                { label: `Original channel — ${channel.handle}`, url: `https://www.youtube.com/${channel.handle}` },
               ],
         });
 
         if (!create.ok || !create.id) {
-          results.push({
-            channel: channel.name,
-            videoId: v.videoId,
-            status: "error",
-            error: create.error,
-          });
+          channelResults.push({ channel: channel.name, videoId: v.videoId, status: "error", error: create.error });
           continue;
         }
 
@@ -141,7 +135,7 @@ export async function GET(req: NextRequest) {
           });
         }
 
-        results.push({
+        channelResults.push({
           channel: channel.name,
           videoId: v.videoId,
           status: isAuto ? "created:auto" : "created:draft",
@@ -149,7 +143,7 @@ export async function GET(req: NextRequest) {
           postId: create.id,
         });
       } catch (err) {
-        results.push({
+        channelResults.push({
           channel: channel.name,
           videoId: v.videoId,
           status: "error",
@@ -157,6 +151,13 @@ export async function GET(req: NextRequest) {
         });
       }
     }
+    return channelResults;
+  });
+
+  const settled = await Promise.allSettled(channelTasks);
+  for (const s of settled) {
+    if (s.status === "fulfilled") results.push(...s.value);
+    else results.push({ channel: "?", videoId: "", status: "error", error: String(s.reason) });
   }
 
   return Response.json({
