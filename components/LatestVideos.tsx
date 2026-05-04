@@ -1,8 +1,9 @@
 import { SITE } from "@/lib/site";
-import { fetchLatestLongVideos, formatDuration, formatViewCount } from "@/lib/youtube";
+import { fetchLatestLongVideos } from "@/lib/youtube";
+import { VideoGrid } from "./VideoGrid";
 
 export async function LatestVideos() {
-  const videos = await fetchLatestLongVideos(SITE.youtubeUploadsPlaylist, 6);
+  const videos = await fetchLatestLongVideos(SITE.youtubeUploadsPlaylist, 8);
 
   if (videos.length === 0) {
     return null;
@@ -30,7 +31,7 @@ export async function LatestVideos() {
               >
                 {SITE.youtubeHandle}
               </a>{" "}
-              — อัปเดต tutorial, รีวิว AI tools, และ workflow ใช้งานจริงทุกสัปดาห์
+              — คลิกเพื่อดูในป๊อบอัพ
             </p>
           </div>
           <a
@@ -46,45 +47,8 @@ export async function LatestVideos() {
           </a>
         </div>
 
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {videos.map((v) => (
-            <a
-              key={v.videoId}
-              href={`https://www.youtube.com/watch?v=${v.videoId}`}
-              target="_blank"
-              rel="noopener"
-              className="group rounded-xl border border-[#e6dfd8] bg-[#faf9f5] overflow-hidden transition hover:border-[#cc785c]"
-            >
-              <div className="relative aspect-video overflow-hidden bg-[#efe9de]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`https://i.ytimg.com/vi/${v.videoId}/hqdefault.jpg`}
-                  alt={v.title}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition group-hover:scale-105"
-                />
-                <span className="absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 text-[11px] font-medium text-white">
-                  {formatDuration(v.durationSec)}
-                </span>
-              </div>
-              <div className="p-5">
-                <h3 className="text-[15px] font-medium leading-[1.4] text-[#141413] line-clamp-2 group-hover:text-[#cc785c]">
-                  {v.title}
-                </h3>
-                <div className="mt-3 flex items-center gap-2 text-[12px] text-[#6c6a64]">
-                  <span>{formatViewCount(v.viewCount)} views</span>
-                  <span>·</span>
-                  <time dateTime={v.publishedAt}>
-                    {new Date(v.publishedAt).toLocaleDateString("th-TH", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </time>
-                </div>
-              </div>
-            </a>
-          ))}
+        <div className="mt-8">
+          <VideoGrid videos={videos} />
         </div>
       </div>
     </section>

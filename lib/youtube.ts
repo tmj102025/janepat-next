@@ -85,14 +85,14 @@ export type LatestVideo = {
  */
 export async function fetchLatestLongVideos(
   uploadsPlaylistId: string,
-  count = 6,
+  count = 8,
   apiKey?: string,
 ): Promise<LatestVideo[]> {
   const key = apiKey ?? process.env.YOUTUBE_API_KEY;
   if (!key) return [];
 
   // Pull more than `count` from playlist so we have room after filtering Shorts
-  const fetchSize = Math.min(50, count * 3);
+  const fetchSize = Math.min(50, count * 4);
   const playlistUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=${uploadsPlaylistId}&maxResults=${fetchSize}&key=${key}`;
   const playlistRes = await fetch(playlistUrl, { next: { revalidate: 1800 } });
   if (!playlistRes.ok) return [];
