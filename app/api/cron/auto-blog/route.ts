@@ -40,6 +40,7 @@ export async function GET(req: NextRequest) {
   }
 
   const channelFilter = req.nextUrl.searchParams.get("channel");
+  const skipDedup = req.nextUrl.searchParams.get("skipDedup") === "1";
   const channels = channelFilter
     ? SOURCE_CHANNELS.filter((c) => c.handle === channelFilter || c.id === channelFilter || c.name === channelFilter)
     : SOURCE_CHANNELS;
@@ -63,10 +64,17 @@ export async function GET(req: NextRequest) {
     // Each video processed sequentially within a channel (limit usually = 1)
     for (const v of videos) {
       try {
-        const existing = await findPostByVideoId(v.videoId);
-        if (existing) {
-          channelResults.push({ channel: channel.name, videoId: v.videoId, status: "skipped:exists" });
-          continue;
+        if (!skipDedup) {
+          const existing = await findPostByVideoId(v.videoId);
+          if (existing) {
+            channelResults.push({
+              channel: channel.name,
+              videoId: v.videoId,
+              status: "skipped:exists",
+              error: `existing.slug=${existing.slug}`,
+            });
+            continue;
+          }
         }
 
         let sourceText = "";
