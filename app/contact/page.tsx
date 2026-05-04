@@ -1,6 +1,6 @@
 import { SITE } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo";
-import { breadcrumbSchema, jsonLdScriptProps } from "@/lib/schema";
+import { breadcrumbSchema, jsonLdScriptProps, webPageSchema } from "@/lib/schema";
 import { ContactForm } from "@/components/ContactForm";
 
 export const metadata = buildMetadata({
@@ -10,14 +10,22 @@ export const metadata = buildMetadata({
 });
 
 export default function ContactPage() {
+  const url = `${SITE.url}/contact`;
   const breadcrumb = breadcrumbSchema([
     { name: "หน้าแรก", url: SITE.url },
-    { name: "ติดต่อ", url: `${SITE.url}/contact` },
+    { name: "ติดต่อ", url },
   ]);
+  const webPage = webPageSchema({
+    url,
+    name: "ติดต่อ Tim Janepat",
+    description: "ฟอร์มและช่องทางติดต่อ Tim Janepat — brand deal, AI consulting, training, สอบถามทั่วไป",
+    type: "ContactPage",
+  });
 
   return (
     <>
       <script {...jsonLdScriptProps(breadcrumb)} />
+      <script {...jsonLdScriptProps(webPage)} />
 
       <section className="gradient-hero">
         <div className="mx-auto max-w-3xl px-6 pt-20 pb-12 md:pt-20">

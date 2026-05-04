@@ -1,6 +1,12 @@
 import { SITE } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo";
-import { breadcrumbSchema, jsonLdScriptProps } from "@/lib/schema";
+import {
+  breadcrumbSchema,
+  collectionPageSchema,
+  itemListSchema,
+  jsonLdScriptProps,
+  videoObjectSchema,
+} from "@/lib/schema";
 import { fetchLatestLongVideos } from "@/lib/youtube";
 import { VideoGrid } from "@/components/VideoGrid";
 
@@ -14,14 +20,44 @@ export const metadata = buildMetadata({
 export default async function VideosPage() {
   const videos = await fetchLatestLongVideos(SITE.youtubeUploadsPlaylist, 20);
 
+  const collectionUrl = `${SITE.url}/videos`;
   const breadcrumb = breadcrumbSchema([
     { name: "หน้าแรก", url: SITE.url },
-    { name: "วีดีโอความรู้ AI", url: `${SITE.url}/videos` },
+    { name: "วีดีโอความรู้ AI", url: collectionUrl },
   ]);
+  const collection = collectionPageSchema({
+    url: collectionUrl,
+    name: "วีดีโอความรู้ AI ภาษาไทย",
+    description:
+      "รวมวีดีโอ long-form ภาษาไทยจากช่อง @TimJanepat — tutorial, รีวิว AI tools, workflow ใช้งานจริง",
+    numberOfItems: videos.length,
+  });
+  const itemList = itemListSchema({
+    url: collectionUrl,
+    items: videos.map((v) => ({
+      url: `https://www.youtube.com/watch?v=${v.videoId}`,
+      name: v.title,
+      image: v.thumbnail,
+    })),
+  });
+  const videoSchemas = videos.map((v) =>
+    videoObjectSchema({
+      videoId: v.videoId,
+      name: v.title,
+      thumbnail: v.thumbnail,
+      uploadDate: v.publishedAt,
+      durationSec: v.durationSec,
+    }),
+  );
 
   return (
     <>
       <script {...jsonLdScriptProps(breadcrumb)} />
+      <script {...jsonLdScriptProps(collection)} />
+      <script {...jsonLdScriptProps(itemList)} />
+      {videoSchemas.map((s, i) => (
+        <script key={i} {...jsonLdScriptProps(s)} />
+      ))}
 
       <div className="min-h-screen bg-[#faf9f5]">
         {/* Header */}

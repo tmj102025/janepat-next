@@ -4,13 +4,21 @@ import { AI_CATEGORIES, SITE } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo";
 import { articleSchema, breadcrumbSchema, faqSchema, howToSchema, jsonLdScriptProps } from "@/lib/schema";
 import { getPostBySlug } from "@/lib/pocketbase";
+import { findMockPost, MOCK_POSTS } from "@/lib/mockPosts";
 import { renderMarkdown } from "@/lib/markdown";
+import { PostCard } from "@/components/PostCard";
 
 type Params = Promise<{ category: string; slug: string }>;
 
+async function resolvePost(slug: string) {
+  const real = await getPostBySlug(slug);
+  if (real) return real;
+  return findMockPost(slug);
+}
+
 export async function generateMetadata({ params }: { params: Params }) {
   const { category, slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = await resolvePost(slug);
   if (!post || post.category !== category) {
     return buildMetadata({ title: "ไม่พบบทความ", noIndex: true });
   }
@@ -29,14 +37,14 @@ export async function generateMetadata({ params }: { params: Params }) {
 export default async function PostPage({ params }: { params: Params }) {
   const { category, slug } = await params;
   const cat = AI_CATEGORIES.find((c) => c.slug === category);
-  const post = await getPostBySlug(slug);
+  const post = await resolvePost(slug);
 
   if (!cat || !post || post.category !== category) notFound();
 
   const url = `${SITE.url}/ai/${category}/${slug}`;
   const breadcrumb = breadcrumbSchema([
     { name: "หน้าแรก", url: SITE.url },
-    { name: "ความรู้ AI", url: `${SITE.url}/ai` },
+    { name: "บทความ AI", url: `${SITE.url}/blog` },
     { name: cat.name, url: `${SITE.url}/ai/${cat.slug}` },
     { name: post.title_th, url },
   ]);
@@ -52,6 +60,15 @@ export default async function PostPage({ params }: { params: Params }) {
   });
 
   const html = await renderMarkdown(post.content_md);
+  const dateStr = new Date(post.created).toLocaleDateString("th-TH", {
+    year: "numeric", month: "long", day: "numeric",
+  });
+
+  // Related — same category, exclude current
+  const allPosts = MOCK_POSTS;
+  const related = allPosts
+    .filter((p) => p.category === post.category && p.slug !== post.slug)
+    .slice(0, 3);
 
   return (
     <>
@@ -64,95 +81,146 @@ export default async function PostPage({ params }: { params: Params }) {
         <script {...jsonLdScriptProps(howToSchema(post.howto_jsonld))} />
       )}
 
-      <article className="px-6 py-14 md:py-18">
-        <div className="mx-auto max-w-3xl">
-          <nav className="text-[12px] text-[#8e8b82]">
-            <Link href="/ai" className="hover:text-[#cc785c]">ความรู้ AI</Link>
-            <span className="mx-2">/</span>
-            <Link href={`/ai/${cat.slug}`} className="hover:text-[#cc785c]">{cat.name}</Link>
-          </nav>
+      <div className="min-h-screen bg-[#faf9f5]">
+        <div className="mx-auto max-w-[1200px] px-6 py-8">
+          <div className="max-w-3xl mx-auto">
+            {/* Breadcrumb */}
+            <nav className="font-sans text-[13px] text-[#6c6a64] mb-6">
+              <Link href="/blog" className="hover:text-[#cc785c] transition-colors">บทความ</Link>
+              <span className="mx-2">/</span>
+              <Link href={`/ai/${cat.slug}`} className="hover:text-[#cc785c] transition-colors">{cat.name}</Link>
+              <span className="mx-2">/</span>
+              <span className="text-[#3d3d3a] line-clamp-1">{post.title_th}</span>
+            </nav>
 
-          <h1 className="mt-6 text-[34px] font-semibold leading-[1.2] tracking-[-0.01em] text-[#141413] md:text-[48px]">
-            {post.title_th}
-          </h1>
+            {/* Category + Meta */}
+            <div className="flex flex-wrap items-center gap-3 mb-4">
+              <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[#cc785c]/10 text-[#cc785c] uppercase tracking-[1px]">
+                {cat.name}
+              </span>
+              <span className="font-sans text-[13px] text-[#6c6a64]">{dateStr}</span>
+              {post.reading_minutes && (
+                <>
+                  <span className="text-[#8e8b82]">·</span>
+                  <span className="font-sans text-[13px] text-[#6c6a64]">{post.reading_minutes} นาทีอ่าน</span>
+                </>
+              )}
+            </div>
 
-          <div className="mt-6 flex items-center gap-4 text-[13px] text-[#8e8b82]">
-            <span>โดย Tim Janepat</span>
-            <span>·</span>
-            <time dateTime={post.created}>
-              {new Date(post.created).toLocaleDateString("th-TH", { year: "numeric", month: "long", day: "numeric" })}
-            </time>
-            {post.reading_minutes && (
-              <>
-                <span>·</span>
-                <span>{post.reading_minutes} นาที</span>
-              </>
-            )}
-          </div>
+            {/* Title — editorial display */}
+            <h1 className="font-display text-[34px] md:text-[44px] leading-[1.15] tracking-[-0.6px] text-[#141413] mb-6">
+              {post.title_th}
+            </h1>
 
-          {/* TL;DR — GEO win */}
-          <div className="mt-10 rounded-xl border border-[#cc785c]/35 bg-[#cc785c]/5 p-6">
-            <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">TL;DR</div>
-            <p className="mt-2 text-[15px] leading-[1.8] text-[#252523]">{post.excerpt}</p>
-          </div>
-
-          {/* Content */}
-          <div
-            className="prose-th mt-12"
-            dangerouslySetInnerHTML={{ __html: html }}
-          />
-
-          {/* FAQ */}
-          {post.faq_jsonld && post.faq_jsonld.length > 0 && (
-            <section className="mt-16 border-t border-[#e6dfd8] pt-12">
-              <h2 className="font-display text-[24px] leading-[1.2] tracking-[-0.3px] text-[#141413] md:text-[30px]">คำถามที่พบบ่อย</h2>
-              <div className="mt-8 space-y-3">
-                {post.faq_jsonld.map((f) => (
-                  <details key={f.q} className="rounded-xl border border-[#e6dfd8] bg-white p-5">
-                    <summary className="cursor-pointer list-none text-[15px] font-semibold text-[#141413]">
-                      <span className="mr-3 text-[#cc785c]">Q.</span>
-                      {f.q}
-                    </summary>
-                    <div className="mt-3 text-[14px] leading-[1.8] text-[#3d3d3a]">{f.a}</div>
-                  </details>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* Citations */}
-          {post.citations && post.citations.length > 0 && (
-            <section className="mt-12 border-t border-[#e6dfd8] pt-8">
-              <h3 className="text-[14px] font-mono uppercase tracking-widest text-[#cc785c]">แหล่งอ้างอิง</h3>
-              <ul className="mt-4 space-y-2 text-[13px] text-[#6c6a64]">
-                {post.citations.map((c) => (
-                  <li key={c.url}>
-                    <a href={c.url} target="_blank" rel="noopener" className="text-[#cc785c] underline hover:text-[#a9583e]">
-                      {c.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          {/* Author byline */}
-          <div className="mt-16 rounded-xl border border-[#e6dfd8] bg-white p-6">
-            <div className="flex items-start gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-teal-300 to-amber-300 text-black font-black">
+            {/* Author row */}
+            <div className="flex items-center gap-3 mb-8 pb-6 border-b border-[#e6dfd8]">
+              <div className="w-10 h-10 rounded-full bg-[#cc785c] flex items-center justify-center font-display text-[18px] font-bold text-white shrink-0">
                 T
               </div>
               <div>
-                <div className="text-[15px] font-bold text-[#141413]">เขียนโดย Tim Janepat</div>
-                <p className="mt-1 text-[13px] leading-[1.7] text-[#6c6a64]">{SITE.author.bio}</p>
-                <Link href="/about" className="mt-3 inline-block text-[13px] text-[#cc785c] hover:text-[#a9583e]">
-                  อ่านประวัติเต็ม →
-                </Link>
+                <p className="font-sans font-semibold text-[14px] text-[#141413]">{post.author ?? "Tim Janepat"}</p>
+                <p className="font-sans text-[12px] text-[#6c6a64]">AI Expert · Bangkok</p>
+              </div>
+            </div>
+
+            {/* Cover */}
+            {post.cover && (
+              <div className="aspect-video rounded-xl overflow-hidden bg-[#efe9de] mb-8">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={post.cover} alt={post.title_th} className="w-full h-full object-cover" />
+              </div>
+            )}
+
+            {/* Excerpt — TL;DR (Speakable for voice/AI assistants) */}
+            <div className="tldr rounded-xl border border-[#cc785c]/30 bg-[#cc785c]/5 p-5 mb-10">
+              <div className="text-[11px] font-medium uppercase tracking-[1.5px] text-[#cc785c] mb-2">TL;DR</div>
+              <p className="font-sans text-[16px] text-[#252523] leading-[1.7]">{post.excerpt}</p>
+            </div>
+
+            {/* Content */}
+            <div className="prose-th" dangerouslySetInnerHTML={{ __html: html }} />
+
+            {/* FAQ */}
+            {post.faq_jsonld && post.faq_jsonld.length > 0 && (
+              <section className="mt-14 pt-10 border-t border-[#e6dfd8]">
+                <h2 className="font-display text-[26px] md:text-[32px] leading-[1.15] tracking-[-0.5px] text-[#141413] mb-6">
+                  คำถามที่พบบ่อย
+                </h2>
+                <div className="space-y-3">
+                  {post.faq_jsonld.map((f) => (
+                    <details key={f.q} className="group rounded-xl border border-[#e6dfd8] bg-white p-5 open:border-[#cc785c]/40">
+                      <summary className="cursor-pointer list-none font-sans font-semibold text-[15px] text-[#141413] flex items-start gap-3">
+                        <span className="text-[#cc785c] shrink-0">Q.</span>
+                        <span>{f.q}</span>
+                      </summary>
+                      <div className="mt-3 ml-7 font-sans text-[14px] leading-[1.75] text-[#3d3d3a]">{f.a}</div>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Tags */}
+            {post.tags && post.tags.length > 0 && (
+              <div className="mt-10 pt-6 border-t border-[#e6dfd8] flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <span key={tag} className="rounded-full border border-[#e6dfd8] bg-white px-3 py-1 text-[12px] text-[#3d3d3a]">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Citations */}
+            {post.citations && post.citations.length > 0 && (
+              <section className="mt-10 pt-6 border-t border-[#e6dfd8]">
+                <h3 className="text-[11px] font-medium uppercase tracking-[1.5px] text-[#cc785c] mb-3">แหล่งอ้างอิง</h3>
+                <ul className="space-y-2 text-[13px]">
+                  {post.citations.map((c) => (
+                    <li key={c.url}>
+                      <a href={c.url} target="_blank" rel="noopener" className="text-[#cc785c] underline underline-offset-3 hover:text-[#a9583e]">
+                        {c.label} ↗
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Share */}
+            <div className="mt-10 pt-6 border-t border-[#e6dfd8]">
+              <p className="font-sans text-[13px] text-[#6c6a64] mb-3">แชร์บทความนี้:</p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: "LINE", href: `https://line.me/R/msg/text/?${encodeURIComponent(post.title_th + " " + url)}` },
+                  { label: "Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}` },
+                  { label: "X / Twitter", href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title_th)}&url=${encodeURIComponent(url)}` },
+                ].map((s) => (
+                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex h-9 items-center rounded-full border border-[#e6dfd8] bg-white px-4 text-[13px] font-medium text-[#141413] hover:border-[#cc785c] hover:text-[#cc785c] transition">
+                    {s.label}
+                  </a>
+                ))}
               </div>
             </div>
           </div>
         </div>
-      </article>
+
+        {/* Related */}
+        {related.length > 0 && (
+          <div className="bg-white border-t border-[#e6dfd8]">
+            <div className="mx-auto max-w-[1200px] px-6 py-12 md:py-14">
+              <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c] mb-2">Related</div>
+              <h2 className="font-display text-[28px] md:text-[36px] leading-[1.15] tracking-[-0.5px] text-[#141413] mb-8">
+                บทความที่เกี่ยวข้อง
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {related.map((p) => <PostCard key={p.id} post={p} />)}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }

@@ -1,87 +1,87 @@
-import Link from "next/link";
-import { AI_CATEGORIES, SITE } from "@/lib/site";
+import { SITE } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo";
-import { breadcrumbSchema, jsonLdScriptProps } from "@/lib/schema";
+import {
+  breadcrumbSchema,
+  collectionPageSchema,
+  itemListSchema,
+  jsonLdScriptProps,
+} from "@/lib/schema";
 import { listPublishedPosts } from "@/lib/pocketbase";
+import { MOCK_POSTS } from "@/lib/mockPosts";
+import { PostCard } from "@/components/PostCard";
 
 export const metadata = buildMetadata({
-  title: "บทความทั้งหมด — AI ภาษาไทย โดย Tim Janepat",
-  description: "บทความ AI ภาษาไทยทั้งหมด ครอบคลุม ChatGPT, Claude, Gemini, AI Marketing, AI Automation, Prompt Engineering และ AI Tools",
+  title: "บทความ AI — Tips, Tutorials, Use Cases ภาษาไทย",
+  description:
+    "บทความ AI ภาษาไทย ครอบคลุม ChatGPT, Claude, Gemini, AI Marketing, AI Automation, Prompt Engineering และ AI Tools — อัปเดตทุกสัปดาห์",
   path: "/blog",
 });
 
-export default async function BlogIndexPage() {
-  const posts = await listPublishedPosts({ limit: 100 });
+export default async function BlogPage() {
+  const real = await listPublishedPosts({ limit: 100 });
+  const posts = real.length > 0 ? real : MOCK_POSTS;
+  const sorted = posts
+    .slice()
+    .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
+  const collectionUrl = `${SITE.url}/blog`;
   const breadcrumb = breadcrumbSchema([
     { name: "หน้าแรก", url: SITE.url },
-    { name: "บทความ", url: `${SITE.url}/blog` },
+    { name: "บทความ AI", url: collectionUrl },
   ]);
+  const collection = collectionPageSchema({
+    url: collectionUrl,
+    name: "บทความ AI ภาษาไทย",
+    description:
+      "บทความ AI ภาษาไทย ครอบคลุม ChatGPT, Claude, Gemini, AI Marketing, AI Automation, Prompt Engineering และ AI Tools",
+    numberOfItems: sorted.length,
+  });
+  const itemList = itemListSchema({
+    url: collectionUrl,
+    items: sorted.slice(0, 30).map((p) => ({
+      url: `${SITE.url}/ai/${p.category}/${p.slug}`,
+      name: p.title_th,
+      image: p.cover,
+    })),
+  });
 
   return (
     <>
       <script {...jsonLdScriptProps(breadcrumb)} />
+      <script {...jsonLdScriptProps(collection)} />
+      <script {...jsonLdScriptProps(itemList)} />
 
-      <section className="gradient-hero">
-        <div className="mx-auto max-w-5xl px-6 pt-20 pb-12 md:pt-20">
-          <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">Blog</div>
-          <h1 className="mt-4 font-display text-[40px] leading-[1.05] tracking-[-0.8px] text-[#141413] md:text-[56px]">
-            บทความ AI ทั้งหมด
+      <div className="min-h-screen bg-[#faf9f5]">
+        {/* Header — centered like /videos */}
+        <div className="mx-auto max-w-[1200px] px-6 pt-10 pb-6 md:pt-12 md:pb-8 text-center">
+          <div className="inline-flex items-center gap-2 mb-4 text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#cc785c]" />
+            Articles
+          </div>
+          <h1 className="font-display text-[36px] md:text-[52px] text-[#141413] leading-[1.1] mb-3 tracking-[-0.8px]">
+            <span className="text-[#cc785c]">บทความ AI</span>
           </h1>
-          <p className="mt-4 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">
-            อัปเดต tutorial, รีวิว AI tools, และความรู้ AI ที่คนไทยใช้ได้จริง — เผยแพร่เนื้อหาใหม่ 2-4 บทความต่อสัปดาห์
+          <p className="font-sans text-[14px] md:text-[15px] text-[#6c6a64] max-w-xl mx-auto">
+            ความรู้ AI สำหรับมือใหม่ และเจ้าของธุรกิจ — เรียงล่าสุดก่อน
           </p>
         </div>
-      </section>
 
-      <section className="px-6 py-12">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-wrap gap-2">
-            {AI_CATEGORIES.map((c) => (
-              <Link
-                key={c.slug}
-                href={`/ai/${c.slug}`}
-                className="rounded-full border border-[#e6dfd8] bg-white px-4 py-1.5 text-[12px] text-[#3d3d3a] transition hover:border-[#cc785c]/35 hover:text-[#141413]"
-              >
-                {c.name}
-              </Link>
-            ))}
-          </div>
-
-          {posts.length === 0 ? (
-            <div className="mt-12 rounded-xl border border-dashed border-[#e6dfd8] bg-white p-12 text-center">
-              <p className="text-[14px] text-[#6c6a64]">บทความใหม่กำลังจะมา ติดตามได้เร็ว ๆ นี้</p>
+        {/* Grid 4-col like /videos */}
+        <div className="mx-auto max-w-[1200px] px-6 pb-14">
+          {sorted.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {sorted.map((post) => (
+                <PostCard key={post.id} post={post} />
+              ))}
             </div>
           ) : (
-            <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {posts.map((p) => {
-                const cat = AI_CATEGORIES.find((c) => c.slug === p.category);
-                return (
-                  <Link
-                    key={p.id}
-                    href={`/ai/${p.category}/${p.slug}`}
-                    className="group rounded-xl border border-[#e6dfd8] bg-white overflow-hidden transition hover:border-[#cc785c]/35"
-                  >
-                    {p.cover && (
-                      <div className="aspect-video overflow-hidden bg-white">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={p.cover} alt={p.title_th} className="h-full w-full object-cover transition group-hover:scale-105" />
-                      </div>
-                    )}
-                    <div className="p-6">
-                      <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
-                        {cat?.name ?? p.category}
-                      </div>
-                      <h3 className="mt-2 font-display text-[20px] leading-[1.25] tracking-[-0.2px] text-[#141413] line-clamp-2">{p.title_th}</h3>
-                      <p className="mt-2 text-[13px] leading-[1.7] text-[#6c6a64] line-clamp-3">{p.excerpt}</p>
-                    </div>
-                  </Link>
-                );
-              })}
+            <div className="text-center py-20 text-[#6c6a64]">
+              <div className="text-5xl mb-4">📝</div>
+              <p className="font-sans">ยังไม่มีบทความ</p>
             </div>
           )}
         </div>
-      </section>
+      </div>
     </>
   );
 }

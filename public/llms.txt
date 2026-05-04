@@ -1,0 +1,23 @@
+# Janepat.com
+
+> AI Expert ภาษาไทย — แชร์ความรู้ AI, ChatGPT, Claude, AI Marketing, AI Automation สำหรับคนไทย เจ้าของธุรกิจ และคนทำงาน โดย Tim Janepat
+
+Tim Janepat คือ Google Gemini Certified Trainer และวิทยากรอบรม AI ให้บริษัทไทยกว่า 30+ องค์กร เผยแพร่บทความ + วิดีโอภาษาไทยสอน AI ที่ใช้งานได้จริง
+
+## Articles
+- [/blog](https://janepat.com/blog): บทความ AI ภาษาไทยทั้งหมด — ครอบคลุม ChatGPT, Claude, Gemini, AI Marketing, AI Automation, AI Tools, AI for Business, AI for Creator, AI Basics
+
+## Videos
+- [/videos](https://janepat.com/videos): รวมวิดีโอความรู้ AI long-form (>3 นาที) จาก @TimJanepat — tutorial, รีวิว AI tools, workflow ใช้งานจริง
+
+## Services
+- [/services](https://janepat.com/services): บริการอบรม AI In-house Training สำหรับองค์กรไทย — Onsite ทั่วประเทศ ปรับเนื้อหาเฉพาะธุรกิจ เริ่มต้น ฿19,900 (ครึ่งวัน 3 ชม. หรือเต็มวัน)
+
+## About
+- [/about](https://janepat.com/about): ประวัติ Tim Janepat — นักการตลาดดิจิทัล 10+ ปี Google Gemini Certified Trainer YouTube creator @TimJanepat 28.8K subscribers
+- [/contact](https://janepat.com/contact): ติดต่อ Tim สำหรับ brand deal, consulting, training
+
+## Optional
+- [Sitemap](https://janepat.com/sitemap.xml): URLs ทั้งหมดของเว็บ
+- [RSS Feed](https://janepat.com/feed.xml): บทความล่าสุด
+- [YouTube Channel](https://www.youtube.com/@TimJanepat): วิดีโอความรู้ AI ภาษาไทย ทุกสัปดาห์

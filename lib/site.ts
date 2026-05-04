@@ -72,9 +72,6 @@ export const NAV = [
   { href: "/", label: "หน้าแรก" },
   { href: "/blog", label: "บทความ AI" },
   { href: "/videos", label: "วีดีโอความรู้ AI" },
-  { href: "/services", label: "บริการ" },
-  { href: "/about", label: "เกี่ยวกับ Tim" },
-  { href: "/contact", label: "ติดต่อ" },
 ] as const;
 
 export const AI_CATEGORIES = [
