@@ -7,6 +7,22 @@
  * Alternatives: meta-llama/llama-3.3-70b-instruct:free, qwen/qwq-32b:free
  */
 
+/** Strip code fences + escape raw control chars on retry — used for both wrapper + content */
+function safeJsonParse(raw: string): unknown {
+  const cleaned = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/i, "").trim();
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    const fixed = cleaned.replace(/[\x00-\x1f]+/g, (c) => {
+      if (c === "\n") return "\\n";
+      if (c === "\r") return "\\r";
+      if (c === "\t") return "\\t";
+      return " ";
+    });
+    return JSON.parse(fixed);
+  }
+}
+
 // Primary + fallback chain — ทุกตัวฟรีและตอบไทยได้
 // (ทดสอบเมื่อ 2026-05-04 — gpt-oss-120b ตอบไทยคล่องที่สุด)
 const DEFAULT_MODEL = "openai/gpt-oss-120b:free";
@@ -100,42 +116,28 @@ ${input.transcript.slice(0, 25000)}
       }),
     });
 
+    const rawBody = await res.text();
     if (!res.ok) {
-      lastError = `${model} → ${res.status} ${(await res.text()).slice(0, 200)}`;
-      // 429 = rate-limited upstream → ลองตัวถัดไป; 4xx อื่น = หยุด
+      lastError = `${model} → ${res.status} ${rawBody.slice(0, 200)}`;
       if (res.status !== 429 && res.status < 500) break;
       continue;
     }
 
-    const json = await res.json();
-    const content: string | undefined = json?.choices?.[0]?.message?.content;
-    if (content) {
+    let wrapper;
+    try {
+      wrapper = safeJsonParse(rawBody);
+    } catch (e) {
+      lastError = `${model} → wrapper parse fail: ${(e as Error).message} | body: ${rawBody.slice(0, 200)}`;
+      continue;
+    }
+    const content: string | undefined = wrapper?.choices?.[0]?.message?.content;
+    if (content && content.length > 100) {
       text = content;
       break;
     }
     lastError = `${model} → empty content`;
   }
   if (!text) throw new Error(`OpenRouter all models failed. Last: ${lastError}`);
-
-  // Sanitize control chars that LLMs sometimes emit raw inside JSON strings
-  function safeJsonParse(raw: string) {
-    const cleaned = raw
-      .replace(/^```(?:json)?\s*/i, "")
-      .replace(/\s*```\s*$/i, "")
-      .trim();
-    try {
-      return JSON.parse(cleaned);
-    } catch {
-      // Replace raw control chars in strings with their escaped form
-      const fixed = cleaned.replace(/[\x00-\x1f]+/g, (c) => {
-        if (c === "\n") return "\\n";
-        if (c === "\r") return "\\r";
-        if (c === "\t") return "\\t";
-        return " ";
-      });
-      return JSON.parse(fixed);
-    }
-  }
 
   const parsed = safeJsonParse(text) as RewriteOutput;
 
