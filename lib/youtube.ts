@@ -106,8 +106,8 @@ export async function fetchLatestLongVideos(
   const key = apiKey ?? process.env.YOUTUBE_API_KEY;
   if (!key) return [];
 
-  // Pull more than `count` from playlist so we have room after filtering Shorts
-  const fetchSize = Math.min(50, count * 4);
+  // Pull more than `count` from playlist — channels with many Shorts need a wider window
+  const fetchSize = Math.min(50, Math.max(15, count * 10));
   const playlistUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=${uploadsPlaylistId}&maxResults=${fetchSize}&key=${key}`;
   const playlistRes = await fetch(playlistUrl, { next: { revalidate: 1800 } });
   if (!playlistRes.ok) return [];

@@ -117,8 +117,27 @@ ${input.transcript.slice(0, 25000)}
   }
   if (!text) throw new Error(`OpenRouter all models failed. Last: ${lastError}`);
 
-  const cleaned = text.replace(/^```(?:json)?\s*/, "").replace(/\s*```\s*$/, "");
-  const parsed = JSON.parse(cleaned) as RewriteOutput;
+  // Sanitize control chars that LLMs sometimes emit raw inside JSON strings
+  function safeJsonParse(raw: string) {
+    const cleaned = raw
+      .replace(/^```(?:json)?\s*/i, "")
+      .replace(/\s*```\s*$/i, "")
+      .trim();
+    try {
+      return JSON.parse(cleaned);
+    } catch {
+      // Replace raw control chars in strings with their escaped form
+      const fixed = cleaned.replace(/[\x00-\x1f]+/g, (c) => {
+        if (c === "\n") return "\\n";
+        if (c === "\r") return "\\r";
+        if (c === "\t") return "\\t";
+        return " ";
+      });
+      return JSON.parse(fixed);
+    }
+  }
+
+  const parsed = safeJsonParse(text) as RewriteOutput;
 
   if (input.mode === "auto") {
     const id = extractVideoId(input.videoUrl);
