@@ -64,7 +64,7 @@ export default async function PostPage({ params }: { params: Params }) {
         <script {...jsonLdScriptProps(howToSchema(post.howto_jsonld))} />
       )}
 
-      <article className="px-6 py-16 md:py-20">
+      <article className="px-6 py-14 md:py-18">
         <div className="mx-auto max-w-3xl">
           <nav className="text-[12px] text-[#8e8b82]">
             <Link href="/ai" className="hover:text-[#cc785c]">ความรู้ AI</Link>

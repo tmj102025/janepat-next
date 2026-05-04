@@ -23,12 +23,12 @@ export default async function BlogIndexPage() {
       <script {...jsonLdScriptProps(breadcrumb)} />
 
       <section className="gradient-hero">
-        <div className="mx-auto max-w-5xl px-6 pt-20 pb-12 md:pt-28">
+        <div className="mx-auto max-w-5xl px-6 pt-20 pb-12 md:pt-20">
           <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">Blog</div>
           <h1 className="mt-4 font-display text-[40px] leading-[1.05] tracking-[-0.8px] text-[#141413] md:text-[56px]">
             บทความ AI ทั้งหมด
           </h1>
-          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">
+          <p className="mt-4 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">
             อัปเดต tutorial, รีวิว AI tools, และความรู้ AI ที่คนไทยใช้ได้จริง — เผยแพร่เนื้อหาใหม่ 2-4 บทความต่อสัปดาห์
           </p>
         </div>

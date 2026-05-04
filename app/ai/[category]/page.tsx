@@ -41,7 +41,7 @@ export default async function CategoryPage({ params }: { params: Params }) {
       <script {...jsonLdScriptProps(breadcrumb)} />
 
       <section className="gradient-hero">
-        <div className="mx-auto max-w-5xl px-6 pt-20 pb-16 md:pt-28">
+        <div className="mx-auto max-w-5xl px-6 pt-20 pb-16 md:pt-20">
           <Link href="/ai" className="text-[12px] font-mono text-[#cc785c] hover:text-[#a9583e]">
             ← /ai
           </Link>
@@ -51,11 +51,11 @@ export default async function CategoryPage({ params }: { params: Params }) {
           <h1 className="mt-4 text-[40px] font-semibold leading-[1.1] tracking-[-0.02em] text-[#141413] md:text-[58px]">
             {cat.name}
           </h1>
-          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">{cat.description}</p>
+          <p className="mt-4 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">{cat.description}</p>
         </div>
       </section>
 
-      <section className="px-6 py-16">
+      <section className="px-6 py-12">
         <div className="mx-auto max-w-7xl">
           <h2 className="font-display text-[24px] leading-[1.2] tracking-[-0.3px] text-[#141413] md:text-[30px]">บทความทั้งหมด</h2>
 

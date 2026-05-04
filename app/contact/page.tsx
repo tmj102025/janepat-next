@@ -20,7 +20,7 @@ export default function ContactPage() {
       <script {...jsonLdScriptProps(breadcrumb)} />
 
       <section className="gradient-hero">
-        <div className="mx-auto max-w-3xl px-6 pt-20 pb-12 md:pt-28">
+        <div className="mx-auto max-w-3xl px-6 pt-20 pb-12 md:pt-20">
           <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">Contact</div>
           <h1 className="mt-4 font-display text-[40px] leading-[1.05] tracking-[-0.8px] text-[#141413] md:text-[56px]">
             ติดต่อ <span className="text-gradient">Tim</span>

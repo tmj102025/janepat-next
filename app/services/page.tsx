@@ -80,22 +80,22 @@ export default function ServicesPage() {
       <script {...jsonLdScriptProps(breadcrumb)} />
 
       <section className="gradient-hero">
-        <div className="mx-auto max-w-5xl px-6 pt-20 pb-16 md:pt-28">
+        <div className="mx-auto max-w-5xl px-6 pt-20 pb-16 md:pt-20">
           <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">Services</div>
           <h1 className="mt-4 font-display text-[44px] leading-[1.05] tracking-[-1px] text-[#141413] md:text-[64px]">
             ทำงานร่วมกับ <span className="text-gradient">Tim Janepat</span>
           </h1>
-          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">
+          <p className="mt-4 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">
             4 บริการที่ผมเปิดให้แบรนด์ บริษัท และคนที่อยากเรียน AI จริง ๆ —
             ทุกอย่างมุ่งเน้น &quot;ผลลัพธ์&quot; ไม่ใช่แค่ความรู้
           </p>
         </div>
       </section>
 
-      <section className="px-6 py-16 md:py-20">
+      <section className="px-6 py-14 md:py-18">
         <div className="mx-auto max-w-5xl space-y-6">
           {services.map((s) => (
-            <div key={s.name} className="rounded-xl border border-[#e6dfd8] bg-white p-8 md:p-10">
+            <div key={s.name} className="rounded-xl border border-[#e6dfd8] bg-white p-6 md:p-10">
               <div className="flex flex-wrap items-start justify-between gap-6">
                 <div className="max-w-2xl">
                   <h2 className="font-display text-[24px] leading-[1.2] tracking-[-0.3px] text-[#141413] md:text-[30px]">{s.name}</h2>

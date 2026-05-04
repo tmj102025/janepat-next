@@ -11,8 +11,8 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero — cream canvas, serif display, coral CTA */}
-      <section className="hero-band px-6 py-24 md:py-[96px]">
-        <div className="mx-auto max-w-[1200px] grid gap-14 lg:grid-cols-[1.3fr_1fr] lg:items-end">
+      <section className="hero-band px-6 py-14 md:py-18">
+        <div className="mx-auto max-w-[1200px] grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-end">
           <div>
             <div className="inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#cc785c] live-pulse" />
@@ -23,27 +23,27 @@ export default async function HomePage() {
               ภาษาไทย<br />
               <span className="text-[#cc785c]">กับ Tim Janepat</span>
             </h1>
-            <p className="mt-7 max-w-xl text-[18px] leading-[1.55] text-[#3d3d3a]">
+            <p className="mt-5 max-w-xl text-[18px] leading-[1.55] text-[#3d3d3a]">
               ทุกเรื่อง AI ที่คนไทยควรรู้ — ChatGPT, Claude, Gemini, AI Marketing, Automation
               สอนให้เข้าใจง่าย ใช้ได้จริง โดยผู้เชี่ยวชาญที่สอนคนไทยมาแล้วกว่า{" "}
               <span className="text-[#141413] font-medium">1,200+</span> คน
             </p>
-            <div className="mt-9 flex flex-wrap gap-3">
+            <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/ai"
-                className="inline-flex h-10 items-center gap-2 rounded-md bg-[#cc785c] px-5 text-[14px] font-medium text-white transition hover:bg-[#a9583e]"
+                className="inline-flex h-10 items-center gap-2 rounded-full bg-[#cc785c] px-5 text-[14px] font-medium text-white transition hover:bg-[#a9583e]"
               >
                 เริ่มเรียน AI ฟรี →
               </Link>
               <Link
                 href="/services"
-                className="inline-flex h-10 items-center rounded-md border border-[#e6dfd8] bg-[#faf9f5] px-5 text-[14px] font-medium text-[#141413] hover:border-[#cc785c]"
+                className="inline-flex h-10 items-center rounded-full border border-[#e6dfd8] bg-[#faf9f5] px-5 text-[14px] font-medium text-[#141413] hover:border-[#cc785c]"
               >
                 ดูบริการของ Tim
               </Link>
             </div>
 
-            <div className="mt-14 grid grid-cols-2 gap-x-8 gap-y-6 md:grid-cols-4 max-w-3xl">
+            <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 md:grid-cols-4 max-w-3xl">
               <Stat value="28.8K+" label="YouTube subscribers" />
               <Stat value="1,200+" label="นักเรียน AI" />
               <Stat value="10+" label="ปีในวงการดิจิทัล" />
@@ -93,14 +93,14 @@ export default async function HomePage() {
       <BrandStrip />
 
       {/* AI Topics Grid — cream feature cards */}
-      <section className="px-6 py-24 md:py-[96px]">
+      <section className="px-6 py-14 md:py-18">
         <div className="mx-auto max-w-[1200px]">
           <div className="grid gap-6 lg:grid-cols-[1fr_1.6fr] lg:items-end">
             <div>
               <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
                 Topic Hub · 8 หัวข้อหลัก
               </div>
-              <h2 className="mt-3 font-display text-[44px] leading-[1.1] tracking-[-0.7px] text-[#141413] md:text-[56px]">
+              <h2 className="mt-2 font-display text-[40px] leading-[1.1] tracking-[-0.7px] text-[#141413] md:text-[56px]">
                 เลือกหัวข้อ AI<br />ที่อยากเรียนรู้
               </h2>
             </div>
@@ -111,12 +111,12 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {AI_CATEGORIES.map((cat, idx) => (
               <Link
                 key={cat.slug}
                 href={`/ai/${cat.slug}`}
-                className="group rounded-xl bg-[#efe9de] p-8 transition hover:bg-[#e8e0d2]"
+                className="group rounded-xl bg-[#efe9de] p-5 transition hover:bg-[#e8e0d2]"
               >
                 <div className="flex items-start justify-between">
                   <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#6c6a64]">
@@ -144,14 +144,14 @@ export default async function HomePage() {
       <FeaturedVideo />
 
       {/* Featured Articles — cream canvas with hairline cards */}
-      <section className="px-6 py-24 md:py-[96px]">
+      <section className="px-6 py-14 md:py-18">
         <div className="mx-auto max-w-[1200px]">
           <div className="flex items-end justify-between gap-6 flex-wrap">
             <div>
               <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
                 Latest Articles
               </div>
-              <h2 className="mt-3 font-display text-[44px] leading-[1.1] tracking-[-0.7px] text-[#141413] md:text-[56px]">
+              <h2 className="mt-2 font-display text-[40px] leading-[1.1] tracking-[-0.7px] text-[#141413] md:text-[56px]">
                 บทความ AI ล่าสุด
               </h2>
             </div>
@@ -164,7 +164,7 @@ export default async function HomePage() {
           </div>
 
           {featuredPosts.length > 0 ? (
-            <div className="mt-12 grid gap-5 md:grid-cols-3">
+            <div className="mt-8 grid gap-5 md:grid-cols-3">
               {featuredPosts.map((post) => (
                 <Link
                   key={post.id}
@@ -181,7 +181,7 @@ export default async function HomePage() {
                       />
                     </div>
                   )}
-                  <div className="p-7">
+                  <div className="p-5">
                     <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
                       {post.category}
                     </div>
@@ -201,12 +201,12 @@ export default async function HomePage() {
               ))}
             </div>
           ) : (
-            <div className="mt-12 grid gap-5 md:grid-cols-3">
+            <div className="mt-8 grid gap-5 md:grid-cols-3">
               {AI_CATEGORIES.slice(0, 3).map((cat) => (
                 <Link
                   key={cat.slug}
                   href={`/ai/${cat.slug}`}
-                  className="group rounded-xl border border-dashed border-[#e6dfd8] bg-[#faf9f5] p-8 hover:border-[#cc785c] transition"
+                  className="group rounded-xl border border-dashed border-[#e6dfd8] bg-[#faf9f5] p-6 hover:border-[#cc785c] transition"
                 >
                   <div className="flex h-32 items-center justify-center">
                     <div className="font-display text-[64px] leading-none text-[#cc785c]/40">
@@ -229,9 +229,9 @@ export default async function HomePage() {
       <Testimonials />
 
       {/* CTA band — coral callout */}
-      <section className="px-6 pb-24">
+      <section className="px-6 pb-14">
         <div className="mx-auto max-w-[1200px]">
-          <div className="rounded-xl bg-[#cc785c] p-12 md:p-16 text-white">
+          <div className="rounded-xl bg-[#cc785c] p-6 md:p-12 text-white">
             <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-center">
               <div>
                 <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-white/70">
@@ -247,13 +247,13 @@ export default async function HomePage() {
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link
                     href="/services"
-                    className="inline-flex h-10 items-center rounded-md bg-[#faf9f5] px-5 text-[14px] font-medium text-[#141413] hover:bg-white"
+                    className="inline-flex h-10 items-center rounded-full bg-[#faf9f5] px-5 text-[14px] font-medium text-[#141413] hover:bg-white"
                   >
                     ดูบริการทั้งหมด →
                   </Link>
                   <Link
                     href="/contact"
-                    className="inline-flex h-10 items-center rounded-md border border-white/40 px-5 text-[14px] font-medium text-white hover:border-white"
+                    className="inline-flex h-10 items-center rounded-full border border-white/40 px-5 text-[14px] font-medium text-white hover:border-white"
                   >
                     ติดต่อ Tim
                   </Link>

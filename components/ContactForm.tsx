@@ -47,7 +47,7 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-2xl border border-[#cc785c]/35 bg-[#cc785c]/5 p-8 text-center">
+      <div className="rounded-2xl border border-[#cc785c]/35 bg-[#cc785c]/5 p-6 text-center">
         <div className="text-[32px]">✓</div>
         <h3 className="mt-3 text-[20px] font-bold text-[#141413]">ส่งข้อความเรียบร้อย</h3>
         <p className="mt-2 text-[14px] text-[#6c6a64]">ผมหรือทีมจะตอบกลับภายใน 24 ชั่วโมง ขอบคุณครับ</p>
@@ -100,7 +100,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="inline-flex items-center rounded-full bg-[#cc785c] px-6 py-3 text-[14px] font-semibold text-white transition hover:bg-[#a9583e] disabled:opacity-50"
+        className="inline-flex items-center rounded-full bg-[#cc785c] px-5 py-2.5 text-[14px] font-semibold text-white transition hover:bg-[#a9583e] disabled:opacity-50"
       >
         {status === "submitting" ? "กำลังส่ง..." : "ส่งข้อความ"}
       </button>

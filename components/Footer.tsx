@@ -3,7 +3,7 @@ import { AI_CATEGORIES, NAV, SITE } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="bg-[#181715] px-6 py-16 text-[#a09d96]">
+    <footer className="bg-[#181715] px-6 py-12 text-[#a09d96]">
       <div className="mx-auto max-w-[1200px]">
         <div className="grid gap-12 md:grid-cols-4">
           <div className="md:col-span-2">
@@ -57,7 +57,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-[#252320] pt-6 text-[12px] text-[#a09d96] md:flex-row md:items-center">
+        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-[#252320] pt-6 text-[12px] text-[#a09d96] md:flex-row md:items-center">
           <div>© {new Date().getFullYear()} {SITE.brand} — เขียนโดย Tim Janepat</div>
           <div className="flex gap-5">
             <Link href="/about" className="hover:text-[#faf9f5]">About</Link>

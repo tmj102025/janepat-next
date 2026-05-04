@@ -35,7 +35,7 @@ export function Header() {
           </a>
           <Link
             href="/contact"
-            className="inline-flex h-10 items-center rounded-md bg-[#cc785c] px-5 text-[14px] font-medium text-white transition hover:bg-[#a9583e]"
+            className="inline-flex h-10 items-center rounded-full bg-[#cc785c] px-5 text-[14px] font-medium text-white transition hover:bg-[#a9583e]"
           >
             ติดต่อ Tim
           </Link>

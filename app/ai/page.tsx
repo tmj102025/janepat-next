@@ -46,7 +46,7 @@ export default function AIPillarPage() {
       <script {...jsonLdScriptProps(faq)} />
 
       <section className="gradient-hero">
-        <div className="mx-auto max-w-5xl px-6 pt-20 pb-16 md:pt-28">
+        <div className="mx-auto max-w-5xl px-6 pt-20 pb-16 md:pt-20">
           <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
             Pillar Hub
           </div>
@@ -55,14 +55,14 @@ export default function AIPillarPage() {
             <br />
             ภาษาไทย ครบทุกหัวข้อ
           </h1>
-          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">
+          <p className="mt-4 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">
             แหล่งรวมความรู้ AI สำหรับคนไทย — ตั้งแต่พื้นฐาน ChatGPT, Claude, Gemini ไปจนถึง
             AI Marketing, AI Automation, Prompt Engineering และ AI Tools เลือกหัวข้อที่อยากเรียนรู้
           </p>
         </div>
       </section>
 
-      <section className="px-6 py-20">
+      <section className="px-6 py-14">
         <div className="mx-auto max-w-7xl">
           <h2 className="font-display text-[32px] leading-[1.15] tracking-[-0.5px] text-[#141413] md:text-[40px]">หัวข้อ AI ทั้งหมด</h2>
           <p className="mt-3 text-[15px] text-[#6c6a64]">เลือกหัวข้อเพื่อดูบทความและ tutorial ทั้งหมดของแต่ละ topic</p>
@@ -72,7 +72,7 @@ export default function AIPillarPage() {
               <Link
                 key={cat.slug}
                 href={`/ai/${cat.slug}`}
-                className="group rounded-xl border border-[#e6dfd8] bg-white p-7 transition hover:border-[#cc785c]/35"
+                className="group rounded-xl border border-[#e6dfd8] bg-white p-5 transition hover:border-[#cc785c]/35"
               >
                 <div className={`inline-block rounded-full bg-gradient-to-r ${cat.color} bg-clip-text text-[12px] font-mono uppercase tracking-widest text-transparent`}>
                   /ai/{cat.slug}
@@ -88,7 +88,7 @@ export default function AIPillarPage() {
         </div>
       </section>
 
-      <section className="border-t border-[#e6dfd8] bg-[#f5f0e8] px-6 py-20">
+      <section className="border-t border-[#e6dfd8] bg-[#f5f0e8] px-6 py-14">
         <div className="mx-auto max-w-3xl">
           <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">FAQ</div>
           <h2 className="mt-3 font-display text-[32px] leading-[1.15] tracking-[-0.5px] text-[#141413] md:text-[40px]">คำถามที่พบบ่อยเรื่อง AI</h2>

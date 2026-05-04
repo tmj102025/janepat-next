@@ -2,8 +2,8 @@ import { SITE } from "@/lib/site";
 
 export function FeaturedVideo() {
   return (
-    <section className="bg-[#181715] px-6 py-24 md:py-[96px]">
-      <div className="mx-auto max-w-[1200px] grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:items-center">
+    <section className="bg-[#181715] px-6 py-12 md:py-20">
+      <div className="mx-auto max-w-[1200px] grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:items-center">
         <div>
           <div className="inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[1.5px] text-[#a09d96]">
             <span className="h-1.5 w-1.5 rounded-full bg-[#cc785c] live-pulse" />
@@ -22,7 +22,7 @@ export function FeaturedVideo() {
               href={SITE.social.youtube}
               target="_blank"
               rel="noopener"
-              className="inline-flex h-10 items-center gap-2 rounded-md bg-[#cc785c] px-5 text-[14px] font-medium text-white hover:bg-[#a9583e]"
+              className="inline-flex h-10 items-center gap-2 rounded-full bg-[#cc785c] px-5 text-[14px] font-medium text-white hover:bg-[#a9583e]"
             >
               <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
                 <path d="M23.5 6.2c-.3-1-1-1.8-2-2C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.5.5c-1 .3-1.7 1-2 2C0 8.2 0 12 0 12s0 3.8.5 5.8c.3 1 1 1.8 2 2 2 .5 9.5.5 9.5.5s7.5 0 9.5-.5c1-.3 1.7-1 2-2 .5-2 .5-5.8.5-5.8s0-3.8-.5-5.8zM9.6 15.6V8.4L15.8 12l-6.2 3.6z" />
@@ -33,7 +33,7 @@ export function FeaturedVideo() {
               href={`https://www.youtube.com/watch?v=${SITE.featuredVideoId}`}
               target="_blank"
               rel="noopener"
-              className="inline-flex h-10 items-center rounded-md bg-[#252320] px-5 text-[14px] font-medium text-[#faf9f5] hover:bg-[#2f2c28]"
+              className="inline-flex h-10 items-center rounded-full bg-[#252320] px-5 text-[14px] font-medium text-[#faf9f5] hover:bg-[#2f2c28]"
             >
               เปิดใน YouTube ↗
             </a>

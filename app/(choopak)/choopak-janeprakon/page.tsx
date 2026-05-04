@@ -3,11 +3,12 @@ import { SITE } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo";
 import { breadcrumbSchema, jsonLdScriptProps } from "@/lib/schema";
 import { YouTubeCard } from "@/components/YouTubeCard";
+import { WorksGallery } from "@/components/WorksGallery";
 
 export const metadata = buildMetadata({
   title: `${CHOOPAK.name} — ${CHOOPAK.role}`,
   description:
-    "Choopak Janeprakon — Digital Content Creator & Designer ผู้เชี่ยวชาญ video editing, graphic design และ Adobe Creative Suite ดู portfolio ผลงาน video และประสบการณ์",
+    "Choopak Janeprakon — Digital Content Creator & Designer. Expert in video editing, graphic design, and Adobe Creative Suite. View portfolio videos and work experience.",
   path: "/choopak-janeprakon",
   type: "profile",
 });
@@ -40,7 +41,7 @@ const personSchemaChoopak = {
 
 export default function ChoopakPage() {
   const breadcrumb = breadcrumbSchema([
-    { name: "หน้าแรก", url: SITE.url },
+    { name: "Home", url: SITE.url },
     { name: CHOOPAK.name, url: `${SITE.url}/choopak-janeprakon` },
   ]);
 
@@ -75,13 +76,13 @@ export default function ChoopakPage() {
                   href="#portfolio"
                   className="inline-flex items-center rounded-full bg-[#d4a373] px-6 py-3 text-[14px] font-semibold text-stone-900 shadow-md shadow-[#d4a373]/30 transition hover:bg-[#c89465]"
                 >
-                  ดูผลงาน Video →
+                  View Portfolio →
                 </a>
                 <a
                   href="#contact"
                   className="inline-flex items-center rounded-full border border-stone-900/15 bg-white px-6 py-3 text-[14px] text-stone-900 transition hover:border-[#0891b2]/50 hover:text-[#0891b2]"
                 >
-                  ติดต่อร่วมงาน
+                  Get in Touch
                 </a>
               </div>
 
@@ -89,11 +90,11 @@ export default function ChoopakPage() {
               <nav className="mt-10 flex flex-wrap gap-2" aria-label="Sections">
                 {[
                   { href: "#showreel", label: "Showreel" },
+                  { href: "#portfolio", label: "Portfolio" },
                   { href: "#works", label: "Works" },
                   { href: "#about", label: "About" },
                   { href: "#skills", label: "Skills" },
                   { href: "#experience", label: "Experience" },
-                  { href: "#portfolio", label: "Portfolio" },
                   { href: "#education", label: "Education" },
                   { href: "#contact", label: "Contact" },
                 ].map((s) => (
@@ -126,24 +127,6 @@ export default function ChoopakPage() {
         </div>
       </section>
 
-      {/* Showreel */}
-      <section id="showreel" className="border-t border-stone-900/[0.06] px-6 py-16">
-        <div className="mx-auto max-w-5xl">
-          <div className="flex items-end justify-between gap-4 flex-wrap">
-            <div>
-              <div className="nk-mono text-[11px] text-[#0e7490]">Featured</div>
-              <h2 className="mt-2 text-[24px] font-bold text-stone-900 md:text-[32px]">
-                {CHOOPAK.showreel.title}
-              </h2>
-            </div>
-            <span className="nk-tag nk-tag-forest">● Available for projects</span>
-          </div>
-          <div className="mt-8">
-            <YouTubeCard videoId={CHOOPAK.showreel.id} title={CHOOPAK.showreel.title} client="Showreel" />
-          </div>
-        </div>
-      </section>
-
       {/* Marquee */}
       <div className="nk-marquee">
         <div className="nk-marquee-track">
@@ -163,13 +146,13 @@ export default function ChoopakPage() {
       </div>
 
       {/* About / Summary */}
-      <section id="about" className="border-t border-stone-900/[0.06] px-6 py-20">
+      <section id="about" className="border-t border-stone-900/[0.06] bg-[#fbf6ec] px-6 py-20">
         <div className="mx-auto max-w-4xl">
           <div className="nk-mono text-[11px] text-[#0e7490]">
             Professional Summary
           </div>
           <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[36px]">
-            ครีเอเตอร์ที่เล่าเรื่องด้วยภาพ
+            About Me
           </h2>
           <div className="nk-divider mt-6 max-w-[120px]" />
           <p className="mt-6 text-[16px] leading-[1.9] text-stone-700">{CHOOPAK.summary}</p>
@@ -177,10 +160,10 @@ export default function ChoopakPage() {
       </section>
 
       {/* Skills */}
-      <section id="skills" className="border-t border-stone-900/[0.06] bg-[#fbf6ec] px-6 py-20">
+      <section id="skills" className="border-t border-stone-900/[0.06] px-6 py-20">
         <div className="mx-auto max-w-5xl">
           <div className="nk-mono text-[11px] text-[#0e7490]">Skills</div>
-          <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[36px]">เครื่องมือที่ใช้</h2>
+          <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[36px]">Tools & Software</h2>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {CHOOPAK.skills.map((s) => (
@@ -205,12 +188,12 @@ export default function ChoopakPage() {
       </section>
 
       {/* Experience */}
-      <section id="experience" className="border-t border-stone-900/[0.06] px-6 py-20">
+      <section id="experience" className="border-t border-stone-900/[0.06] bg-[#fbf6ec] px-6 py-20">
         <div className="mx-auto max-w-4xl">
           <div className="nk-mono text-[11px] text-[#0e7490]">
             Experience
           </div>
-          <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[36px]">ประสบการณ์ทำงาน</h2>
+          <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[36px]">Work Experience</h2>
 
           <div className="mt-10 space-y-4">
             {CHOOPAK.experience.map((e, idx) => (
@@ -220,18 +203,17 @@ export default function ChoopakPage() {
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <div className="text-[20px] font-bold text-stone-900">{e.company}</div>
-                    <div className="mt-1 text-[14px] text-[#0891b2]">{e.role}</div>
-                  </div>
-                  <div className="rounded-full border border-[#d4a373]/40 bg-[#d4a373]/10 px-3 py-1 nk-mono text-[11px] text-[#92400e]">
-                    {e.period}
+                    <div className="text-[14px] font-semibold text-[#0891b2]">{e.role}</div>
+                    <div className="mt-1 text-[20px] font-bold text-stone-900">
+                      {e.company}{" "}
+                      <span className="text-[14px] font-medium text-stone-500">({e.period})</span>
+                    </div>
                   </div>
                 </div>
-                <ul className="mt-4 space-y-1.5 text-[14px] leading-[1.7] text-stone-700">
-                  {e.bullets.map((b) => (
-                    <li key={b} className="flex gap-2">
-                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#d4a373]" />
-                      <span>{b}</span>
+                <ul className="mt-4 space-y-2 pl-5">
+                  {e.bullets.map((b, i) => (
+                    <li key={i} className="list-disc text-[14px] leading-[1.8] text-stone-700 marker:text-[#d4a373]">
+                      {b}
                     </li>
                   ))}
                 </ul>
@@ -248,103 +230,11 @@ export default function ChoopakPage() {
         </div>
       </section>
 
-      {/* Works — Image-based portfolio (banners, prints, LED, web) */}
-      <section id="works" className="border-t border-stone-900/[0.06] bg-[#fbf6ec] px-6 py-20">
-        <div className="mx-auto max-w-6xl">
-          <div className="nk-mono text-[11px] text-[#0e7490]">Works</div>
-          <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[42px]">
-            ผลงานที่ผ่านมา
-          </h2>
-          <p className="mt-3 max-w-2xl text-[15px] leading-[1.8] text-stone-600">
-            รวมผลงาน graphic design, banner, print, LED display และ event shooting จากแบรนด์ต่างๆ
-          </p>
-
-          <div className="mt-12 grid gap-8">
-            {CHOOPAK.works.map((w) => (
-              <article key={w.image} className="nk-card overflow-hidden">
-                <div className="grid lg:grid-cols-[1.4fr_1fr]">
-                  <div className="bg-stone-50 p-4 md:p-6">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={w.image}
-                      alt={w.title}
-                      loading="lazy"
-                      className="h-auto w-full rounded-xl border border-stone-900/[0.05] object-contain"
-                    />
-                  </div>
-                  <div className="flex flex-col justify-center p-6 md:p-8">
-                    <span className="nk-tag self-start">{w.type}</span>
-                    <h3 className="mt-3 text-[20px] font-bold text-stone-900 md:text-[24px]">
-                      {w.title}
-                    </h3>
-                    <div className="mt-2 nk-mono text-[11px] text-[#b8854f]">{w.client}</div>
-                    <p className="mt-4 text-[14px] leading-[1.8] text-stone-700">{w.summary}</p>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Portfolio (YouTube grid) */}
-      <section
-        id="portfolio"
-        className="border-t border-stone-900/[0.06] bg-[#fbf6ec] px-6 py-20"
-      >
-        <div className="mx-auto max-w-7xl">
-          <div className="flex items-end justify-between gap-6 flex-wrap">
-            <div>
-              <div className="nk-mono text-[11px] text-[#0e7490]">
-                Portfolio
-              </div>
-              <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[42px]">ผลงาน Video</h2>
-              <p className="mt-3 max-w-2xl text-[15px] leading-[1.8] text-stone-600">
-                คลิปจาก YouTube playlist ของ SaM Yazen — ดูผลงาน video ทั้งหมด
-              </p>
-            </div>
-            <a
-              href={`https://www.youtube.com/playlist?list=${CHOOPAK.playlists[0]?.playlistId}`}
-              target="_blank"
-              rel="noopener"
-              className="inline-flex items-center gap-1 rounded-full border border-[#0891b2]/30 bg-white px-4 py-2 text-[12px] font-semibold text-[#0e7490] transition hover:border-[#0891b2] hover:bg-[#0891b2]/5"
-            >
-              เปิด Playlist บน YouTube ↗
-            </a>
-          </div>
-
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {CHOOPAK.portfolio.map((v) => (
-              <YouTubeCard key={v.id} videoId={v.id} title={v.title} client={v.client} />
-            ))}
-          </div>
-
-          {/* Embedded playlist player — auto-pulls every video in the playlist */}
-          <div className="mt-12">
-            <div className="nk-card overflow-hidden">
-              <div className="relative aspect-video">
-                <iframe
-                  src={`https://www.youtube.com/embed/videoseries?list=${CHOOPAK.playlists[0]?.playlistId}&rel=0`}
-                  title="Choopak Janeprakon — Portfolio Playlist"
-                  className="absolute inset-0 h-full w-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-              <div className="flex items-center justify-between gap-3 px-5 py-3 bg-stone-50">
-                <div className="nk-mono text-[11px] text-[#0e7490]">PLAYLIST · LIVE FROM YOUTUBE</div>
-                <div className="text-[11px] text-stone-500">SaM Yazen</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Education */}
       <section id="education" className="border-t border-stone-900/[0.06] px-6 py-20">
         <div className="mx-auto max-w-4xl">
           <div className="nk-mono text-[11px] text-[#0e7490]">Education</div>
-          <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[36px]">การศึกษา</h2>
+          <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[36px]">Education</h2>
 
           <div className="mt-10 space-y-4">
             {CHOOPAK.education.map((e, idx) => (
@@ -362,6 +252,103 @@ export default function ChoopakPage() {
         </div>
       </section>
 
+      {/* Showreel */}
+      <section id="showreel" className="border-t border-stone-900/[0.06] px-6 py-16">
+        <div className="mx-auto max-w-3xl">
+          <div className="flex items-end justify-between gap-4 flex-wrap">
+            <div>
+              <div className="nk-mono text-[11px] text-[#0e7490]">Featured</div>
+              <h2 className="mt-2 text-[24px] font-bold text-stone-900 md:text-[32px]">
+                Portfolio Showreel
+              </h2>
+            </div>
+            <span className="nk-tag nk-tag-forest">● Available for projects</span>
+          </div>
+          <div className="mt-8">
+            <YouTubeCard videoId={CHOOPAK.showreel.id} title={CHOOPAK.showreel.title} client="Showreel" />
+          </div>
+        </div>
+      </section>
+
+      {/* Portfolio — Video playlists by client */}
+      <section
+        id="portfolio"
+        className="border-t border-stone-900/[0.06] bg-[#fbf6ec] px-6 py-20"
+      >
+        <div className="mx-auto max-w-7xl">
+          <div className="nk-mono text-[11px] text-[#0e7490]">Portfolio</div>
+          <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[42px]">
+            My Portfolio
+          </h2>
+          <p className="mt-3 max-w-2xl text-[15px] leading-[1.8] text-stone-600">
+            Video work organized by client.
+          </p>
+
+          <div className="mt-12 space-y-16">
+            {CHOOPAK.playlists.map((pl) => (
+              <div key={pl.playlistId}>
+                <div className="flex items-end justify-between gap-4 flex-wrap">
+                  <div>
+                    <div className="nk-mono text-[11px] text-[#b8854f]">Client</div>
+                    <h3 className="mt-1 text-[24px] font-bold text-stone-900 md:text-[30px]">
+                      {pl.client}
+                    </h3>
+                    <div className="mt-1 text-[13px] text-stone-500">
+                      {pl.videos.length} videos
+                    </div>
+                  </div>
+                  <a
+                    href={`https://www.youtube.com/playlist?list=${pl.playlistId}`}
+                    target="_blank"
+                    rel="noopener"
+                    className="inline-flex items-center gap-1 rounded-full border border-[#0891b2]/30 bg-white px-4 py-2 text-[12px] font-semibold text-[#0e7490] transition hover:border-[#0891b2] hover:bg-[#0891b2]/5"
+                  >
+                    Open Playlist on YouTube ↗
+                  </a>
+                </div>
+
+                {/* Video grid — 2 rows max (2 cols mobile, 4 cols desktop = 8 videos visible) */}
+                <div className="mt-6 grid gap-4 grid-cols-2 lg:grid-cols-4">
+                  {pl.videos.slice(0, 8).map((v) => (
+                    <YouTubeCard key={v.id} videoId={v.id} title={v.title} client={pl.client} />
+                  ))}
+                </div>
+                {pl.videos.length > 8 && (
+                  <div className="mt-4 text-[12px] text-stone-500">
+                    +{pl.videos.length - 8} more on{" "}
+                    <a
+                      href={`https://www.youtube.com/playlist?list=${pl.playlistId}`}
+                      target="_blank"
+                      rel="noopener"
+                      className="font-semibold text-[#0e7490] underline-offset-2 hover:underline"
+                    >
+                      YouTube playlist ↗
+                    </a>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Works — Image-based portfolio (banners, prints, LED, web) */}
+      <section id="works" className="border-t border-stone-900/[0.06] px-6 py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="nk-mono text-[11px] text-[#0e7490]">Works</div>
+          <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[42px]">
+            Graphic & Print Works
+          </h2>
+          <p className="mt-3 max-w-2xl text-[15px] leading-[1.8] text-stone-600">
+            Banner design, print, LED display, and event shooting. Click any thumbnail to view full size.
+          </p>
+
+          <div className="mt-12">
+            <WorksGallery works={CHOOPAK.works} />
+          </div>
+        </div>
+      </section>
+
       {/* Contact */}
       <section
         id="contact"
@@ -370,10 +357,10 @@ export default function ChoopakPage() {
         <div className="mx-auto max-w-3xl text-center">
           <div className="nk-mono text-[11px] text-[#0e7490]">Contact</div>
           <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[36px]">
-            ติดต่อร่วมงาน
+            Let&apos;s Work Together
           </h2>
           <p className="mt-4 text-[15px] leading-[1.8] text-stone-600">
-            สนใจร่วมงาน video production, content creation, หรือ graphic design? ติดต่อได้ตามช่องทางด้านล่าง
+            Available for video production, content creation, and graphic design projects.
           </p>
 
           <div className="mt-10 nk-card p-6 text-left md:p-8">

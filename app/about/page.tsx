@@ -38,7 +38,7 @@ export default function AboutPage() {
       <script {...jsonLdScriptProps(breadcrumb)} />
 
       <section className="gradient-hero">
-        <div className="mx-auto max-w-5xl px-6 pt-20 pb-16 md:pt-28">
+        <div className="mx-auto max-w-5xl px-6 pt-20 pb-16 md:pt-20">
           <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
             About
           </div>
@@ -47,7 +47,7 @@ export default function AboutPage() {
             <br />
             ใช้ AI สร้างรายได้จริง
           </h1>
-          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">
+          <p className="mt-4 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">
             ผมคือ Timothy Janepat (Tim) — นักการตลาดดิจิทัลและผู้เชี่ยวชาญ AI ภาษาไทย
             ตลอด 10 ปีที่ผ่านมา ผมโฟกัสที่การ &quot;ทำเรื่อง AI ที่ดูยาก ให้คนทั่วไปใช้ได้จริง&quot;
             ผ่าน YouTube channel @TimJanepat, บทความบน janepat.com, และ workshop องค์กร
@@ -55,7 +55,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="border-t border-[#e6dfd8] bg-[#f5f0e8] px-6 py-16">
+      <section className="border-t border-[#e6dfd8] bg-[#f5f0e8] px-6 py-12">
         <div className="mx-auto max-w-5xl grid gap-6 sm:grid-cols-2 md:grid-cols-4">
           {credentials.map((c) => (
             <div key={c.label} className="rounded-xl border border-[#e6dfd8] bg-white p-6">
@@ -66,7 +66,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="px-6 py-20">
+      <section className="px-6 py-14">
         <div className="mx-auto max-w-3xl">
           <h2 className="font-display text-[32px] leading-[1.15] tracking-[-0.5px] text-[#141413] md:text-[40px]">เส้นทางของผม</h2>
           <div className="prose-th mt-8">
@@ -105,13 +105,13 @@ export default function AboutPage() {
           <div className="mt-12 flex flex-wrap gap-3">
             <Link
               href="/ai"
-              className="inline-flex items-center rounded-full bg-[#cc785c] px-6 py-3 text-[14px] font-semibold text-white hover:bg-[#a9583e]"
+              className="inline-flex items-center rounded-full bg-[#cc785c] px-5 py-2.5 text-[14px] font-semibold text-white hover:bg-[#a9583e]"
             >
               ดูบทความ AI ของผม →
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center rounded-full border border-[#e6dfd8] px-6 py-3 text-[14px] text-[#141413] hover:border-[#cc785c]/35"
+              className="inline-flex items-center rounded-full border border-[#e6dfd8] px-5 py-2.5 text-[14px] text-[#141413] hover:border-[#cc785c]/35"
             >
               ติดต่อร่วมงาน
             </Link>
