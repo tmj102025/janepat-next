@@ -24,11 +24,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="th" className="h-full antialiased">
       <head>
-        <link rel="preconnect" href="https://fonts.cdnfonts.com" crossOrigin="" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.cdnfonts.com/css/line-seed-sans-th"
-        />
+        <link rel="preload" href="/fonts/LINESeedSansTH_Rg.ttf" as="font" type="font/ttf" crossOrigin="" />
+        <link rel="preload" href="/fonts/LINESeedSansTH_Bd.ttf" as="font" type="font/ttf" crossOrigin="" />
         <script {...jsonLdScriptProps(personSchema())} />
         <script {...jsonLdScriptProps(organizationSchema())} />
         <script {...jsonLdScriptProps(websiteSchema())} />

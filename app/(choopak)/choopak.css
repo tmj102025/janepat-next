@@ -2,31 +2,31 @@
 
 /* LINE Seed Sans TH (Thai+Latin) */
 @font-face {
-  font-family: 'LINESeedSansTH';
+  font-family: 'LINE Seed Sans TH', 'LINESeedSansTH';
   src: url('/fonts/LINESeedSansTH_Th.ttf') format('truetype');
   font-weight: 100;
   font-display: swap;
 }
 @font-face {
-  font-family: 'LINESeedSansTH';
+  font-family: 'LINE Seed Sans TH', 'LINESeedSansTH';
   src: url('/fonts/LINESeedSansTH_Rg.ttf') format('truetype');
   font-weight: 400;
   font-display: swap;
 }
 @font-face {
-  font-family: 'LINESeedSansTH';
+  font-family: 'LINE Seed Sans TH', 'LINESeedSansTH';
   src: url('/fonts/LINESeedSansTH_Bd.ttf') format('truetype');
   font-weight: 700;
   font-display: swap;
 }
 @font-face {
-  font-family: 'LINESeedSansTH';
+  font-family: 'LINE Seed Sans TH', 'LINESeedSansTH';
   src: url('/fonts/LINESeedSansTH_XBd.ttf') format('truetype');
   font-weight: 800;
   font-display: swap;
 }
 @font-face {
-  font-family: 'LINESeedSansTH';
+  font-family: 'LINE Seed Sans TH', 'LINESeedSansTH';
   src: url('/fonts/LINESeedSansTH_He.ttf') format('truetype');
   font-weight: 900;
   font-display: swap;
@@ -37,12 +37,12 @@ html:has(.choopak-root),
 html:has(.choopak-root) body {
   background: #fffdf7 !important;
   color: #1c1917 !important;
-  font-family: 'LINESeedSansTH', 'Helvetica Neue', Arial, sans-serif !important;
+  font-family: 'LINE Seed Sans TH', 'LINESeedSansTH', 'Helvetica Neue', Arial, sans-serif !important;
 }
 
 .choopak-root,
 .choopak-root * {
-  font-family: 'LINESeedSansTH', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'LINE Seed Sans TH', 'LINESeedSansTH', 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* Keep mono utility for label/caption only */
