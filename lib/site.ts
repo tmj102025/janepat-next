@@ -70,8 +70,8 @@ export const SITE = {
 
 export const NAV = [
   { href: "/", label: "หน้าแรก" },
-  { href: "/ai", label: "ความรู้ AI" },
-  { href: "/blog", label: "บทความ" },
+  { href: "/blog", label: "บทความ AI" },
+  { href: "/videos", label: "วีดีโอความรู้ AI" },
   { href: "/services", label: "บริการ" },
   { href: "/about", label: "เกี่ยวกับ Tim" },
   { href: "/contact", label: "ติดต่อ" },

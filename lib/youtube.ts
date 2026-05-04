@@ -130,8 +130,9 @@ export async function fetchLatestLongVideos(
     }),
   );
 
+  // Long-form = > 3 minutes
   return items
-    .filter((v) => v.durationSec > 60)
+    .filter((v) => v.durationSec > 180)
     .slice(0, count);
 }
 
