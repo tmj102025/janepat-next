@@ -3,14 +3,14 @@ import { AI_CATEGORIES, SITE } from "@/lib/site";
 import { listPublishedPosts } from "@/lib/pocketbase";
 import { BrandStrip } from "@/components/BrandStrip";
 import { Testimonials } from "@/components/Testimonials";
-import { FeaturedVideo } from "@/components/FeaturedVideo";
+import { LatestVideos } from "@/components/LatestVideos";
 
 export default async function HomePage() {
   const featuredPosts = await listPublishedPosts({ featured: true, limit: 3 });
 
   return (
     <>
-      {/* Hero — cream canvas, serif display, coral CTA */}
+      {/* Hero — cream canvas, coral CTA */}
       <section className="hero-band px-6 py-14 md:py-18">
         <div className="mx-auto max-w-[1200px] grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-end">
           <div>
@@ -30,10 +30,10 @@ export default async function HomePage() {
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                href="/ai"
+                href="/blog"
                 className="inline-flex h-10 items-center gap-2 rounded-full bg-[#cc785c] px-5 text-[14px] font-medium text-white transition hover:bg-[#a9583e]"
               >
-                เริ่มเรียน AI ฟรี →
+                อ่านบทความ AI →
               </Link>
               <Link
                 href="/services"
@@ -91,57 +91,6 @@ export default async function HomePage() {
       </section>
 
       <BrandStrip />
-
-      {/* AI Topics Grid — cream feature cards */}
-      <section className="px-6 py-14 md:py-18">
-        <div className="mx-auto max-w-[1200px]">
-          <div className="grid gap-6 lg:grid-cols-[1fr_1.6fr] lg:items-end">
-            <div>
-              <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
-                Topic Hub · 8 หัวข้อหลัก
-              </div>
-              <h2 className="mt-2 font-display text-[40px] leading-[1.1] tracking-[-0.7px] text-[#141413] md:text-[56px]">
-                เลือกหัวข้อ AI<br />ที่อยากเรียนรู้
-              </h2>
-            </div>
-            <p className="text-[17px] leading-[1.55] text-[#3d3d3a] max-w-2xl lg:justify-self-end">
-              แต่ละหัวข้อมีบทความ tutorial และ resource ฟรี
-              ครอบคลุมตั้งแต่พื้นฐานถึงระดับ advanced —
-              อ่านครบทั้ง 8 หัวข้อ ใช้ AI ทำงานได้จริง
-            </p>
-          </div>
-
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {AI_CATEGORIES.map((cat, idx) => (
-              <Link
-                key={cat.slug}
-                href={`/ai/${cat.slug}`}
-                className="group rounded-xl bg-[#efe9de] p-5 transition hover:bg-[#e8e0d2]"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#6c6a64]">
-                    /ai/{cat.slug}
-                  </div>
-                  <div className="font-mono text-[12px] text-[#8e8b82]">
-                    0{idx + 1}
-                  </div>
-                </div>
-                <h3 className="mt-6 font-display text-[28px] leading-[1.15] tracking-[-0.3px] text-[#141413]">
-                  {cat.name}
-                </h3>
-                <p className="mt-2 text-[14px] leading-[1.55] text-[#3d3d3a] line-clamp-3">
-                  {cat.description}
-                </p>
-                <div className="mt-7 inline-flex items-center gap-1 text-[14px] font-medium text-[#cc785c] group-hover:gap-2 transition-all">
-                  อ่านเพิ่ม →
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <FeaturedVideo />
 
       {/* Featured Articles — cream canvas with hairline cards */}
       <section className="px-6 py-14 md:py-18">
@@ -269,6 +218,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Latest YouTube videos — last section before footer */}
+      <LatestVideos />
     </>
   );
 }

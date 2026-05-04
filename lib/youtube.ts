@@ -70,6 +70,92 @@ function extract(s: string, re: RegExp): string | null {
   return m ? m[1] : null;
 }
 
+export type LatestVideo = {
+  videoId: string;
+  title: string;
+  publishedAt: string;
+  thumbnail: string;
+  durationSec: number;
+  viewCount: number;
+};
+
+/**
+ * Fetch latest long-form (>60s) videos from a channel uploads playlist.
+ * Uses YouTube Data API v3. Returns up to `count` videos sorted newest first.
+ */
+export async function fetchLatestLongVideos(
+  uploadsPlaylistId: string,
+  count = 6,
+  apiKey?: string,
+): Promise<LatestVideo[]> {
+  const key = apiKey ?? process.env.YOUTUBE_API_KEY;
+  if (!key) return [];
+
+  // Pull more than `count` from playlist so we have room after filtering Shorts
+  const fetchSize = Math.min(50, count * 3);
+  const playlistUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=${uploadsPlaylistId}&maxResults=${fetchSize}&key=${key}`;
+  const playlistRes = await fetch(playlistUrl, { next: { revalidate: 1800 } });
+  if (!playlistRes.ok) return [];
+  const playlistData = await playlistRes.json();
+  const ids: string[] = (playlistData.items ?? []).map(
+    (it: { contentDetails?: { videoId?: string } }) => it.contentDetails?.videoId ?? "",
+  ).filter(Boolean);
+  if (ids.length === 0) return [];
+
+  const detailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${ids.join(",")}&key=${key}`;
+  const detailsRes = await fetch(detailsUrl, { next: { revalidate: 1800 } });
+  if (!detailsRes.ok) return [];
+  // YouTube descriptions can include raw control chars — sanitize before JSON parse
+  const raw = await detailsRes.text();
+  let detailsData;
+  try {
+    detailsData = JSON.parse(raw);
+  } catch {
+    detailsData = JSON.parse(raw.replace(/[\x00-\x1f]+/g, " "));
+  }
+
+  const items: LatestVideo[] = (detailsData.items ?? []).map(
+    (v: {
+      id: string;
+      snippet: { title: string; publishedAt: string };
+      contentDetails: { duration: string };
+      statistics?: { viewCount?: string };
+    }) => ({
+      videoId: v.id,
+      title: v.snippet.title,
+      publishedAt: v.snippet.publishedAt,
+      thumbnail: `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`,
+      durationSec: parseDurationSeconds(v.contentDetails.duration),
+      viewCount: Number(v.statistics?.viewCount ?? 0),
+    }),
+  );
+
+  return items
+    .filter((v) => v.durationSec > 60)
+    .slice(0, count);
+}
+
+function parseDurationSeconds(iso: string): number {
+  const m = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  if (!m) return 0;
+  const [, h, mm, s] = m;
+  return Number(h ?? 0) * 3600 + Number(mm ?? 0) * 60 + Number(s ?? 0);
+}
+
+export function formatDuration(sec: number): string {
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = sec % 60;
+  if (h > 0) return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  return `${m}:${String(s).padStart(2, "0")}`;
+}
+
+export function formatViewCount(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(n >= 10_000 ? 0 : 1)}K`;
+  return String(n);
+}
+
 function decodeHtml(s: string): string {
   return s
     .replace(/&amp;/g, "&")

@@ -26,6 +26,10 @@ export const SITE = {
   },
   // Latest showreel/featured video on YouTube — สลับ id ได้เมื่อมีเนื้อหาใหม่
   featuredVideoId: "hw_Jg1J94uk",
+  // Tim's YouTube channel
+  youtubeChannelId: "UCRKlO0XkDH9VI6ziF2agdSg",
+  youtubeUploadsPlaylist: "UURKlO0XkDH9VI6ziF2agdSg",
+  youtubeHandle: "@TimJanepat",
   brandsWorkedWith: [
     "Hostinger",
     "Zoer.ai",

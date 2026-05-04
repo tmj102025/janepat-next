@@ -3,7 +3,8 @@ import "./globals.css";
 import { SITE } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo";
 import { jsonLdScriptProps, organizationSchema, personSchema, websiteSchema } from "@/lib/schema";
-import { ConditionalChrome } from "@/components/ConditionalChrome";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -33,7 +34,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className="min-h-full flex flex-col bg-[#faf9f5] text-[#3d3d3a]">
-        <ConditionalChrome>{children}</ConditionalChrome>
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );
