@@ -24,13 +24,12 @@ function safeJsonParse(raw: string): unknown {
 }
 
 // Primary + fallback chain — ทุกตัวฟรีและตอบไทยได้
-// (ทดสอบเมื่อ 2026-05-04 — gpt-oss-120b ตอบไทยคล่องที่สุด)
-const DEFAULT_MODEL = "openai/gpt-oss-120b:free";
+// gpt-oss-20b เร็วพอจะอยู่ใต้ Cloudflare 100s timeout
+const DEFAULT_MODEL = "openai/gpt-oss-20b:free";
 const FALLBACK_MODELS = [
-  "openai/gpt-oss-20b:free",
   "z-ai/glm-4.5-air:free",
-  "nvidia/nemotron-3-super-120b-a12b:free",
   "meta-llama/llama-3.3-70b-instruct:free",
+  "openai/gpt-oss-120b:free",
 ];
 
 export type RewriteInput = {
@@ -88,10 +87,10 @@ ${input.transcript.slice(0, 25000)}
   "title_th": "หัวข้อภาษาไทยที่คนค้นหาจริง (60-65 ตัวอักษร, มี keyword หลัก)",
   "slug": "kebab-case-english-slug",
   "excerpt": "สรุปสั้น 2-3 ประโยค สำหรับ TL;DR + meta description (ไม่เกิน 160 ตัวอักษร)",
-  "content_md": "บทความเต็มเป็น markdown — H2 sections, paragraphs, bullets, code blocks เมื่อจำเป็น ความยาว 1200-2000 คำ",
+  "content_md": "บทความเต็มเป็น markdown — H2 sections, paragraphs, bullets, code blocks เมื่อจำเป็น ความยาว 700-1000 คำ",
   "faq_jsonld": [{"q":"คำถามที่พบบ่อย 1","a":"คำตอบ"}],
   "tags": ["tag1","tag2","tag3"],
-  "reading_minutes": 6
+  "reading_minutes": 5
 }`;
 
   let text: string | undefined;
