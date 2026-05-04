@@ -47,15 +47,15 @@ export default function AIPillarPage() {
 
       <section className="gradient-hero">
         <div className="mx-auto max-w-5xl px-6 pt-20 pb-16 md:pt-28">
-          <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">
+          <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
             Pillar Hub
           </div>
-          <h1 className="mt-4 text-[40px] font-semibold leading-[1.1] tracking-[-0.02em] text-stone-900 md:text-[60px]">
+          <h1 className="mt-4 font-display text-[44px] leading-[1.05] tracking-[-1px] text-[#141413] md:text-[64px]">
             <span className="text-gradient">ความรู้ AI</span>
             <br />
             ภาษาไทย ครบทุกหัวข้อ
           </h1>
-          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-stone-700">
+          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">
             แหล่งรวมความรู้ AI สำหรับคนไทย — ตั้งแต่พื้นฐาน ChatGPT, Claude, Gemini ไปจนถึง
             AI Marketing, AI Automation, Prompt Engineering และ AI Tools เลือกหัวข้อที่อยากเรียนรู้
           </p>
@@ -64,22 +64,22 @@ export default function AIPillarPage() {
 
       <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-[28px] font-bold text-stone-900 md:text-[36px]">หัวข้อ AI ทั้งหมด</h2>
-          <p className="mt-3 text-[15px] text-stone-600">เลือกหัวข้อเพื่อดูบทความและ tutorial ทั้งหมดของแต่ละ topic</p>
+          <h2 className="font-display text-[32px] leading-[1.15] tracking-[-0.5px] text-[#141413] md:text-[40px]">หัวข้อ AI ทั้งหมด</h2>
+          <p className="mt-3 text-[15px] text-[#6c6a64]">เลือกหัวข้อเพื่อดูบทความและ tutorial ทั้งหมดของแต่ละ topic</p>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {AI_CATEGORIES.map((cat) => (
               <Link
                 key={cat.slug}
                 href={`/ai/${cat.slug}`}
-                className="group rounded-2xl border border-stone-200 bg-white p-7 transition hover:border-teal-300"
+                className="group rounded-xl border border-[#e6dfd8] bg-white p-7 transition hover:border-[#cc785c]/35"
               >
                 <div className={`inline-block rounded-full bg-gradient-to-r ${cat.color} bg-clip-text text-[12px] font-mono uppercase tracking-widest text-transparent`}>
                   /ai/{cat.slug}
                 </div>
-                <h3 className="mt-3 text-[22px] font-bold text-stone-900">{cat.name}</h3>
-                <p className="mt-3 text-[14px] leading-[1.75] text-stone-600">{cat.description}</p>
-                <div className="mt-6 inline-flex items-center gap-1 text-[13px] text-teal-600 transition group-hover:gap-2">
+                <h3 className="mt-3 font-display text-[24px] leading-[1.2] tracking-[-0.3px] text-[#141413]">{cat.name}</h3>
+                <p className="mt-3 text-[14px] leading-[1.75] text-[#6c6a64]">{cat.description}</p>
+                <div className="mt-6 inline-flex items-center gap-1 text-[13px] text-[#cc785c] transition group-hover:gap-2">
                   ดูบทความทั้งหมด <span>→</span>
                 </div>
               </Link>
@@ -88,21 +88,21 @@ export default function AIPillarPage() {
         </div>
       </section>
 
-      <section className="border-t border-stone-200 bg-stone-100 px-6 py-20">
+      <section className="border-t border-[#e6dfd8] bg-[#f5f0e8] px-6 py-20">
         <div className="mx-auto max-w-3xl">
-          <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">FAQ</div>
-          <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[36px]">คำถามที่พบบ่อยเรื่อง AI</h2>
+          <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">FAQ</div>
+          <h2 className="mt-3 font-display text-[32px] leading-[1.15] tracking-[-0.5px] text-[#141413] md:text-[40px]">คำถามที่พบบ่อยเรื่อง AI</h2>
           <div className="mt-10 space-y-4">
             {faqs.map((f) => (
               <details
                 key={f.q}
-                className="group rounded-xl border border-stone-200 bg-white p-6 open:border-teal-300"
+                className="group rounded-xl border border-[#e6dfd8] bg-white p-6 open:border-[#cc785c]/35"
               >
-                <summary className="cursor-pointer list-none text-[16px] font-semibold text-stone-900">
-                  <span className="mr-3 text-teal-600">Q.</span>
+                <summary className="cursor-pointer list-none text-[16px] font-semibold text-[#141413]">
+                  <span className="mr-3 text-[#cc785c]">Q.</span>
                   {f.q}
                 </summary>
-                <div className="mt-4 text-[15px] leading-[1.85] text-stone-700">{f.a}</div>
+                <div className="mt-4 text-[15px] leading-[1.85] text-[#3d3d3a]">{f.a}</div>
               </details>
             ))}
           </div>

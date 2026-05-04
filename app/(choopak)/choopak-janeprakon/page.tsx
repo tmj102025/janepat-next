@@ -89,6 +89,7 @@ export default function ChoopakPage() {
               <nav className="mt-10 flex flex-wrap gap-2" aria-label="Sections">
                 {[
                   { href: "#showreel", label: "Showreel" },
+                  { href: "#works", label: "Works" },
                   { href: "#about", label: "About" },
                   { href: "#skills", label: "Skills" },
                   { href: "#experience", label: "Experience" },
@@ -109,9 +110,12 @@ export default function ChoopakPage() {
 
             <div className="relative">
               <div className="aspect-square overflow-hidden rounded-3xl border border-[#d4a373]/30 bg-gradient-to-br from-[#d4a373]/25 via-white to-[#0891b2]/15 shadow-xl shadow-[#d4a373]/15">
-                <div className="flex h-full w-full items-center justify-center text-[120px] font-black text-[#b8854f]/25">
-                  CJ
-                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/portfolio/profile.png"
+                  alt={CHOOPAK.name}
+                  className="h-full w-full object-cover"
+                />
               </div>
               <div className="absolute -bottom-3 -right-3 rounded-2xl border border-[#d4a373]/40 bg-white px-4 py-2 text-[12px] shadow-lg shadow-stone-900/5">
                 <div className="nk-mono text-[#b8854f]">10+ YEARS</div>
@@ -223,7 +227,14 @@ export default function ChoopakPage() {
                     {e.period}
                   </div>
                 </div>
-                <p className="mt-4 text-[14px] leading-[1.8] text-stone-700">{e.summary}</p>
+                <ul className="mt-4 space-y-1.5 text-[14px] leading-[1.7] text-stone-700">
+                  {e.bullets.map((b) => (
+                    <li key={b} className="flex gap-2">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#d4a373]" />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {e.tags.map((t) => (
                     <span key={t} className="nk-tag nk-tag-forest">
@@ -232,6 +243,45 @@ export default function ChoopakPage() {
                   ))}
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Works — Image-based portfolio (banners, prints, LED, web) */}
+      <section id="works" className="border-t border-stone-900/[0.06] bg-[#fbf6ec] px-6 py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="nk-mono text-[11px] text-[#0e7490]">Works</div>
+          <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[42px]">
+            ผลงานที่ผ่านมา
+          </h2>
+          <p className="mt-3 max-w-2xl text-[15px] leading-[1.8] text-stone-600">
+            รวมผลงาน graphic design, banner, print, LED display และ event shooting จากแบรนด์ต่างๆ
+          </p>
+
+          <div className="mt-12 grid gap-8">
+            {CHOOPAK.works.map((w) => (
+              <article key={w.image} className="nk-card overflow-hidden">
+                <div className="grid lg:grid-cols-[1.4fr_1fr]">
+                  <div className="bg-stone-50 p-4 md:p-6">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={w.image}
+                      alt={w.title}
+                      loading="lazy"
+                      className="h-auto w-full rounded-xl border border-stone-900/[0.05] object-contain"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-center p-6 md:p-8">
+                    <span className="nk-tag self-start">{w.type}</span>
+                    <h3 className="mt-3 text-[20px] font-bold text-stone-900 md:text-[24px]">
+                      {w.title}
+                    </h3>
+                    <div className="mt-2 nk-mono text-[11px] text-[#b8854f]">{w.client}</div>
+                    <p className="mt-4 text-[14px] leading-[1.8] text-stone-700">{w.summary}</p>
+                  </div>
+                </div>
+              </article>
             ))}
           </div>
         </div>
@@ -250,15 +300,42 @@ export default function ChoopakPage() {
               </div>
               <h2 className="mt-3 text-[28px] font-bold text-stone-900 md:text-[42px]">ผลงาน Video</h2>
               <p className="mt-3 max-w-2xl text-[15px] leading-[1.8] text-stone-600">
-                คลิกเพื่อดูผลงาน video ที่ผลิตให้แบรนด์ต่างๆ
+                คลิปจาก YouTube playlist ของ SaM Yazen — ดูผลงาน video ทั้งหมด
               </p>
             </div>
+            <a
+              href={`https://www.youtube.com/playlist?list=${CHOOPAK.playlists[0]?.playlistId}`}
+              target="_blank"
+              rel="noopener"
+              className="inline-flex items-center gap-1 rounded-full border border-[#0891b2]/30 bg-white px-4 py-2 text-[12px] font-semibold text-[#0e7490] transition hover:border-[#0891b2] hover:bg-[#0891b2]/5"
+            >
+              เปิด Playlist บน YouTube ↗
+            </a>
           </div>
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {CHOOPAK.portfolio.map((v) => (
               <YouTubeCard key={v.id} videoId={v.id} title={v.title} client={v.client} />
             ))}
+          </div>
+
+          {/* Embedded playlist player — auto-pulls every video in the playlist */}
+          <div className="mt-12">
+            <div className="nk-card overflow-hidden">
+              <div className="relative aspect-video">
+                <iframe
+                  src={`https://www.youtube.com/embed/videoseries?list=${CHOOPAK.playlists[0]?.playlistId}&rel=0`}
+                  title="Choopak Janeprakon — Portfolio Playlist"
+                  className="absolute inset-0 h-full w-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+              <div className="flex items-center justify-between gap-3 px-5 py-3 bg-stone-50">
+                <div className="nk-mono text-[11px] text-[#0e7490]">PLAYLIST · LIVE FROM YOUTUBE</div>
+                <div className="text-[11px] text-stone-500">SaM Yazen</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -299,12 +376,19 @@ export default function ChoopakPage() {
             สนใจร่วมงาน video production, content creation, หรือ graphic design? ติดต่อได้ตามช่องทางด้านล่าง
           </p>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+          <div className="mt-10 nk-card p-6 text-left md:p-8">
+            <div className="nk-mono text-[11px] text-[#0e7490]">Address</div>
+            <div className="mt-2 text-[15px] leading-[1.8] text-stone-700">
+              {CHOOPAK.address}
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <a
               href={`tel:${CHOOPAK.phone.replace(/-/g, "")}`}
               className="nk-card p-6 text-left"
             >
-              <div className="nk-mono text-[11px] text-[#0e7490]">Phone</div>
+              <div className="nk-mono text-[11px] text-[#0e7490]">Tel.</div>
               <div className="mt-2 text-[18px] font-semibold text-stone-900">{CHOOPAK.phone}</div>
             </a>
             <a

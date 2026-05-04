@@ -24,11 +24,11 @@ export default async function BlogIndexPage() {
 
       <section className="gradient-hero">
         <div className="mx-auto max-w-5xl px-6 pt-20 pb-12 md:pt-28">
-          <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">Blog</div>
-          <h1 className="mt-4 text-[40px] font-semibold leading-[1.1] tracking-[-0.02em] text-stone-900 md:text-[56px]">
+          <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">Blog</div>
+          <h1 className="mt-4 font-display text-[40px] leading-[1.05] tracking-[-0.8px] text-[#141413] md:text-[56px]">
             บทความ AI ทั้งหมด
           </h1>
-          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-stone-700">
+          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">
             อัปเดต tutorial, รีวิว AI tools, และความรู้ AI ที่คนไทยใช้ได้จริง — เผยแพร่เนื้อหาใหม่ 2-4 บทความต่อสัปดาห์
           </p>
         </div>
@@ -41,7 +41,7 @@ export default async function BlogIndexPage() {
               <Link
                 key={c.slug}
                 href={`/ai/${c.slug}`}
-                className="rounded-full border border-stone-200 bg-white px-4 py-1.5 text-[12px] text-stone-700 transition hover:border-teal-300 hover:text-stone-900"
+                className="rounded-full border border-[#e6dfd8] bg-white px-4 py-1.5 text-[12px] text-[#3d3d3a] transition hover:border-[#cc785c]/35 hover:text-[#141413]"
               >
                 {c.name}
               </Link>
@@ -49,8 +49,8 @@ export default async function BlogIndexPage() {
           </div>
 
           {posts.length === 0 ? (
-            <div className="mt-12 rounded-2xl border border-dashed border-stone-200 bg-white p-12 text-center">
-              <p className="text-[14px] text-stone-600">บทความใหม่กำลังจะมา ติดตามได้เร็ว ๆ นี้</p>
+            <div className="mt-12 rounded-xl border border-dashed border-[#e6dfd8] bg-white p-12 text-center">
+              <p className="text-[14px] text-[#6c6a64]">บทความใหม่กำลังจะมา ติดตามได้เร็ว ๆ นี้</p>
             </div>
           ) : (
             <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -60,7 +60,7 @@ export default async function BlogIndexPage() {
                   <Link
                     key={p.id}
                     href={`/ai/${p.category}/${p.slug}`}
-                    className="group rounded-2xl border border-stone-200 bg-white overflow-hidden transition hover:border-teal-300"
+                    className="group rounded-xl border border-[#e6dfd8] bg-white overflow-hidden transition hover:border-[#cc785c]/35"
                   >
                     {p.cover && (
                       <div className="aspect-video overflow-hidden bg-white">
@@ -69,11 +69,11 @@ export default async function BlogIndexPage() {
                       </div>
                     )}
                     <div className="p-6">
-                      <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">
+                      <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
                         {cat?.name ?? p.category}
                       </div>
-                      <h3 className="mt-2 text-[18px] font-bold text-stone-900 line-clamp-2">{p.title_th}</h3>
-                      <p className="mt-2 text-[13px] leading-[1.7] text-stone-600 line-clamp-3">{p.excerpt}</p>
+                      <h3 className="mt-2 font-display text-[20px] leading-[1.25] tracking-[-0.2px] text-[#141413] line-clamp-2">{p.title_th}</h3>
+                      <p className="mt-2 text-[13px] leading-[1.7] text-[#6c6a64] line-clamp-3">{p.excerpt}</p>
                     </div>
                   </Link>
                 );

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fafaf9",
+  themeColor: "#faf9f5",
   width: "device-width",
   initialScale: 1,
 };
@@ -26,12 +26,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preload" href="/fonts/LINESeedSansTH_Rg.ttf" as="font" type="font/ttf" crossOrigin="" />
         <link rel="preload" href="/fonts/LINESeedSansTH_Bd.ttf" as="font" type="font/ttf" crossOrigin="" />
+        <link rel="preload" href="/fonts/LINESeedSansTH_He.ttf" as="font" type="font/ttf" crossOrigin="" />
         <script {...jsonLdScriptProps(personSchema())} />
         <script {...jsonLdScriptProps(organizationSchema())} />
         <script {...jsonLdScriptProps(websiteSchema())} />
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-[#faf9f5] text-[#3d3d3a]">
         <ConditionalChrome>{children}</ConditionalChrome>
       </body>
     </html>

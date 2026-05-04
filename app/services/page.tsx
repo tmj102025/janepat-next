@@ -81,11 +81,11 @@ export default function ServicesPage() {
 
       <section className="gradient-hero">
         <div className="mx-auto max-w-5xl px-6 pt-20 pb-16 md:pt-28">
-          <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">Services</div>
-          <h1 className="mt-4 text-[40px] font-semibold leading-[1.1] tracking-[-0.02em] text-stone-900 md:text-[60px]">
+          <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">Services</div>
+          <h1 className="mt-4 font-display text-[44px] leading-[1.05] tracking-[-1px] text-[#141413] md:text-[64px]">
             ทำงานร่วมกับ <span className="text-gradient">Tim Janepat</span>
           </h1>
-          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-stone-700">
+          <p className="mt-6 max-w-2xl text-[16px] leading-[1.85] text-[#3d3d3a]">
             4 บริการที่ผมเปิดให้แบรนด์ บริษัท และคนที่อยากเรียน AI จริง ๆ —
             ทุกอย่างมุ่งเน้น &quot;ผลลัพธ์&quot; ไม่ใช่แค่ความรู้
           </p>
@@ -95,25 +95,25 @@ export default function ServicesPage() {
       <section className="px-6 py-16 md:py-20">
         <div className="mx-auto max-w-5xl space-y-6">
           {services.map((s) => (
-            <div key={s.name} className="rounded-2xl border border-stone-200 bg-white p-8 md:p-10">
+            <div key={s.name} className="rounded-xl border border-[#e6dfd8] bg-white p-8 md:p-10">
               <div className="flex flex-wrap items-start justify-between gap-6">
                 <div className="max-w-2xl">
-                  <h2 className="text-[24px] font-bold text-stone-900 md:text-[30px]">{s.name}</h2>
-                  <div className="mt-1 text-[13px] font-mono uppercase tracking-widest text-teal-600">
+                  <h2 className="font-display text-[24px] leading-[1.2] tracking-[-0.3px] text-[#141413] md:text-[30px]">{s.name}</h2>
+                  <div className="mt-1 text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
                     {s.tagline}
                   </div>
-                  <p className="mt-4 text-[15px] leading-[1.85] text-stone-700">{s.description}</p>
+                  <p className="mt-4 text-[15px] leading-[1.85] text-[#3d3d3a]">{s.description}</p>
                 </div>
-                <div className="rounded-xl border border-teal-300 bg-teal-600/5 px-4 py-3">
-                  <div className="text-[11px] font-mono text-teal-600">PRICING</div>
-                  <div className="mt-1 text-[14px] font-semibold text-stone-900">{s.pricing}</div>
+                <div className="rounded-xl border border-[#cc785c]/35 bg-[#cc785c]/5 px-4 py-3">
+                  <div className="text-[11px] font-mono text-[#cc785c]">PRICING</div>
+                  <div className="mt-1 text-[14px] font-semibold text-[#141413]">{s.pricing}</div>
                 </div>
               </div>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
                 {s.deliverables.map((d) => (
-                  <div key={d} className="flex items-start gap-2 text-[13px] text-stone-700">
-                    <span className="mt-1 text-teal-400">✓</span>
+                  <div key={d} className="flex items-start gap-2 text-[13px] text-[#3d3d3a]">
+                    <span className="mt-1 text-[#cc785c]">✓</span>
                     <span>{d}</span>
                   </div>
                 ))}
@@ -122,7 +122,7 @@ export default function ServicesPage() {
               <div className="mt-8">
                 <Link
                   href={`/contact?type=${encodeURIComponent(s.name)}`}
-                  className="inline-flex items-center rounded-full bg-teal-600 px-5 py-2.5 text-[13px] font-semibold text-white hover:bg-teal-700"
+                  className="inline-flex items-center rounded-full bg-[#cc785c] px-5 py-2.5 text-[13px] font-semibold text-white hover:bg-[#a9583e]"
                 >
                   {s.cta} →
                 </Link>

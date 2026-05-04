@@ -3,20 +3,20 @@ import { AI_CATEGORIES, NAV, SITE } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="border-t border-stone-200 bg-stone-100 px-6 py-16">
-      <div className="mx-auto max-w-7xl">
+    <footer className="bg-[#181715] px-6 py-16 text-[#a09d96]">
+      <div className="mx-auto max-w-[1200px]">
         <div className="grid gap-12 md:grid-cols-4">
           <div className="md:col-span-2">
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-teal-300 to-amber-300 text-black font-black">
-                T
+            <div className="flex items-center gap-2.5">
+              <span className="spike-mark text-[#faf9f5]" aria-hidden />
+              <span className="font-display text-[22px] tracking-[-0.01em] text-[#faf9f5]">
+                Janepat
               </span>
-              <span className="font-semibold text-stone-900">{SITE.brand}</span>
             </div>
-            <p className="mt-4 max-w-md text-[14px] leading-[1.8] text-stone-600">
+            <p className="mt-5 max-w-md text-[14px] leading-[1.6] text-[#a09d96]">
               {SITE.author.bio}
             </p>
-            <div className="mt-6 flex flex-wrap gap-3 text-[13px]">
+            <div className="mt-7 flex flex-wrap gap-2 text-[12px]">
               <FooterSocial href={SITE.social.youtube} label="YouTube" />
               <FooterSocial href={SITE.social.facebook} label="Facebook" />
               <FooterSocial href={SITE.social.instagram} label="Instagram" />
@@ -27,13 +27,13 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-[12px] font-mono uppercase tracking-widest text-teal-600">
-              เมนู
+            <h4 className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#faf9f5]">
+              Menu
             </h4>
-            <ul className="mt-4 space-y-3 text-[14px] text-stone-600">
+            <ul className="mt-4 space-y-3 text-[14px]">
               {NAV.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="hover:text-stone-900">
+                  <Link href={item.href} className="hover:text-[#faf9f5]">
                     {item.label}
                   </Link>
                 </li>
@@ -42,13 +42,13 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-[12px] font-mono uppercase tracking-widest text-teal-600">
+            <h4 className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#faf9f5]">
               ความรู้ AI
             </h4>
-            <ul className="mt-4 space-y-3 text-[14px] text-stone-600">
+            <ul className="mt-4 space-y-3 text-[14px]">
               {AI_CATEGORIES.slice(0, 6).map((cat) => (
                 <li key={cat.slug}>
-                  <Link href={`/ai/${cat.slug}`} className="hover:text-stone-900">
+                  <Link href={`/ai/${cat.slug}`} className="hover:text-[#faf9f5]">
                     {cat.name}
                   </Link>
                 </li>
@@ -57,14 +57,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-stone-200 pt-6 text-[12px] text-stone-500 md:flex-row md:items-center">
-          <div>
-            © {new Date().getFullYear()} {SITE.brand} · เขียนโดย Tim Janepat ·{" "}
-            <span className="text-stone-600">AI Expert ภาษาไทย</span>
-          </div>
-          <div className="flex gap-4">
-            <Link href="/about" className="hover:text-stone-900">เกี่ยวกับ</Link>
-            <Link href="/contact" className="hover:text-stone-900">ติดต่อ</Link>
+        <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-[#252320] pt-6 text-[12px] text-[#a09d96] md:flex-row md:items-center">
+          <div>© {new Date().getFullYear()} {SITE.brand} — เขียนโดย Tim Janepat</div>
+          <div className="flex gap-5">
+            <Link href="/about" className="hover:text-[#faf9f5]">About</Link>
+            <Link href="/contact" className="hover:text-[#faf9f5]">Contact</Link>
           </div>
         </div>
       </div>
@@ -78,7 +75,7 @@ function FooterSocial({ href, label }: { href: string; label: string }) {
       href={href}
       target="_blank"
       rel="noopener"
-      className="rounded-full border border-stone-200 px-3 py-1 text-stone-700 transition hover:border-teal-300 hover:text-stone-900"
+      className="rounded-full border border-[#252320] px-3 py-1 text-[#a09d96] transition hover:border-[#cc785c] hover:text-[#faf9f5]"
     >
       {label}
     </a>

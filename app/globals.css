@@ -1,12 +1,6 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "LINE Seed Sans TH";
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-  src: url("/fonts/LINESeedSansTH_Th.ttf") format("truetype");
-}
+/* LINE Seed Sans TH — kept as Thai humanist fallback */
 @font-face {
   font-family: "LINE Seed Sans TH";
   font-weight: 400;
@@ -28,111 +22,239 @@
   font-display: swap;
   src: url("/fonts/LINESeedSansTH_He.ttf") format("truetype");
 }
-@font-face {
-  font-family: "LINE Seed Sans TH";
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-  src: url("/fonts/LINESeedSansTH_XBd.ttf") format("truetype");
-}
 
 @theme {
-  --color-bg: #fafaf9;
-  --color-bg-elevated: #ffffff;
-  --color-bg-card: #ffffff;
-  --color-border: rgba(28, 25, 23, 0.08);
-  --color-border-strong: rgba(28, 25, 23, 0.14);
+  /* Claude design tokens — cream canvas + coral + dark navy */
+  --color-canvas: #faf9f5;
+  --color-surface-soft: #f5f0e8;
+  --color-surface-card: #efe9de;
+  --color-surface-cream-strong: #e8e0d2;
+  --color-surface-dark: #181715;
+  --color-surface-dark-elevated: #252320;
+  --color-surface-dark-soft: #1f1e1b;
 
-  --color-ink: #1c1917;
-  --color-ink-muted: #57534e;
-  --color-ink-dim: #78716c;
+  --color-ink: #141413;
+  --color-body-strong: #252523;
+  --color-body: #3d3d3a;
+  --color-muted: #6c6a64;
+  --color-muted-soft: #8e8b82;
 
-  --color-teal-300: #5eead4;
-  --color-teal-400: #2dd4bf;
-  --color-teal-500: #14b8a6;
-  --color-teal-600: #0d9488;
-  --color-teal-700: #0f766e;
-  --color-teal-900: #134e4a;
+  --color-hairline: #e6dfd8;
+  --color-hairline-soft: #ebe6df;
 
-  --color-amber-300: #fcd34d;
-  --color-amber-500: #f59e0b;
+  --color-on-primary: #ffffff;
+  --color-on-dark: #faf9f5;
+  --color-on-dark-soft: #a09d96;
 
-  --font-sans: "LINE Seed Sans TH", "LINE Seed Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-primary: #cc785c;
+  --color-primary-active: #a9583e;
+  --color-primary-disabled: #e6dfd8;
+
+  --color-accent-teal: #5db8a6;
+  --color-accent-amber: #e8a55a;
+  --color-success: #5db872;
+  --color-warning: #d4a017;
+  --color-error: #c64545;
+
+  /* font: ใช้ LINE Seed Sans TH ทั้งหมด — display ใช้ weight 800 + negative tracking
+     ให้ได้ feel editorial โดยไม่ต้องเปลี่ยนตระกูลฟอนต์ */
+  --font-sans: "LINE Seed Sans TH", "LINE Seed Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-sans);
   --font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+
+  --section: 96px;
 }
 
 html {
-  background: #fafaf9;
-  color: #1c1917;
+  background: var(--color-canvas);
+  color: var(--color-ink);
 }
 
 body {
-  background: var(--color-bg);
-  color: var(--color-ink);
+  background: var(--color-canvas);
+  color: var(--color-body);
   font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: rgba(13, 148, 136, 0.2);
-  color: #134e4a;
+  background: rgba(204, 120, 92, 0.22);
+  color: var(--color-ink);
 }
 
 a {
   color: inherit;
 }
 
+/* Display utility — semibold + negative tracking (next.aiceo.im principle: 600/700, not 800) */
+.font-display {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Anthropic-style spike-mark substitute (4-spoke radial asterisk) */
+.spike-mark {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image:
+    linear-gradient(to bottom, currentColor 0, currentColor 100%),
+    linear-gradient(to right, currentColor 0, currentColor 100%),
+    linear-gradient(45deg, currentColor 0, currentColor 100%),
+    linear-gradient(-45deg, currentColor 0, currentColor 100%);
+  background-size: 2px 100%, 100% 2px, 16px 2px, 16px 2px;
+  background-position: center, center, center, center;
+  background-repeat: no-repeat;
+  transform: rotate(0deg);
+}
+
+.hero-band {
+  background: var(--color-canvas);
+}
+
+/* Alias used by inner pages — keeps the same cream feel as hero-band */
 .gradient-hero {
   background:
-    radial-gradient(ellipse 80% 55% at 50% -10%, rgba(13, 148, 136, 0.10), transparent 65%),
-    radial-gradient(ellipse 50% 35% at 90% 110%, rgba(245, 158, 11, 0.08), transparent 65%),
-    linear-gradient(180deg, #ffffff 0%, #fafaf9 60%, #f5f5f4 100%);
+    radial-gradient(ellipse 70% 45% at 50% -10%, rgba(204, 120, 92, 0.08), transparent 65%),
+    linear-gradient(180deg, var(--color-canvas) 0%, var(--color-surface-soft) 100%);
 }
 
 .text-gradient {
-  background: linear-gradient(90deg, #0d9488 0%, #f59e0b 100%);
+  background: linear-gradient(90deg, #cc785c 0%, #e8a55a 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-.glass {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(28, 25, 23, 0.08);
+.hairline {
+  border-color: var(--color-hairline);
 }
 
-.text-stroke {
-  -webkit-text-stroke: 1.2px rgba(13, 148, 136, 0.55);
-  color: transparent;
+.hairline-soft {
+  border-color: var(--color-hairline-soft);
 }
 
-.text-stroke-faint {
-  -webkit-text-stroke: 1.2px rgba(28, 25, 23, 0.12);
-  color: transparent;
+/* Article prose for /ai/[slug] posts */
+.prose-th h2 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+  color: var(--color-ink);
+  margin-top: 3rem;
+  margin-bottom: 1rem;
 }
 
-.dotted-grid {
-  background-image: radial-gradient(circle at 1px 1px, rgba(13, 148, 136, 0.2) 1px, transparent 0);
-  background-size: 28px 28px;
+.prose-th h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.3;
+  letter-spacing: -0.25px;
+  color: var(--color-ink);
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
 }
 
-.hero-orbit {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle 600px at 80% 20%, rgba(13, 148, 136, 0.14), transparent 60%),
-    radial-gradient(circle 500px at 20% 80%, rgba(245, 158, 11, 0.10), transparent 60%);
-  filter: blur(24px);
+.prose-th p {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--color-body);
+  margin-bottom: 1.25rem;
+}
+
+.prose-th ul,
+.prose-th ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+  color: var(--color-body);
+  line-height: 1.7;
+}
+
+.prose-th ul li {
+  list-style: disc;
+  margin-bottom: 0.5rem;
+}
+
+.prose-th ol li {
+  list-style: decimal;
+  margin-bottom: 0.5rem;
+}
+
+.prose-th a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.prose-th a:hover {
+  color: var(--color-primary-active);
+}
+
+.prose-th blockquote {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 1rem;
+  color: var(--color-muted);
+  margin: 1.5rem 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.prose-th code {
+  background: var(--color-surface-card);
+  color: var(--color-ink);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+
+.prose-th pre {
+  background: var(--color-surface-dark);
+  border: 1px solid var(--color-surface-dark-elevated);
+  border-radius: 12px;
+  padding: 1.25rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.prose-th pre code {
+  background: transparent;
+  padding: 0;
+  color: var(--color-on-dark);
+  font-size: 14px;
+}
+
+.prose-th table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 15px;
+}
+
+.prose-th table th,
+.prose-th table td {
+  border: 1px solid var(--color-hairline);
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.prose-th table th {
+  background: var(--color-surface-card);
+  color: var(--color-ink);
+  font-weight: 500;
 }
 
 @keyframes pulse-soft {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.08); }
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
 }
 
 .live-pulse {
@@ -147,135 +269,7 @@ a {
 .ticker {
   display: inline-flex;
   white-space: nowrap;
-  animation: ticker-scroll 35s linear infinite;
+  animation: ticker-scroll 40s linear infinite;
   gap: 3rem;
   padding-right: 3rem;
-}
-
-.card-glow {
-  position: relative;
-  overflow: hidden;
-}
-
-.card-glow::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  background: conic-gradient(from 180deg at 50% 50%, rgba(13, 148, 136, 0) 0deg, rgba(13, 148, 136, 0.45) 90deg, rgba(245, 158, 11, 0.35) 180deg, rgba(13, 148, 136, 0) 270deg);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 0;
-}
-
-.card-glow:hover::before {
-  opacity: 1;
-}
-
-.card-glow > * {
-  position: relative;
-  z-index: 1;
-}
-
-.prose-th h2 {
-  font-size: 28px;
-  font-weight: 700;
-  color: #1c1917;
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
-  letter-spacing: -0.01em;
-}
-
-.prose-th h3 {
-  font-size: 22px;
-  font-weight: 600;
-  color: #1c1917;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-}
-
-.prose-th p {
-  font-size: 16px;
-  line-height: 1.85;
-  color: #44403c;
-  margin-bottom: 1.25rem;
-}
-
-.prose-th ul,
-.prose-th ol {
-  margin-bottom: 1.25rem;
-  padding-left: 1.5rem;
-  color: #44403c;
-  line-height: 1.85;
-}
-
-.prose-th ul li {
-  list-style: disc;
-  margin-bottom: 0.5rem;
-}
-
-.prose-th ol li {
-  list-style: decimal;
-  margin-bottom: 0.5rem;
-}
-
-.prose-th a {
-  color: #0d9488;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.prose-th a:hover {
-  color: #0f766e;
-}
-
-.prose-th blockquote {
-  border-left: 3px solid #0d9488;
-  padding-left: 1rem;
-  color: #57534e;
-  font-style: italic;
-  margin: 1.5rem 0;
-}
-
-.prose-th code {
-  background: rgba(13, 148, 136, 0.10);
-  color: #0f766e;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: var(--font-mono);
-  font-size: 0.875em;
-}
-
-.prose-th pre {
-  background: #1c1917;
-  border: 1px solid rgba(28, 25, 23, 0.08);
-  border-radius: 8px;
-  padding: 1rem;
-  overflow-x: auto;
-  margin: 1.5rem 0;
-}
-
-.prose-th pre code {
-  background: transparent;
-  padding: 0;
-  color: #f5f5f4;
-}
-
-.prose-th table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1.5rem 0;
-  font-size: 14px;
-}
-
-.prose-th table th,
-.prose-th table td {
-  border: 1px solid rgba(28, 25, 23, 0.10);
-  padding: 0.75rem 1rem;
-  text-align: left;
-}
-
-.prose-th table th {
-  background: rgba(13, 148, 136, 0.08);
-  color: #1c1917;
-  font-weight: 600;
 }

@@ -10,102 +10,78 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="gradient-hero relative overflow-hidden">
-        <div className="hero-orbit" />
-        <div className="absolute inset-0 dotted-grid opacity-40" />
-
-        <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-24 md:pt-28 md:pb-32">
-          <div className="grid gap-14 lg:grid-cols-[1.5fr_1fr] lg:items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-teal-300 bg-teal-50 px-3 py-1 text-[11px] font-mono uppercase tracking-widest text-teal-600">
-                <span className="h-1.5 w-1.5 rounded-full bg-teal-600 live-pulse" />
-                AI Expert · ภาษาไทย · 28.8K subs
-              </div>
-
-              <h1 className="mt-7 text-[44px] font-semibold leading-[1.02] tracking-[-0.025em] text-stone-900 md:text-[76px] lg:text-[88px]">
-                เรียนรู้
-                <br />
-                <span className="text-gradient">AI ภาษาไทย</span>
-                <br />
-                <span className="text-stroke-faint">กับ TIM JANEPAT</span>
-              </h1>
-
-              <p className="mt-7 max-w-xl text-[16px] leading-[1.85] text-stone-700 md:text-[18px]">
-                ทุกเรื่อง AI ที่คนไทยควรรู้ — ChatGPT, Claude, Gemini, AI Marketing, Automation
-                สอนให้เข้าใจง่าย ใช้ได้จริง โดยผู้เชี่ยวชาญที่สอนคนไทยมาแล้วกว่า{" "}
-                <strong className="text-stone-900">1,200+</strong> คน
-              </p>
-
-              <div className="mt-10 flex flex-wrap gap-3">
-                <Link
-                  href="/ai"
-                  className="inline-flex items-center gap-2 rounded-full bg-teal-600 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:bg-teal-700 hover:scale-[1.03]"
-                >
-                  เริ่มเรียน AI ฟรี
-                  <span className="text-[16px]">→</span>
-                </Link>
-                <Link
-                  href="/services"
-                  className="inline-flex items-center gap-2 rounded-full border border-stone-300 px-6 py-3.5 text-[14px] text-stone-900 transition hover:border-teal-400"
-                >
-                  ดูบริการของ Tim
-                </Link>
-              </div>
-
-              <div className="mt-14 grid grid-cols-2 gap-5 md:grid-cols-4 max-w-2xl">
-                <Stat value="28.8K+" label="YouTube subscribers" />
-                <Stat value="1,200+" label="นักเรียน AI" />
-                <Stat value="10+" label="ปีในวงการดิจิทัล" />
-                <Stat value="100+" label="บทความ AI ภาษาไทย" />
-              </div>
+      {/* Hero — cream canvas, serif display, coral CTA */}
+      <section className="hero-band px-6 py-24 md:py-[96px]">
+        <div className="mx-auto max-w-[1200px] grid gap-14 lg:grid-cols-[1.3fr_1fr] lg:items-end">
+          <div>
+            <div className="inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#cc785c] live-pulse" />
+              AI Expert · ภาษาไทย
+            </div>
+            <h1 className="mt-6 font-display text-[56px] leading-[1.05] tracking-[-1.5px] text-[#141413] md:text-[80px] lg:text-[96px]">
+              เรียนรู้ AI<br />
+              ภาษาไทย<br />
+              <span className="text-[#cc785c]">กับ Tim Janepat</span>
+            </h1>
+            <p className="mt-7 max-w-xl text-[18px] leading-[1.55] text-[#3d3d3a]">
+              ทุกเรื่อง AI ที่คนไทยควรรู้ — ChatGPT, Claude, Gemini, AI Marketing, Automation
+              สอนให้เข้าใจง่าย ใช้ได้จริง โดยผู้เชี่ยวชาญที่สอนคนไทยมาแล้วกว่า{" "}
+              <span className="text-[#141413] font-medium">1,200+</span> คน
+            </p>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <Link
+                href="/ai"
+                className="inline-flex h-10 items-center gap-2 rounded-md bg-[#cc785c] px-5 text-[14px] font-medium text-white transition hover:bg-[#a9583e]"
+              >
+                เริ่มเรียน AI ฟรี →
+              </Link>
+              <Link
+                href="/services"
+                className="inline-flex h-10 items-center rounded-md border border-[#e6dfd8] bg-[#faf9f5] px-5 text-[14px] font-medium text-[#141413] hover:border-[#cc785c]"
+              >
+                ดูบริการของ Tim
+              </Link>
             </div>
 
-            {/* Hero side card */}
-            <div className="relative hidden lg:block">
-              <div className="absolute -inset-6 rounded-[32px] bg-gradient-to-br from-teal-400/25 via-transparent to-amber-300/20 blur-3xl" />
-              <div className="relative rounded-3xl border border-stone-200 bg-white/80 backdrop-blur p-8">
-                <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-teal-600/70">
-                  Live activity
-                </div>
-                <div className="mt-5 space-y-4">
-                  <ActivityItem
-                    badge="LIVE"
-                    badgeColor="bg-rose-500"
-                    title="ChatGPT 5 Code Mode"
-                    meta="ออกอากาศใน 3 ชั่วโมงข้างหน้า"
-                  />
-                  <ActivityItem
-                    badge="NEW"
-                    badgeColor="bg-teal-600 text-white"
-                    title="n8n + Claude Workflow"
-                    meta="บทความใหม่ · 12 นาที"
-                  />
-                  <ActivityItem
-                    badge="HOT"
-                    badgeColor="bg-amber-300 text-white"
-                    title="AI Marketing Stack 2026"
-                    meta="2.4k views อาทิตย์นี้"
-                  />
-                </div>
+            <div className="mt-14 grid grid-cols-2 gap-x-8 gap-y-6 md:grid-cols-4 max-w-3xl">
+              <Stat value="28.8K+" label="YouTube subscribers" />
+              <Stat value="1,200+" label="นักเรียน AI" />
+              <Stat value="10+" label="ปีในวงการดิจิทัล" />
+              <Stat value="100+" label="บทความ AI" />
+            </div>
+          </div>
 
-                <div className="mt-8 rounded-2xl border border-stone-200 bg-stone-100 p-5">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-300 to-amber-300 font-black text-white text-xl">
-                      T
-                    </div>
-                    <div>
-                      <div className="text-[13px] font-semibold text-stone-900">Tim Janepat</div>
-                      <div className="text-[11px] text-stone-500">AI Expert · Bangkok</div>
-                    </div>
+          {/* Hero illustration card — dark navy product mockup */}
+          <div className="hidden lg:block">
+            <div className="rounded-xl bg-[#181715] p-6 shadow-sm">
+              <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#a09d96]">
+                <span className="inline-flex items-center gap-2">
+                  <span className="flex h-2 w-2 rounded-full bg-[#5db872]" />
+                  Live activity
+                </span>
+              </div>
+              <div className="mt-5 space-y-3">
+                <ActivityItem badge="LIVE" badgeColor="bg-[#c64545]" title="ChatGPT 5 Code Mode" meta="ออกอากาศใน 3 ชั่วโมง" />
+                <ActivityItem badge="NEW" badgeColor="bg-[#cc785c]" title="n8n + Claude Workflow" meta="บทความใหม่ · 12 นาที" />
+                <ActivityItem badge="HOT" badgeColor="bg-[#e8a55a]" title="AI Marketing Stack 2026" meta="2.4k views อาทิตย์นี้" />
+              </div>
+
+              <div className="mt-6 rounded-lg bg-[#1f1e1b] p-5 border border-[#252320]">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#cc785c] font-display text-[22px] text-white">
+                    T
                   </div>
-                  <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] font-mono">
-                    <div className="rounded-lg bg-teal-50 border border-teal-300 px-2 py-1.5 text-teal-600 text-center">
-                      Gemini Cert
-                    </div>
-                    <div className="rounded-lg bg-amber-50 border border-amber-200 px-2 py-1.5 text-amber-600 text-center">
-                      28.8K · YouTube
-                    </div>
+                  <div>
+                    <div className="text-[14px] font-medium text-[#faf9f5]">Tim Janepat</div>
+                    <div className="text-[12px] text-[#a09d96]">AI Expert · Bangkok</div>
+                  </div>
+                </div>
+                <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] font-medium">
+                  <div className="rounded bg-[#252320] px-2 py-1.5 text-[#5db8a6] text-center">
+                    Gemini Cert.
+                  </div>
+                  <div className="rounded bg-[#252320] px-2 py-1.5 text-[#e8a55a] text-center">
+                    28.8K · YT
                   </div>
                 </div>
               </div>
@@ -116,20 +92,21 @@ export default async function HomePage() {
 
       <BrandStrip />
 
-      {/* AI Topics Grid — redesigned with numbers + better hierarchy */}
-      <section className="px-6 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-6 lg:grid-cols-[1fr_2fr] lg:items-end">
+      {/* AI Topics Grid — cream feature cards */}
+      <section className="px-6 py-24 md:py-[96px]">
+        <div className="mx-auto max-w-[1200px]">
+          <div className="grid gap-6 lg:grid-cols-[1fr_1.6fr] lg:items-end">
             <div>
-              <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">
+              <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
                 Topic Hub · 8 หัวข้อหลัก
               </div>
-              <h2 className="mt-3 text-[32px] font-bold tracking-[-0.01em] text-stone-900 md:text-[52px] leading-[1.05]">
+              <h2 className="mt-3 font-display text-[44px] leading-[1.1] tracking-[-0.7px] text-[#141413] md:text-[56px]">
                 เลือกหัวข้อ AI<br />ที่อยากเรียนรู้
               </h2>
             </div>
-            <p className="text-[15px] leading-[1.85] text-stone-600 max-w-2xl lg:justify-self-end">
-              แต่ละหัวข้อมีบทความ tutorial และ resource ฟรี ครอบคลุมตั้งแต่พื้นฐานถึงระดับ advanced —
+            <p className="text-[17px] leading-[1.55] text-[#3d3d3a] max-w-2xl lg:justify-self-end">
+              แต่ละหัวข้อมีบทความ tutorial และ resource ฟรี
+              ครอบคลุมตั้งแต่พื้นฐานถึงระดับ advanced —
               อ่านครบทั้ง 8 หัวข้อ ใช้ AI ทำงานได้จริง
             </p>
           </div>
@@ -139,27 +116,24 @@ export default async function HomePage() {
               <Link
                 key={cat.slug}
                 href={`/ai/${cat.slug}`}
-                className="group card-glow rounded-2xl border border-stone-200 bg-white p-7 transition hover:bg-stone-50 hover:-translate-y-1"
+                className="group rounded-xl bg-[#efe9de] p-8 transition hover:bg-[#e8e0d2]"
               >
                 <div className="flex items-start justify-between">
-                  <div
-                    className={`text-[10px] font-mono uppercase tracking-[0.25em] bg-gradient-to-r ${cat.color} bg-clip-text text-transparent`}
-                  >
+                  <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#6c6a64]">
                     /ai/{cat.slug}
                   </div>
-                  <div className="text-[11px] font-mono text-stone-400">
+                  <div className="font-mono text-[12px] text-[#8e8b82]">
                     0{idx + 1}
                   </div>
                 </div>
-                <h3 className="mt-5 text-[20px] font-bold text-stone-900 tracking-tight">{cat.name}</h3>
-                <p className="mt-2 text-[13px] leading-[1.7] text-stone-600 line-clamp-3">
+                <h3 className="mt-6 font-display text-[28px] leading-[1.15] tracking-[-0.3px] text-[#141413]">
+                  {cat.name}
+                </h3>
+                <p className="mt-2 text-[14px] leading-[1.55] text-[#3d3d3a] line-clamp-3">
                   {cat.description}
                 </p>
-                <div className="mt-7 flex items-center justify-between text-[12px]">
-                  <span className="text-teal-600 transition group-hover:translate-x-1">
-                    อ่านเพิ่ม →
-                  </span>
-                  <span className="text-stone-400 font-mono">เร็ว ๆ นี้</span>
+                <div className="mt-7 inline-flex items-center gap-1 text-[14px] font-medium text-[#cc785c] group-hover:gap-2 transition-all">
+                  อ่านเพิ่ม →
                 </div>
               </Link>
             ))}
@@ -169,36 +143,36 @@ export default async function HomePage() {
 
       <FeaturedVideo />
 
-      {/* Featured Articles or call to subscribe */}
-      <section className="border-t border-stone-200 px-6 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl">
+      {/* Featured Articles — cream canvas with hairline cards */}
+      <section className="px-6 py-24 md:py-[96px]">
+        <div className="mx-auto max-w-[1200px]">
           <div className="flex items-end justify-between gap-6 flex-wrap">
             <div>
-              <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">
+              <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
                 Latest Articles
               </div>
-              <h2 className="mt-3 text-[28px] font-bold tracking-tight text-stone-900 md:text-[42px]">
+              <h2 className="mt-3 font-display text-[44px] leading-[1.1] tracking-[-0.7px] text-[#141413] md:text-[56px]">
                 บทความ AI ล่าสุด
               </h2>
             </div>
             <Link
               href="/blog"
-              className="text-[13px] font-mono uppercase tracking-widest text-teal-600 hover:text-teal-700"
+              className="text-[14px] font-medium text-[#cc785c] underline underline-offset-4 hover:text-[#a9583e]"
             >
               ดูทั้งหมด →
             </Link>
           </div>
 
           {featuredPosts.length > 0 ? (
-            <div className="mt-10 grid gap-6 md:grid-cols-3">
+            <div className="mt-12 grid gap-5 md:grid-cols-3">
               {featuredPosts.map((post) => (
                 <Link
                   key={post.id}
                   href={`/ai/${post.category}/${post.slug}`}
-                  className="group rounded-2xl border border-stone-200 bg-white overflow-hidden transition hover:border-teal-300 hover:-translate-y-1"
+                  className="group rounded-xl border border-[#e6dfd8] bg-[#faf9f5] overflow-hidden transition hover:border-[#cc785c]"
                 >
                   {post.cover && (
-                    <div className="aspect-video overflow-hidden bg-white">
+                    <div className="aspect-video overflow-hidden bg-[#efe9de]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={post.cover}
@@ -207,18 +181,18 @@ export default async function HomePage() {
                       />
                     </div>
                   )}
-                  <div className="p-6">
-                    <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">
+                  <div className="p-7">
+                    <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
                       {post.category}
                     </div>
-                    <h3 className="mt-3 text-[18px] font-bold text-stone-900 line-clamp-2">
+                    <h3 className="mt-3 font-display text-[24px] leading-[1.15] tracking-[-0.3px] text-[#141413] line-clamp-2">
                       {post.title_th}
                     </h3>
-                    <p className="mt-2 text-[14px] leading-[1.7] text-stone-600 line-clamp-3">
+                    <p className="mt-2 text-[14px] leading-[1.55] text-[#3d3d3a] line-clamp-3">
                       {post.excerpt}
                     </p>
                     {post.reading_minutes && (
-                      <div className="mt-4 text-[11px] font-mono text-stone-500">
+                      <div className="mt-4 text-[12px] font-medium text-[#6c6a64]">
                         ⏱ {post.reading_minutes} นาที
                       </div>
                     )}
@@ -227,25 +201,23 @@ export default async function HomePage() {
               ))}
             </div>
           ) : (
-            <div className="mt-10 grid gap-6 md:grid-cols-3">
+            <div className="mt-12 grid gap-5 md:grid-cols-3">
               {AI_CATEGORIES.slice(0, 3).map((cat) => (
                 <Link
                   key={cat.slug}
                   href={`/ai/${cat.slug}`}
-                  className="group rounded-2xl border border-dashed border-stone-200 bg-stone-50 p-7 hover:border-teal-300 transition"
+                  className="group rounded-xl border border-dashed border-[#e6dfd8] bg-[#faf9f5] p-8 hover:border-[#cc785c] transition"
                 >
                   <div className="flex h-32 items-center justify-center">
-                    <div
-                      className={`text-[64px] font-black bg-gradient-to-br ${cat.color} bg-clip-text text-transparent leading-none`}
-                    >
+                    <div className="font-display text-[64px] leading-none text-[#cc785c]/40">
                       AI
                     </div>
                   </div>
-                  <div className="mt-4 text-[11px] font-mono uppercase tracking-widest text-teal-600">
+                  <div className="mt-4 text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
                     {cat.name}
                   </div>
-                  <div className="mt-2 text-[13px] text-stone-600">
-                    บทความใหม่กำลังจะมา ติดตามได้ที่ YouTube ก่อน
+                  <div className="mt-2 text-[14px] text-[#6c6a64]">
+                    บทความใหม่กำลังจะมา
                   </div>
                 </Link>
               ))}
@@ -256,62 +228,43 @@ export default async function HomePage() {
 
       <Testimonials />
 
-      {/* Services CTA */}
-      <section className="relative border-t border-stone-200 bg-stone-50 px-6 py-20 md:py-28 overflow-hidden">
-        <div className="absolute inset-0 dotted-grid opacity-30" />
-        <div className="relative mx-auto max-w-7xl">
-          <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
-            <div>
-              <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">
-                Services · 4 ทาง
+      {/* CTA band — coral callout */}
+      <section className="px-6 pb-24">
+        <div className="mx-auto max-w-[1200px]">
+          <div className="rounded-xl bg-[#cc785c] p-12 md:p-16 text-white">
+            <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+              <div>
+                <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-white/70">
+                  Services · 4 ทาง
+                </div>
+                <h2 className="mt-4 font-display text-[44px] leading-[1.1] tracking-[-0.7px] md:text-[56px]">
+                  ทำงาน AI<br />ร่วมกับ Tim
+                </h2>
+                <p className="mt-5 max-w-md text-[17px] leading-[1.55] text-white/90">
+                  Brand deal · AI consulting · Corporate training · Online course —
+                  ทุกอย่างมุ่งเน้น &quot;ผลลัพธ์&quot; ไม่ใช่แค่ความรู้
+                </p>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Link
+                    href="/services"
+                    className="inline-flex h-10 items-center rounded-md bg-[#faf9f5] px-5 text-[14px] font-medium text-[#141413] hover:bg-white"
+                  >
+                    ดูบริการทั้งหมด →
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="inline-flex h-10 items-center rounded-md border border-white/40 px-5 text-[14px] font-medium text-white hover:border-white"
+                  >
+                    ติดต่อ Tim
+                  </Link>
+                </div>
               </div>
-              <h2 className="mt-3 text-[32px] font-bold tracking-tight text-stone-900 md:text-[52px] leading-[1.02]">
-                ทำงาน AI<br />
-                <span className="text-stroke">ร่วมกับ TIM</span>
-              </h2>
-              <p className="mt-5 text-[15px] leading-[1.85] text-stone-600 max-w-md">
-                ตั้งแต่ brand deal, AI consulting, อบรมองค์กร ไปจนถึงคอร์สออนไลน์
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href="/services"
-                  className="inline-flex items-center rounded-full bg-teal-600 px-6 py-3.5 text-[14px] font-semibold text-white hover:bg-teal-700 hover:scale-[1.03] transition"
-                >
-                  ดูบริการทั้งหมด
-                </Link>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center rounded-full border border-stone-300 px-6 py-3.5 text-[14px] text-stone-900 hover:border-teal-400 transition"
-                >
-                  ติดต่อ Tim
-                </Link>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <ServiceTile num="01" title="Brand Partnership" />
+                <ServiceTile num="02" title="AI Consulting" />
+                <ServiceTile num="03" title="Corporate Training" />
+                <ServiceTile num="04" title="Online Course" />
               </div>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <ServiceCard
-                num="01"
-                title="Brand Partnership"
-                desc="YouTube sponsored / paid review สำหรับแบรนด์ AI/Tech"
-                tone="teal"
-              />
-              <ServiceCard
-                num="02"
-                title="AI Consulting"
-                desc="ออกแบบ AI workflow ให้ธุรกิจ — ChatGPT, Claude, n8n"
-                tone="amber"
-              />
-              <ServiceCard
-                num="03"
-                title="Corporate Training"
-                desc="อบรม AI ให้พนักงาน in-house ปรับแต่งตามอุตสาหกรรม"
-                tone="rose"
-              />
-              <ServiceCard
-                num="04"
-                title="Online Course"
-                desc="คอร์ส AI ออนไลน์ภาษาไทย — Lifetime access"
-                tone="emerald"
-              />
             </div>
           </div>
         </div>
@@ -322,9 +275,11 @@ export default async function HomePage() {
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="border-l-2 border-stone-200 pl-4">
-      <div className="text-[28px] font-bold text-stone-900 md:text-[34px] leading-none">{value}</div>
-      <div className="mt-2 text-[11px] font-mono uppercase tracking-widest text-stone-500">
+    <div>
+      <div className="font-display text-[40px] leading-none tracking-[-0.5px] text-[#141413]">
+        {value}
+      </div>
+      <div className="mt-2 text-[12px] font-medium uppercase tracking-[1.5px] text-[#6c6a64]">
         {label}
       </div>
     </div>
@@ -343,40 +298,25 @@ function ActivityItem({
   meta: string;
 }) {
   return (
-    <div className="flex items-start gap-3 rounded-xl border border-stone-200/60 bg-stone-50/60 p-3">
-      <span className={`shrink-0 rounded-md px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-stone-900 ${badgeColor}`}>
+    <div className="flex items-start gap-3 rounded-lg bg-[#1f1e1b] p-3 border border-[#252320]">
+      <span className={`shrink-0 rounded px-2 py-0.5 text-[10px] font-medium uppercase tracking-[1.5px] text-white ${badgeColor}`}>
         {badge}
       </span>
       <div className="min-w-0">
-        <div className="text-[13px] font-semibold text-stone-900 truncate">{title}</div>
-        <div className="text-[11px] text-stone-500">{meta}</div>
+        <div className="text-[14px] font-medium text-[#faf9f5] truncate">{title}</div>
+        <div className="text-[12px] text-[#a09d96]">{meta}</div>
       </div>
     </div>
   );
 }
 
-function ServiceCard({
-  num,
-  title,
-  desc,
-  tone,
-}: {
-  num: string;
-  title: string;
-  desc: string;
-  tone: "teal" | "amber" | "rose" | "emerald";
-}) {
-  const toneClass = {
-    teal: "text-teal-600",
-    amber: "text-amber-600",
-    rose: "text-rose-600",
-    emerald: "text-emerald-600",
-  }[tone];
+function ServiceTile({ num, title }: { num: string; title: string }) {
   return (
-    <div className="rounded-2xl border border-stone-200 bg-white p-6 transition hover:border-teal-300">
-      <div className={`text-[11px] font-mono ${toneClass}`}>{num}</div>
-      <div className="mt-3 text-[15px] font-bold text-stone-900">{title}</div>
-      <div className="mt-2 text-[13px] leading-[1.7] text-stone-600">{desc}</div>
+    <div className="rounded-lg bg-white/10 p-5 border border-white/15">
+      <div className="text-[11px] font-mono text-white/70">{num}</div>
+      <div className="mt-3 font-display text-[20px] leading-[1.2] tracking-[-0.2px]">
+        {title}
+      </div>
     </div>
   );
 }

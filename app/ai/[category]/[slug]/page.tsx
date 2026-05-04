@@ -66,17 +66,17 @@ export default async function PostPage({ params }: { params: Params }) {
 
       <article className="px-6 py-16 md:py-20">
         <div className="mx-auto max-w-3xl">
-          <nav className="text-[12px] text-stone-500">
-            <Link href="/ai" className="hover:text-teal-600">ความรู้ AI</Link>
+          <nav className="text-[12px] text-[#8e8b82]">
+            <Link href="/ai" className="hover:text-[#cc785c]">ความรู้ AI</Link>
             <span className="mx-2">/</span>
-            <Link href={`/ai/${cat.slug}`} className="hover:text-teal-600">{cat.name}</Link>
+            <Link href={`/ai/${cat.slug}`} className="hover:text-[#cc785c]">{cat.name}</Link>
           </nav>
 
-          <h1 className="mt-6 text-[34px] font-semibold leading-[1.2] tracking-[-0.01em] text-stone-900 md:text-[48px]">
+          <h1 className="mt-6 text-[34px] font-semibold leading-[1.2] tracking-[-0.01em] text-[#141413] md:text-[48px]">
             {post.title_th}
           </h1>
 
-          <div className="mt-6 flex items-center gap-4 text-[13px] text-stone-500">
+          <div className="mt-6 flex items-center gap-4 text-[13px] text-[#8e8b82]">
             <span>โดย Tim Janepat</span>
             <span>·</span>
             <time dateTime={post.created}>
@@ -91,9 +91,9 @@ export default async function PostPage({ params }: { params: Params }) {
           </div>
 
           {/* TL;DR — GEO win */}
-          <div className="mt-10 rounded-2xl border border-teal-300 bg-teal-600/5 p-6">
-            <div className="text-[11px] font-mono uppercase tracking-widest text-teal-600">TL;DR</div>
-            <p className="mt-2 text-[15px] leading-[1.8] text-stone-800">{post.excerpt}</p>
+          <div className="mt-10 rounded-xl border border-[#cc785c]/35 bg-[#cc785c]/5 p-6">
+            <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">TL;DR</div>
+            <p className="mt-2 text-[15px] leading-[1.8] text-[#252523]">{post.excerpt}</p>
           </div>
 
           {/* Content */}
@@ -104,16 +104,16 @@ export default async function PostPage({ params }: { params: Params }) {
 
           {/* FAQ */}
           {post.faq_jsonld && post.faq_jsonld.length > 0 && (
-            <section className="mt-16 border-t border-stone-200 pt-12">
-              <h2 className="text-[24px] font-bold text-stone-900 md:text-[28px]">คำถามที่พบบ่อย</h2>
+            <section className="mt-16 border-t border-[#e6dfd8] pt-12">
+              <h2 className="font-display text-[24px] leading-[1.2] tracking-[-0.3px] text-[#141413] md:text-[30px]">คำถามที่พบบ่อย</h2>
               <div className="mt-8 space-y-3">
                 {post.faq_jsonld.map((f) => (
-                  <details key={f.q} className="rounded-xl border border-stone-200 bg-white p-5">
-                    <summary className="cursor-pointer list-none text-[15px] font-semibold text-stone-900">
-                      <span className="mr-3 text-teal-600">Q.</span>
+                  <details key={f.q} className="rounded-xl border border-[#e6dfd8] bg-white p-5">
+                    <summary className="cursor-pointer list-none text-[15px] font-semibold text-[#141413]">
+                      <span className="mr-3 text-[#cc785c]">Q.</span>
                       {f.q}
                     </summary>
-                    <div className="mt-3 text-[14px] leading-[1.8] text-stone-700">{f.a}</div>
+                    <div className="mt-3 text-[14px] leading-[1.8] text-[#3d3d3a]">{f.a}</div>
                   </details>
                 ))}
               </div>
@@ -122,12 +122,12 @@ export default async function PostPage({ params }: { params: Params }) {
 
           {/* Citations */}
           {post.citations && post.citations.length > 0 && (
-            <section className="mt-12 border-t border-stone-200 pt-8">
-              <h3 className="text-[14px] font-mono uppercase tracking-widest text-teal-600">แหล่งอ้างอิง</h3>
-              <ul className="mt-4 space-y-2 text-[13px] text-stone-600">
+            <section className="mt-12 border-t border-[#e6dfd8] pt-8">
+              <h3 className="text-[14px] font-mono uppercase tracking-widest text-[#cc785c]">แหล่งอ้างอิง</h3>
+              <ul className="mt-4 space-y-2 text-[13px] text-[#6c6a64]">
                 {post.citations.map((c) => (
                   <li key={c.url}>
-                    <a href={c.url} target="_blank" rel="noopener" className="text-teal-600 underline hover:text-teal-700">
+                    <a href={c.url} target="_blank" rel="noopener" className="text-[#cc785c] underline hover:text-[#a9583e]">
                       {c.label}
                     </a>
                   </li>
@@ -137,15 +137,15 @@ export default async function PostPage({ params }: { params: Params }) {
           )}
 
           {/* Author byline */}
-          <div className="mt-16 rounded-2xl border border-stone-200 bg-white p-6">
+          <div className="mt-16 rounded-xl border border-[#e6dfd8] bg-white p-6">
             <div className="flex items-start gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-teal-300 to-amber-300 text-black font-black">
                 T
               </div>
               <div>
-                <div className="text-[15px] font-bold text-stone-900">เขียนโดย Tim Janepat</div>
-                <p className="mt-1 text-[13px] leading-[1.7] text-stone-600">{SITE.author.bio}</p>
-                <Link href="/about" className="mt-3 inline-block text-[13px] text-teal-600 hover:text-teal-700">
+                <div className="text-[15px] font-bold text-[#141413]">เขียนโดย Tim Janepat</div>
+                <p className="mt-1 text-[13px] leading-[1.7] text-[#6c6a64]">{SITE.author.bio}</p>
+                <Link href="/about" className="mt-3 inline-block text-[13px] text-[#cc785c] hover:text-[#a9583e]">
                   อ่านประวัติเต็ม →
                 </Link>
               </div>
