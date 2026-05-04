@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import "../globals.css";
 import "./choopak.css";
 
 export const metadata: Metadata = {
@@ -15,10 +14,6 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function ChoopakRootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="th" className="choopak-root antialiased">
-      <body className="min-h-full bg-[#fffdf7] text-stone-900 font-sans">{children}</body>
-    </html>
-  );
+export default function ChoopakLayout({ children }: { children: React.ReactNode }) {
+  return <div className="choopak-root min-h-screen w-full bg-[#fffdf7] text-stone-900">{children}</div>;
 }

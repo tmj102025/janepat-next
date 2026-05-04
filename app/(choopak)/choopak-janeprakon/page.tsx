@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { CHOOPAK } from "@/lib/choopak";
 import { SITE } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo";
@@ -317,8 +316,8 @@ export default function ChoopakPage() {
             </a>
           </div>
 
-          <div className="mt-12 text-[12px] text-stone-500">
-            <Link href="/" className="transition hover:text-[#0891b2]">← กลับหน้าแรก janepat.com</Link>
+          <div className="mt-12 text-[11px] text-stone-400">
+            © {new Date().getFullYear()} {CHOOPAK.name}
           </div>
         </div>
       </section>

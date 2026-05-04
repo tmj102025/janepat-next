@@ -1,4 +1,11 @@
 /* NomadKit — sand · ocean · forest on warm cream */
+/* Override globals.css dark bg when on /choopak-* routes */
+html:has(.choopak-root),
+html:has(.choopak-root) body {
+  background: #fffdf7 !important;
+  color: #1c1917 !important;
+}
+
 .choopak-root {
   background: #fffdf7;
   color: #1c1917;

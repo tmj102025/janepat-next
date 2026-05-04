@@ -65,6 +65,77 @@ a {
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.text-stroke {
+  -webkit-text-stroke: 1px rgba(94, 234, 212, 0.45);
+  color: transparent;
+}
+
+.text-stroke-faint {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.08);
+  color: transparent;
+}
+
+.dotted-grid {
+  background-image: radial-gradient(circle at 1px 1px, rgba(94, 234, 212, 0.18) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+
+.hero-orbit {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle 600px at 80% 20%, rgba(45, 212, 191, 0.18), transparent 60%),
+    radial-gradient(circle 500px at 20% 80%, rgba(252, 211, 77, 0.12), transparent 60%);
+  filter: blur(20px);
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+.live-pulse {
+  animation: pulse-soft 2.4s ease-in-out infinite;
+}
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.ticker {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: ticker-scroll 35s linear infinite;
+  gap: 3rem;
+  padding-right: 3rem;
+}
+
+.card-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-glow::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: conic-gradient(from 180deg at 50% 50%, rgba(45, 212, 191, 0) 0deg, rgba(45, 212, 191, 0.35) 90deg, rgba(252, 211, 77, 0.25) 180deg, rgba(45, 212, 191, 0) 270deg);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.card-glow:hover::before {
+  opacity: 1;
+}
+
+.card-glow > * {
+  position: relative;
+  z-index: 1;
+}
+
 .prose-th h2 {
   font-size: 28px;
   font-weight: 700;

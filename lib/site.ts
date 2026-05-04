@@ -28,6 +28,36 @@ export const SITE = {
     aiceoAcademy: "https://next.aiceo.im",
     aiceo: "https://aiceo.im",
   },
+  // Latest showreel/featured video on YouTube — สลับ id ได้เมื่อมีเนื้อหาใหม่
+  featuredVideoId: "hw_Jg1J94uk",
+  // Brands ที่เคยร่วมงาน (ใส่เป็น text — เปลี่ยนเป็นโลโก้จริงเมื่อมีไฟล์)
+  brandsWorkedWith: [
+    "Hostinger",
+    "Zoer.ai",
+    "Google Gemini",
+    "AhaCreator",
+    "AiCEO Academy",
+    "OpenAI",
+    "Anthropic",
+    "Make.com",
+  ],
+  testimonials: [
+    {
+      author: "Senior Marketing Manager",
+      company: "บริษัทไทยขนาดกลาง",
+      quote: "เรียนกับ Tim ทำให้ทีมเริ่มใช้ AI ลดเวลาทำคอนเทนต์ลง 60% ภายใน 2 สัปดาห์",
+    },
+    {
+      author: "Founder",
+      company: "E-commerce Brand",
+      quote: "Tim สอนเข้าใจง่าย ไม่ใช่แค่ทฤษฎี — workshop วันเดียวเปลี่ยนวิธีทำงานของทีมได้จริง",
+    },
+    {
+      author: "Content Creator",
+      company: "1.2M followers",
+      quote: "คอร์สของ Tim ที่ AiCEO ช่วยให้ผม 10x จำนวนคอนเทนต์ในเวลาเท่าเดิม",
+    },
+  ],
   geo: {
     region: "TH",
     placename: "Bangkok, Thailand",
