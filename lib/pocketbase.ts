@@ -131,10 +131,13 @@ export async function listServices(): Promise<ServiceRecord[]> {
 }
 
 export async function findPostByVideoId(videoId: string): Promise<PostRecord | null> {
+  // Slugs from auto-blog end with `-${videoId.toLowerCase()}` — exact suffix match
+  const suffix = `-${videoId.toLowerCase()}`;
   try {
-    return await pb()
-      .collection("janepat_posts")
-      .getFirstListItem<PostRecord>(`slug ~ "${videoId}"`);
+    const result = await pb().collection("janepat_posts").getList<PostRecord>(1, 1, {
+      filter: `slug ~ "${suffix}"`,
+    });
+    return result.items[0] ?? null;
   } catch {
     return null;
   }
@@ -154,7 +157,13 @@ export async function authAsAdmin(): Promise<void> {
   const email = process.env.PB_ADMIN_EMAIL;
   const password = process.env.PB_ADMIN_PASSWORD;
   if (!email || !password) throw new Error("PB_ADMIN_EMAIL / PB_ADMIN_PASSWORD required");
-  await pb().admins.authWithPassword(email, password);
+  // PB 0.23+ uses _superusers collection
+  try {
+    await pb().collection("_superusers").authWithPassword(email, password);
+  } catch {
+    // Fallback to legacy admins endpoint for older PB versions
+    await pb().admins.authWithPassword(email, password);
+  }
 }
 
 export async function createLead(lead: LeadRecord): Promise<{ ok: boolean; id?: string; error?: string }> {
