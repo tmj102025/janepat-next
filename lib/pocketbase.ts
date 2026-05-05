@@ -72,19 +72,23 @@ export async function listPublishedPosts(opts?: {
   limit?: number;
   featured?: boolean;
 }): Promise<PostRecord[]> {
+  // Use raw fetch with cache:'no-store' — PB SDK was returning empty in production,
+  // possibly due to Next.js fetch cache deduplication or SDK state issues
   try {
+    const base = SITE.pocketbase.url;
     const filters = [`published = true`];
     if (opts?.category) filters.push(`category = "${opts.category}"`);
     if (opts?.featured) filters.push(`featured = true`);
-    const result = await pb()
-      .collection("janepat_posts")
-      .getList<PostRecord>(1, opts?.limit ?? 50, {
-        filter: filters.join(" && "),
-        sort: "-created",
-        // disable Next.js fetch cache — always get fresh data on revalidate
-        requestKey: null,
-      });
-    return result.items;
+    const params = new URLSearchParams({
+      filter: filters.join(" && "),
+      sort: "-created",
+      perPage: String(opts?.limit ?? 50),
+    });
+    const url = `${base}/api/collections/janepat_posts/records?${params}`;
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) return [];
+    const data = (await res.json()) as { items?: PostRecord[] };
+    return data.items ?? [];
   } catch {
     return [];
   }
