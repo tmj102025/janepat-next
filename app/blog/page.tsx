@@ -10,6 +10,9 @@ import { listPublishedPosts } from "@/lib/pocketbase";
 import { MOCK_POSTS } from "@/lib/mockPosts";
 import { PostCard } from "@/components/PostCard";
 
+// Always render at request time
+export const dynamic = "force-dynamic";
+
 export const metadata = buildMetadata({
   title: "บทความ AI — Tips, Tutorials, Use Cases ภาษาไทย",
   description:

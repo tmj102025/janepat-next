@@ -4,8 +4,8 @@ import { MOCK_POSTS } from "@/lib/mockPosts";
 import { LatestVideos } from "@/components/LatestVideos";
 import { FeaturedStoryCard, LatestRowCard, TrendingRow } from "@/components/PostCard";
 
-// Revalidate every 5 min so freshly-published PB posts show up
-export const revalidate = 300;
+// Always render at request time so newly-published PB posts show up immediately
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const real = await listPublishedPosts({ limit: 20 });
