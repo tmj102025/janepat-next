@@ -59,7 +59,7 @@ export function FeaturedStoryCard({ post }: { post: PostRecord }) {
   );
 }
 
-/** Horizontal row card — image left, content right — for "The Latest" list */
+/** Horizontal row card — image left (16:9), content right — for "The Latest" list */
 export function LatestRowCard({ post }: { post: PostRecord }) {
   const cat = AI_CATEGORIES.find((c) => c.slug === post.category);
   const catTone = CAT_TEXT[post.category] ?? "text-[#cc785c]";
@@ -68,7 +68,7 @@ export function LatestRowCard({ post }: { post: PostRecord }) {
       href={`/ai/${post.category}/${post.slug}`}
       className="group flex gap-4 md:gap-5 py-5 border-b border-[#e6dfd8] last:border-b-0"
     >
-      <div className="w-32 h-32 md:w-44 md:h-32 shrink-0 rounded-xl bg-[#efe9de] overflow-hidden">
+      <div className="w-40 md:w-56 aspect-video shrink-0 rounded-xl bg-[#efe9de] overflow-hidden">
         {post.cover && (
           // eslint-disable-next-line @next/next/no-img-element
           <img

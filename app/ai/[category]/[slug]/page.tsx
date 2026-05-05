@@ -165,10 +165,9 @@ export default async function PostPage({ params }: { params: Params }) {
               );
             })()}
 
-            {/* Excerpt — TL;DR (Speakable for voice/AI assistants) */}
-            <div className="tldr rounded-xl border border-[#cc785c]/30 bg-[#cc785c]/5 p-5 mb-10">
-              <div className="text-[11px] font-medium uppercase tracking-[1.5px] text-[#cc785c] mb-2">TL;DR</div>
-              <p className="font-sans text-[16px] text-[#252523] leading-[1.7]">{post.excerpt}</p>
+            {/* Lead summary — Speakable for voice/AI assistants */}
+            <div className="tldr rounded-xl border-l-4 border-[#cc785c] bg-[#cc785c]/5 p-5 mb-10">
+              <p className="font-sans text-[17px] text-[#252523] leading-[1.7] font-medium">{post.excerpt}</p>
             </div>
 
             {/* Content */}

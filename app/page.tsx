@@ -2,7 +2,7 @@ import Link from "next/link";
 import { listPublishedPosts } from "@/lib/pocketbase";
 import { MOCK_POSTS } from "@/lib/mockPosts";
 import { LatestVideos } from "@/components/LatestVideos";
-import { FeaturedStoryCard, LatestRowCard, TrendingRow } from "@/components/PostCard";
+import { LatestRowCard, TrendingRow } from "@/components/PostCard";
 
 // Always render at request time so newly-published PB posts show up immediately
 export const dynamic = "force-dynamic";
@@ -14,38 +14,14 @@ export default async function HomePage() {
     .slice()
     .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
 
-  const featured = sorted.slice(0, 5);
-  const latest = sorted.slice(0, 6); // newest list, can overlap with featured
-  const trending = sorted.slice(0, 5); // mock trending = newest 5
+  const latest = sorted.slice(0, 8);
+  const trending = sorted.slice(0, 5);
 
   return (
     <>
-      {/* Section 1 — Articles feed (Featured Stories + The Latest + On Trending) */}
+      {/* Section 1 — Articles feed (The Latest + On Trending) */}
       <section className="bg-[#faf9f5]">
         <div className="mx-auto max-w-[1200px] px-6 pt-10 pb-12 md:pt-12">
-          {/* Featured Stories header */}
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center gap-3">
-              <span className="block w-1 h-6 bg-[#cc785c]" aria-hidden />
-              <h2 className="font-sans font-bold text-[20px] md:text-[24px] text-[#141413]">
-                Featured Stories
-              </h2>
-            </div>
-            <Link
-              href="/blog"
-              className="text-[13px] font-medium text-[#6c6a64] hover:text-[#cc785c]"
-            >
-              ดูทั้งหมด →
-            </Link>
-          </div>
-
-          {/* Featured grid — 5 image cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-5 mb-12 md:mb-14">
-            {featured.map((p) => (
-              <FeaturedStoryCard key={p.id} post={p} />
-            ))}
-          </div>
-
           {/* Latest + Trending split */}
           <div className="grid gap-8 lg:grid-cols-[1.8fr_1fr]">
             {/* The Latest column */}
