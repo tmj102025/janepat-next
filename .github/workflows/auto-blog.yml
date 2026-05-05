@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       limit:
-        description: "Videos per channel to check (default 1)"
+        description: "Videos per channel to check (default 5)"
         required: false
-        default: "1"
+        default: "5"
 
 jobs:
   trigger:

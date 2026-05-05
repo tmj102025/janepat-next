@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     return Response.json({ ok: false, error: "unauthorized" }, { status: 401 });
   }
 
-  const limit = Number(req.nextUrl.searchParams.get("limit") ?? 1);
+  const limit = Number(req.nextUrl.searchParams.get("limit") ?? 5);
   const results: RunResult[] = [];
 
   try {

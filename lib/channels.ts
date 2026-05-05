@@ -69,13 +69,6 @@ export const SOURCE_CHANNELS: SourceChannel[] = [
     defaultCategory: "tools",
   },
   {
-    id: "UCA-mWX9CvCTVFWRMb9bKc9w",
-    handle: "@danmartell",
-    name: "Dan Martell",
-    mode: "auto",
-    defaultCategory: "business",
-  },
-  {
     id: "UCjc1vfduI7BhVMXBLJLDjmA",
     handle: "@BrockMesarich",
     name: "Brock Mesarich",
