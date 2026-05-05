@@ -123,13 +123,47 @@ export default async function PostPage({ params }: { params: Params }) {
               </div>
             </div>
 
-            {/* Cover */}
-            {post.cover && (
-              <div className="aspect-video rounded-xl overflow-hidden bg-[#efe9de] mb-8">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={post.cover} alt={post.title_th} className="w-full h-full object-cover" />
-              </div>
-            )}
+            {/* Cover — click to watch on YouTube if it's a video thumbnail */}
+            {post.cover && (() => {
+              const ytId = post.cover.match(/i\.ytimg\.com\/vi\/([^/]+)/)?.[1];
+              const inner = (
+                <div className="relative aspect-video rounded-xl overflow-hidden bg-[#efe9de] group">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={post.cover}
+                    alt={post.title_th}
+                    className="w-full h-full object-cover transition group-hover:scale-[1.02]"
+                  />
+                  {ytId && (
+                    <>
+                      <div className="absolute inset-0 bg-black/15 group-hover:bg-black/30 transition" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#cc785c] shadow-2xl ring-4 ring-white/30 transition group-hover:scale-110">
+                          <svg viewBox="0 0 24 24" className="ml-1 h-7 w-7 fill-white">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </span>
+                      </div>
+                      <span className="absolute bottom-3 right-3 rounded-md bg-black/80 px-2 py-1 text-[11px] font-medium text-white">
+                        ▶ ดูบน YouTube
+                      </span>
+                    </>
+                  )}
+                </div>
+              );
+              return ytId ? (
+                <a
+                  href={`https://www.youtube.com/watch?v=${ytId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block mb-8"
+                >
+                  {inner}
+                </a>
+              ) : (
+                <div className="mb-8">{inner}</div>
+              );
+            })()}
 
             {/* Excerpt — TL;DR (Speakable for voice/AI assistants) */}
             <div className="tldr rounded-xl border border-[#cc785c]/30 bg-[#cc785c]/5 p-5 mb-10">

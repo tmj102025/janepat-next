@@ -262,18 +262,20 @@ export async function rewriteToBlog(input: RewriteInput): Promise<RewriteOutput>
 }
 
 function finalizePost(output: RewriteOutput, videoUrl: string): RewriteOutput {
-  // Strip any iframes/images the LLM may have added — we render the video ourselves
+  // Strip any iframes/images the LLM may have added — cover image is rendered separately by the page
   output.content_md = output.content_md
     .replace(/<iframe[\s\S]*?<\/iframe>/gi, "")
     .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
 
-  // Prepend single embed of source video at top
+  // Append a single "watch on YouTube" link at the bottom — cover thumbnail is shown at top by the article template
   const id = extractVideoId(videoUrl);
   if (id) {
-    const embed = `<div style="aspect-ratio:16/9;border-radius:12px;overflow:hidden;margin-bottom:1.5rem"><iframe src="https://www.youtube.com/embed/${id}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:0"></iframe></div>\n\n`;
-    output.content_md = embed + output.content_md;
+    const watchLink = `\n\n---\n\n📺 [ดูคลิปต้นฉบับบน YouTube](${videoUrl})`;
+    if (!output.content_md.includes(videoUrl)) {
+      output.content_md = output.content_md + watchLink;
+    }
   }
   return output;
 }
