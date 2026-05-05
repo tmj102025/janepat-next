@@ -281,21 +281,12 @@ export async function rewriteToBlog(input: RewriteInput): Promise<RewriteOutput>
   throw new Error(`All LLM providers failed. ${lastError}`);
 }
 
-function finalizePost(output: RewriteOutput, videoUrl: string): RewriteOutput {
-  // Strip any iframes/images the LLM may have added — cover image is rendered separately by the page
+function finalizePost(output: RewriteOutput, _videoUrl: string): RewriteOutput {
+  // Strip any iframes/images the LLM may have added — cover image is rendered by the article page
   output.content_md = output.content_md
     .replace(/<iframe[\s\S]*?<\/iframe>/gi, "")
     .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
-
-  // Append a single "watch on YouTube" link at the bottom — cover thumbnail is shown at top by the article template
-  const id = extractVideoId(videoUrl);
-  if (id) {
-    const watchLink = `\n\n---\n\n📺 [ดูคลิปต้นฉบับบน YouTube](${videoUrl})`;
-    if (!output.content_md.includes(videoUrl)) {
-      output.content_md = output.content_md + watchLink;
-    }
-  }
   return output;
 }
