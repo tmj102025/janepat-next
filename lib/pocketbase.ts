@@ -72,8 +72,9 @@ export async function listPublishedPosts(opts?: {
   limit?: number;
   featured?: boolean;
 }): Promise<PostRecord[]> {
-  // Use raw fetch with cache:'no-store' — PB SDK was returning empty in production,
-  // possibly due to Next.js fetch cache deduplication or SDK state issues
+  // Raw fetch + cache:'no-store' so freshly published PB posts show up.
+  // We DON'T pass `sort` because the PB collection's listRule rejects sorts on
+  // system fields (`created`/`updated` → 400). Sort happens in JS after fetch.
   try {
     const base = SITE.pocketbase.url;
     const filters = [`published = true`];
@@ -81,14 +82,14 @@ export async function listPublishedPosts(opts?: {
     if (opts?.featured) filters.push(`featured = true`);
     const params = new URLSearchParams({
       filter: filters.join(" && "),
-      sort: "-created",
       perPage: String(opts?.limit ?? 50),
     });
     const url = `${base}/api/collections/janepat_posts/records?${params}`;
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) return [];
     const data = (await res.json()) as { items?: PostRecord[] };
-    return data.items ?? [];
+    const items = data.items ?? [];
+    return items.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());
   } catch {
     return [];
   }
