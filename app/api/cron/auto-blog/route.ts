@@ -98,9 +98,11 @@ export async function GET(req: NextRequest) {
           videoTitle: v.title,
           videoUrl,
           channelName: channel.name,
+          channelHandle: channel.handle,
           transcript: sourceText,
           category: channel.defaultCategory,
           mode: channel.mode,
+          isTimOwn: channel.handle === "@TimJanepat",
         });
 
         const slug = `${post.slug}-${v.videoId.toLowerCase()}`;

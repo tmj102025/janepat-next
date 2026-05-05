@@ -23,9 +23,11 @@ export type RewriteInput = {
   videoTitle: string;
   videoUrl: string;
   channelName: string;
+  channelHandle?: string;
   transcript: string;
   category: string;
   mode: "auto" | "draft";
+  isTimOwn: boolean; // true = Tim's own video → write first-person; false = curated → attribute creator
 };
 
 export type RewriteOutput = {
@@ -91,20 +93,38 @@ function extractVideoId(url: string): string {
 }
 
 function buildUserPrompt(input: RewriteInput): string {
-  const isAuto = input.mode === "auto";
-  return `**งาน:** ${
-    isAuto
-      ? "วิดีโอนี้เป็นของ Tim เอง — สรุปเนื้อหาเป็นบทความที่อ่านง่าย"
-      : "วิดีโอนี้เป็นของช่องคนอื่น — REWRITE ใหม่ในมุมมองของ Tim โดยใช้ insight จาก transcript เป็นวัตถุดิบ ห้าม copy คำพูด ห้ามอ้างชื่อ creator ในเนื้อหา (อ้างใน citations เท่านั้น) เนื้อหาต้องดูเหมือน Tim เป็นคนอธิบายเอง"
-  }
+  // Build a friendly Thai nickname for the creator (e.g. "Alek Lazar" → "พี่ Alek")
+  const creatorNick = input.channelName
+    .replace(/[|•·].*$/, "")
+    .trim()
+    .split(/\s+/)[0];
+
+  const taskInstructions = input.isTimOwn
+    ? `**งาน — วิดีโอของ Tim เอง:**
+- เขียนบทความสรุปเนื้อหาวิดีโอในมุมมอง first-person ของ Tim ("ผม", "ผมเอง")
+- ไม่ต้องอ้างใคร เพราะคนอ่านจะรู้อยู่แล้วว่ามาจากช่อง Tim
+- เน้นแชร์ประสบการณ์ + tips ที่ใช้ได้จริง`
+    : `**งาน — สรุปจากช่องของ ${input.channelName} โดย Tim เป็นคนเล่าให้ฟัง:**
+- Tim กำลังย่อยวิดีโอของ "${input.channelName}" (handle: ${input.channelHandle ?? ""}) ให้คนไทยอ่านเข้าใจง่าย
+- **อ้างอิงเจ้าของช่องอย่างเป็นกันเอง** — ใช้คำว่า "พี่ ${creatorNick}", "${creatorNick}", "คุณ ${creatorNick}" สลับกันในเนื้อหาตามธรรมชาติ
+- โครงประโยคแบบนี้:
+  • "พี่ ${creatorNick} แชร์ว่า…" / "${creatorNick} บอกว่า…" / "ในคลิปของ ${creatorNick}…"
+  • "${creatorNick} ลองใช้แล้วเจอว่า…"
+  • "เจ้าของช่องเขาเล่าให้ฟังว่า…"
+- Tim เพิ่ม **ความเห็นส่วนตัว** เป็น layer 2 ในแต่ละหัวข้อ — เช่น "ผมเห็นด้วยกับ ${creatorNick} ตรงนี้เพราะ…", "จากมุมของผม…", "ผมว่าน่าสนใจมากตรงที่…"
+- Hook ในย่อหน้าแรกควรกล่าวถึงตัวตนของ creator แบบเชิญชวน เช่น "พี่ ${creatorNick} เพิ่งปล่อยคลิปสุดเด็ด เกี่ยวกับ…"
+- ปิดท้ายด้วยประโยคชวนดู เช่น "ไปดูคลิปเต็มของ${creatorNick}กันได้เลย" / "ใครสนใจตามไปดูเพิ่มในช่องเขาได้"
+- ห้ามคัดลอกประโยคใน transcript ตรงๆ — สรุป + เรียบเรียงใหม่ในภาษา Tim`;
+
+  return `${taskInstructions}
 
 **Source:**
-- Title: ${input.videoTitle}
-- Channel: ${input.channelName}
+- Channel: ${input.channelName} (${input.channelHandle ?? ""})
+- Video title: ${input.videoTitle}
 - URL: ${input.videoUrl}
 - Category: ${input.category}
 
-**Transcript:**
+**Transcript ของวิดีโอ:**
 ${input.transcript.slice(0, 25000)}
 
 ${OUTPUT_INSTRUCTIONS}`;
