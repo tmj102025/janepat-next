@@ -81,6 +81,8 @@ export async function listPublishedPosts(opts?: {
       .getList<PostRecord>(1, opts?.limit ?? 50, {
         filter: filters.join(" && "),
         sort: "-created",
+        // disable Next.js fetch cache — always get fresh data on revalidate
+        requestKey: null,
       });
     return result.items;
   } catch {
