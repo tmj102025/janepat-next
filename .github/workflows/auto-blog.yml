@@ -7,24 +7,78 @@ on:
   workflow_dispatch:
     inputs:
       limit:
-        description: "Videos per channel to check (default 5)"
+        description: "Videos per channel to check (default 1)"
         required: false
-        default: "5"
+        default: "1"
 
 jobs:
   trigger:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger /api/cron/auto-blog
+      - name: Run cron per-channel (avoid Cloudflare 100s timeout)
         run: |
+          set -e
           LIMIT="${{ github.event.inputs.limit || '1' }}"
-          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" \
-            "https://janepat.com/api/cron/auto-blog?secret=${{ secrets.CRON_SECRET }}&limit=$LIMIT")
-          BODY=$(echo "$RESPONSE" | sed -n '1,/^HTTP_STATUS:/p' | sed '$d')
-          STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS" | cut -d':' -f2)
-          echo "Status: $STATUS"
-          echo "Body: $BODY"
-          if [ "$STATUS" -ne 200 ]; then
-            echo "::error::Cron failed with status $STATUS"
+          BASE="https://janepat.com/api/cron/auto-blog?secret=${{ secrets.CRON_SECRET }}&limit=$LIMIT"
+
+          # All curated source channels — keep in sync with lib/channels.ts
+          CHANNELS=(
+            "@TimJanepat"
+            "@zinhoautomates"
+            "@nicksaraev"
+            "@TechWithTim"
+            "@Itssssss_Jack"
+            "@RoboNuggets"
+            "@futurepedia_io"
+            "@BrockMesarich"
+            "@AI-GPTWorkshop"
+            "@aliabdaal"
+            "@matt-j-penny"
+            "@suryakunju"
+            "@aiadvantage"
+          )
+
+          TOTAL_CREATED=0
+          TOTAL_SKIPPED=0
+          TOTAL_ERRORS=0
+          FAILED_CHANNELS=()
+
+          for ch in "${CHANNELS[@]}"; do
+            echo ""
+            echo "=== $ch ==="
+            # urlencode @ → %40
+            CH_ENC=$(echo -n "$ch" | sed 's/@/%40/g')
+            # max-time 95 = below CF 100s
+            HTTP_BODY=$(curl -sS --max-time 95 -w "\nHTTP_STATUS:%{http_code}" "$BASE&channel=$CH_ENC" || echo "HTTP_STATUS:000")
+            STATUS=$(echo "$HTTP_BODY" | grep "HTTP_STATUS" | tail -1 | cut -d':' -f2)
+            BODY=$(echo "$HTTP_BODY" | sed '/HTTP_STATUS:/d')
+            echo "Status: $STATUS"
+            echo "Body: $BODY"
+
+            if [ "$STATUS" != "200" ]; then
+              echo "::warning::$ch failed (HTTP $STATUS)"
+              FAILED_CHANNELS+=("$ch:$STATUS")
+              continue
+            fi
+
+            CREATED=$(echo "$BODY" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('summary',{}).get('created',0))" 2>/dev/null || echo 0)
+            SKIPPED=$(echo "$BODY" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('summary',{}).get('skipped',0))" 2>/dev/null || echo 0)
+            ERRORS=$(echo "$BODY" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('summary',{}).get('errors',0))" 2>/dev/null || echo 0)
+            TOTAL_CREATED=$((TOTAL_CREATED + CREATED))
+            TOTAL_SKIPPED=$((TOTAL_SKIPPED + SKIPPED))
+            TOTAL_ERRORS=$((TOTAL_ERRORS + ERRORS))
+          done
+
+          echo ""
+          echo "=========================================="
+          echo "TOTAL: created=$TOTAL_CREATED skipped=$TOTAL_SKIPPED errors=$TOTAL_ERRORS"
+          if [ ${#FAILED_CHANNELS[@]} -gt 0 ]; then
+            echo "Failed channels: ${FAILED_CHANNELS[*]}"
+          fi
+          echo "=========================================="
+
+          # Treat as failure only if all channels errored (some channels failing is acceptable)
+          if [ ${#FAILED_CHANNELS[@]} -ge 7 ]; then
+            echo "::error::More than half of channels failed"
             exit 1
           fi

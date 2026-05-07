@@ -27,6 +27,91 @@ function timeAgo(iso: string): string {
   return `${mo} month${mo === 1 ? "" : "s"} ago`;
 }
 
+/** Yahoo-style hero — big image with overlay caption, title + excerpt below in cream box */
+export function HeroFeaturedCard({ post }: { post: PostRecord }) {
+  const cat = AI_CATEGORIES.find((c) => c.slug === post.category);
+  const mins = Number.isFinite(post.reading_minutes as number) ? (post.reading_minutes as number) : null;
+  return (
+    <Link
+      href={`/ai/${post.category}/${post.slug}`}
+      className="group block overflow-hidden rounded-2xl bg-white border border-[#e6dfd8] hover:border-[#cc785c] transition-colors"
+    >
+      <div className="relative aspect-video bg-[#181715] overflow-hidden">
+        {post.cover && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={post.cover}
+            alt={post.title_th}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+          />
+        )}
+        <span className="absolute top-3 left-3 rounded-md bg-white/95 backdrop-blur px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[1px] text-[#141413] shadow-sm">
+          {cat?.name ?? post.category}
+        </span>
+      </div>
+      <div className="bg-[#f5f0e8] p-5">
+        <h2 className="font-display font-bold text-[20px] md:text-[24px] leading-[1.2] tracking-[-0.3px] text-[#141413] group-hover:text-[#cc785c] transition-colors line-clamp-3">
+          {post.title_th}
+        </h2>
+        <p className="mt-2 font-sans text-[13px] text-[#3d3d3a] leading-[1.6] line-clamp-2">
+          {post.excerpt}
+        </p>
+        <div className="mt-3 flex items-center gap-2 text-[11px] text-[#6c6a64]">
+          <span>{timeAgo(post.created)}</span>
+          {mins !== null && (
+            <>
+              <span className="text-[#8e8b82]">·</span>
+              <span>{mins} mins read</span>
+            </>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+/** Compact side row — thumb left, title + excerpt + meta right (for sidebar list) */
+export function SideListCard({ post }: { post: PostRecord }) {
+  const cat = AI_CATEGORIES.find((c) => c.slug === post.category);
+  const mins = Number.isFinite(post.reading_minutes as number) ? (post.reading_minutes as number) : null;
+  return (
+    <Link
+      href={`/ai/${post.category}/${post.slug}`}
+      className="group flex gap-3 py-3 border-b border-[#e6dfd8] last:border-b-0"
+    >
+      <div className="w-[160px] aspect-video shrink-0 rounded-lg bg-[#efe9de] overflow-hidden">
+        {post.cover && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={post.cover}
+            alt={post.title_th}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        )}
+      </div>
+      <div className="flex-1 min-w-0">
+        <h4 className="font-sans font-bold text-[14px] md:text-[15px] leading-[1.3] text-[#141413] line-clamp-2 group-hover:text-[#cc785c] transition-colors">
+          {post.title_th}
+        </h4>
+        <p className="mt-1.5 font-sans text-[12px] text-[#6c6a64] leading-[1.5] line-clamp-2">
+          {post.excerpt}
+        </p>
+        <div className="mt-1.5 flex items-center gap-2 text-[11px] text-[#6c6a64]">
+          <span className="font-medium text-[#cc785c]">{cat?.name ?? post.category}</span>
+          <span className="text-[#8e8b82]">·</span>
+          <span>{timeAgo(post.created)}</span>
+          {mins !== null && (
+            <>
+              <span className="text-[#8e8b82]">·</span>
+              <span>{mins} mins</span>
+            </>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 /** Tall image card with bottom gradient + category pill — for "Featured Stories" row */
 export function FeaturedStoryCard({ post }: { post: PostRecord }) {
   const cat = AI_CATEGORIES.find((c) => c.slug === post.category);
@@ -63,6 +148,7 @@ export function FeaturedStoryCard({ post }: { post: PostRecord }) {
 export function LatestRowCard({ post }: { post: PostRecord }) {
   const cat = AI_CATEGORIES.find((c) => c.slug === post.category);
   const catTone = CAT_TEXT[post.category] ?? "text-[#cc785c]";
+  const mins = Number.isFinite(post.reading_minutes as number) ? (post.reading_minutes as number) : null;
   return (
     <Link
       href={`/ai/${post.category}/${post.slug}`}
@@ -91,8 +177,8 @@ export function LatestRowCard({ post }: { post: PostRecord }) {
           </span>
           <span className="text-[#6c6a64]">{timeAgo(post.created)}</span>
           <span className="text-[#8e8b82]">·</span>
-          {post.reading_minutes && (
-            <span className="text-[#6c6a64]">{post.reading_minutes} mins read</span>
+          {mins !== null && (
+            <span className="text-[#6c6a64]">{mins} mins read</span>
           )}
         </div>
       </div>
@@ -117,7 +203,7 @@ export function TrendingRow({ post, rank }: { post: PostRecord; rank: number }) 
         <div className="mt-2 flex items-center gap-2 text-[11px] text-[#6c6a64]">
           <span>{timeAgo(post.created)}</span>
           <span className="text-[#8e8b82]">·</span>
-          {post.reading_minutes && <span>{post.reading_minutes} mins read</span>}
+          {mins !== null && <span>{mins} mins read</span>}
         </div>
       </div>
     </Link>
@@ -128,6 +214,7 @@ export function TrendingRow({ post, rank }: { post: PostRecord; rank: number }) 
 export function PostCard({ post, variant = "default" }: { post: PostRecord; variant?: "default" | "featured" | "compact" }) {
   const cat = AI_CATEGORIES.find((c) => c.slug === post.category);
   const catTone = CAT_TEXT[post.category] ?? "text-[#6c6a64]";
+  const mins = Number.isFinite(post.reading_minutes as number) ? (post.reading_minutes as number) : null;
   const dateStr = new Date(post.created).toLocaleDateString("th-TH", {
     day: "numeric",
     month: "short",
@@ -170,7 +257,7 @@ export function PostCard({ post, variant = "default" }: { post: PostRecord; vari
           </p>
           <div className="mt-5 pt-4 border-t border-[#ebe6df] flex items-center justify-between text-[11px] text-[#6c6a64]">
             <span className="font-medium">{post.author}</span>
-            {post.reading_minutes && <span>{post.reading_minutes} นาทีอ่าน</span>}
+            {mins !== null && <span>{mins} นาทีอ่าน</span>}
           </div>
         </div>
       </Link>

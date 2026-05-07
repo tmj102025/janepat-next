@@ -4,6 +4,8 @@ import { fetchLatestLongByChannel, fetchTranscript } from "@/lib/youtube";
 import { rewriteToBlog } from "@/lib/llm";
 import { authAsAdmin, createPost, findPostByVideoId } from "@/lib/pocketbase";
 import { pushDraftNotification } from "@/lib/telegram";
+import { postLinkToPage, buildFbCaption } from "@/lib/facebook";
+import { SITE } from "@/lib/site";
 
 export const maxDuration = 300; // 5 min
 
@@ -143,6 +145,24 @@ export async function GET(req: NextRequest) {
             channelName: channel.name,
             category: channel.defaultCategory,
           });
+        }
+
+        // Auto-post to Facebook Page (when published + FB env configured)
+        if (isAuto && process.env.FB_PAGE_ID && process.env.FB_PAGE_ACCESS_TOKEN) {
+          const articleUrl = `${SITE.url}/ai/${channel.defaultCategory}/${slug}`;
+          const fb = await postLinkToPage({
+            message: buildFbCaption({
+              title: post.title_th,
+              excerpt: post.excerpt,
+              url: articleUrl,
+              category: channel.defaultCategory,
+              tags: post.tags,
+            }),
+            link: articleUrl,
+          });
+          if (!fb.ok) {
+            console.warn(`[fb-post] ${slug}: ${fb.error}`);
+          }
         }
 
         channelResults.push({

@@ -16,7 +16,7 @@ export async function LatestVideos() {
           <div>
             <div className="inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#c64545] live-pulse" />
-              Latest from YouTube
+              The Latest
             </div>
             <h2 className="mt-2 font-display text-[32px] leading-[1.1] tracking-[-0.6px] text-[#141413] md:text-[44px]">
               วิดีโอล่าสุดของ Tim

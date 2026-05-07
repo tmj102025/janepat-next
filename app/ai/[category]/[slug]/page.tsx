@@ -99,7 +99,7 @@ export default async function PostPage({ params }: { params: Params }) {
                 {cat.name}
               </span>
               <span className="font-sans text-[13px] text-[#6c6a64]">{dateStr}</span>
-              {post.reading_minutes && (
+              {Number.isFinite(post.reading_minutes as number) && (
                 <>
                   <span className="text-[#8e8b82]">·</span>
                   <span className="font-sans text-[13px] text-[#6c6a64]">{post.reading_minutes} นาทีอ่าน</span>
