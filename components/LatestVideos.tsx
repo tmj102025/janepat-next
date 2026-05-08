@@ -14,13 +14,12 @@ export async function LatestVideos() {
       <div className="mx-auto max-w-[1200px]">
         <div className="flex items-end justify-between gap-4 flex-wrap">
           <div>
-            <div className="inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#c64545] live-pulse" />
-              The Latest
+            <div className="flex items-center gap-3 mb-2">
+              <span className="block w-1 h-6 bg-[#cc785c]" aria-hidden />
+              <h2 className="font-sans font-bold text-[20px] md:text-[24px] text-[#141413]">
+                วิดีโอล่าสุดของ Tim
+              </h2>
             </div>
-            <h2 className="mt-2 font-display text-[32px] leading-[1.1] tracking-[-0.6px] text-[#141413] md:text-[44px]">
-              วิดีโอล่าสุดของ Tim
-            </h2>
             <p className="mt-3 max-w-2xl text-[15px] leading-[1.55] text-[#3d3d3a]">
               คลิป long-form จาก{" "}
               <a

@@ -227,10 +227,12 @@ export default async function PostPage({ params }: { params: Params }) {
         {related.length > 0 && (
           <div className="bg-white border-t border-[#e6dfd8]">
             <div className="mx-auto max-w-[1200px] px-6 py-12 md:py-14">
-              <div className="text-[12px] font-medium uppercase tracking-[1.5px] text-[#cc785c] mb-2">Related</div>
-              <h2 className="font-display text-[28px] md:text-[36px] leading-[1.15] tracking-[-0.5px] text-[#141413] mb-8">
-                บทความที่เกี่ยวข้อง
-              </h2>
+              <div className="flex items-center gap-3 mb-6">
+                <span className="block w-1 h-6 bg-[#cc785c]" aria-hidden />
+                <h2 className="font-sans font-bold text-[20px] md:text-[24px] text-[#141413]">
+                  บทความที่เกี่ยวข้อง
+                </h2>
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {related.map((p) => <PostCard key={p.id} post={p} />)}
               </div>
