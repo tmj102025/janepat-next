@@ -107,11 +107,13 @@ export async function GET(req: NextRequest) {
           isTimOwn: channel.handle === "@TimJanepat",
         });
 
-        const slug = `${post.slug}-${v.videoId.toLowerCase()}`;
+        // Clean slug — videoId stored separately for dedup, not in URL
+        const slug = post.slug;
         const isAuto = channel.mode === "auto";
 
         const create = await createPost({
           slug,
+          video_id: v.videoId,
           title_th: post.title_th,
           excerpt: post.excerpt,
           content_md: post.content_md,

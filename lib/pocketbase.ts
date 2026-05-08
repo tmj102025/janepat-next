@@ -30,6 +30,7 @@ export type PostRecord = {
   faq_jsonld?: Array<{ q: string; a: string }>;
   howto_jsonld?: { name: string; steps: Array<{ name: string; text: string }> };
   citations?: Array<{ label: string; url: string }>;
+  video_id?: string; // YouTube videoId — used for dedup, not in URL
   created: string;
   updated: string;
 };
@@ -138,11 +139,9 @@ export async function listServices(): Promise<ServiceRecord[]> {
 }
 
 export async function findPostByVideoId(videoId: string): Promise<PostRecord | null> {
-  // Slugs from auto-blog end with `-${videoId.toLowerCase()}` — exact suffix match
-  const suffix = `-${videoId.toLowerCase()}`;
   try {
     const result = await pb().collection("janepat_posts").getList<PostRecord>(1, 1, {
-      filter: `slug ~ "${suffix}"`,
+      filter: `video_id = "${videoId}"`,
     });
     return result.items[0] ?? null;
   } catch {
