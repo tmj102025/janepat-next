@@ -3,6 +3,7 @@ import { listPublishedPosts } from "@/lib/pocketbase";
 import { MOCK_POSTS } from "@/lib/mockPosts";
 import { LatestVideos } from "@/components/LatestVideos";
 import { HeroFeaturedCard, SideListCard, LatestRowCard } from "@/components/PostCard";
+import { InstructorSection } from "@/components/InstructorSection";
 
 // Always render at request time so newly-published PB posts show up immediately
 export const dynamic = "force-dynamic";
@@ -78,6 +79,9 @@ export default async function HomePage() {
 
       {/* Section 3 — Videos */}
       <LatestVideos />
+
+      {/* Section 4 — Instructor (เกี่ยวกับวิทยากร) */}
+      <InstructorSection />
     </>
   );
 }

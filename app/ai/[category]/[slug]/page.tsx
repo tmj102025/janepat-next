@@ -7,6 +7,7 @@ import { getPostBySlug } from "@/lib/pocketbase";
 import { findMockPost, MOCK_POSTS } from "@/lib/mockPosts";
 import { renderMarkdown } from "@/lib/markdown";
 import { PostCard } from "@/components/PostCard";
+import { AuthorByline } from "@/components/AuthorByline";
 
 type Params = Promise<{ category: string; slug: string }>;
 
@@ -112,16 +113,8 @@ export default async function PostPage({ params }: { params: Params }) {
               {post.title_th}
             </h1>
 
-            {/* Author row */}
-            <div className="flex items-center gap-3 mb-8 pb-6 border-b border-[#e6dfd8]">
-              <div className="w-10 h-10 rounded-full bg-[#cc785c] flex items-center justify-center font-display text-[18px] font-bold text-white shrink-0">
-                T
-              </div>
-              <div>
-                <p className="font-sans font-semibold text-[14px] text-[#141413]">{post.author ?? "Tim Janepat"}</p>
-                <p className="font-sans text-[12px] text-[#6c6a64]">AI Expert · Bangkok</p>
-              </div>
-            </div>
+            {/* Author byline (links to /about) */}
+            <AuthorByline />
 
             {/* Cover image — non-interactive, keep readers on site */}
             {post.cover && (
@@ -174,19 +167,33 @@ export default async function PostPage({ params }: { params: Params }) {
               </div>
             )}
 
-            {/* Citations */}
+            {/* Source video — prominent block at end of article */}
             {post.citations && post.citations.length > 0 && (
-              <section className="mt-10 pt-6 border-t border-[#e6dfd8]">
-                <h3 className="text-[11px] font-medium uppercase tracking-[1.5px] text-[#cc785c] mb-3">แหล่งอ้างอิง</h3>
-                <ul className="space-y-2 text-[13px]">
-                  {post.citations.map((c) => (
-                    <li key={c.url}>
-                      <a href={c.url} target="_blank" rel="noopener" className="text-[#cc785c] underline underline-offset-3 hover:text-[#a9583e]">
-                        {c.label} ↗
+              <section className="mt-12 rounded-2xl border border-[#e6dfd8] bg-[#f5f0e8] p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-[#cc785c] flex items-center justify-center shrink-0">
+                    <svg viewBox="0 0 24 24" className="h-6 w-6 fill-white">
+                      <path d="M23.5 6.2c-.3-1-1-1.8-2-2C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.5.5c-1 .3-1.7 1-2 2C0 8.2 0 12 0 12s0 3.8.5 5.8c.3 1 1 1.8 2 2 2 .5 9.5.5 9.5.5s7.5 0 9.5-.5c1-.3 1.7-1 2-2 .5-2 .5-5.8.5-5.8s0-3.8-.5-5.8zM9.6 15.6V8.4L15.8 12l-6.2 3.6z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-[11px] font-medium uppercase tracking-[1.5px] text-[#cc785c] mb-1">วิดีโอต้นฉบับ</h3>
+                    {post.citations.map((c) => (
+                      <a
+                        key={c.url}
+                        href={c.url}
+                        target="_blank"
+                        rel="noopener"
+                        className="block font-sans font-semibold text-[15px] text-[#141413] hover:text-[#cc785c] transition-colors mb-1"
+                      >
+                        {c.label}
                       </a>
-                    </li>
-                  ))}
-                </ul>
+                    ))}
+                    <p className="font-sans text-[13px] text-[#6c6a64] mt-2">
+                      บทความนี้สรุปและขยายความจากเนื้อหาในวิดีโอ — กดดูคลิปต้นฉบับเพื่อดูภาพและตัวอย่างเพิ่มเติม
+                    </p>
+                  </div>
+                </div>
               </section>
             )}
 
