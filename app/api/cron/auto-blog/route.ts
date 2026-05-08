@@ -4,8 +4,8 @@ import { fetchLatestLongByChannel, fetchTranscript } from "@/lib/youtube";
 import { rewriteToBlog } from "@/lib/llm";
 import { authAsAdmin, createPost, findPostByVideoId } from "@/lib/pocketbase";
 import { pushDraftNotification } from "@/lib/telegram";
-import { postLinkToPage, buildFbCaption } from "@/lib/facebook";
-import { SITE } from "@/lib/site";
+// FB posting moved to /api/cron/fb-poster — link posts here kill FB algorithm reach
+// SITE removed — was only used by deleted FB link-posting code
 
 export const maxDuration = 300; // 5 min
 
@@ -147,23 +147,9 @@ export async function GET(req: NextRequest) {
           });
         }
 
-        // Auto-post to Facebook Page (when published + FB env configured)
-        if (isAuto && process.env.FB_PAGE_ID && process.env.FB_PAGE_ACCESS_TOKEN) {
-          const articleUrl = `${SITE.url}/ai/${channel.defaultCategory}/${slug}`;
-          const fb = await postLinkToPage({
-            message: buildFbCaption({
-              title: post.title_th,
-              excerpt: post.excerpt,
-              url: articleUrl,
-              category: channel.defaultCategory,
-              tags: post.tags,
-            }),
-            link: articleUrl,
-          });
-          if (!fb.ok) {
-            console.warn(`[fb-post] ${slug}: ${fb.error}`);
-          }
-        }
+        // FB posting handled separately by /api/cron/fb-poster (queue + photo + drip-feed).
+        // Direct link-posts here would create FB "shared_story" type which kills reach.
+        // Articles get picked up later as their fb_post_id field stays empty until posted.
 
         channelResults.push({
           channel: channel.name,
