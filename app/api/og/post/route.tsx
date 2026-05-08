@@ -45,12 +45,8 @@ export async function GET(req: NextRequest) {
   const creator = sp.get("creator") ?? "";
   const coverRaw = sp.get("cover") ?? "";
   const cover = coverRaw ? await resolveCoverUrl(coverRaw) : "";
-  // Up to 3 short bullet points (pipe-separated): ?bullets=Step+1|Step+2|Step+3
-  const bullets = (sp.get("bullets") ?? "")
-    .split("|")
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .slice(0, 3);
+  // Hook copy — 1-2 short sentences (max ~120 chars) — replaces bullets for poster feel
+  const hook = sp.get("hook") ?? "";
   // Tim's own channel = minimal layout (hook only, no bullets, no creator pill)
   const isOwn = sp.get("own") === "1";
   const cat = CATEGORY_LABELS[category] ?? CATEGORY_LABELS.tools;
@@ -163,7 +159,7 @@ export async function GET(req: NextRequest) {
           </div>
         </div>
 
-        {/* Hero card — own=true 16:9 (544), curated=440 (slight crop OK to leave room for bullets) */}
+        {/* Hero card — both versions use true 16:9 (544) so YouTube thumbnail isn't cropped */}
         <div
           style={{
             display: "flex",
@@ -172,7 +168,7 @@ export async function GET(req: NextRequest) {
             borderRadius: "20px",
             overflow: "hidden",
             border: "1.5px solid rgba(255, 255, 255, 0.1)",
-            height: isOwn ? "544px" : "440px",
+            height: "544px",
             zIndex: 2,
           }}
         >
@@ -278,7 +274,7 @@ export async function GET(req: NextRequest) {
             style={{
               display: "flex",
               flexWrap: "wrap",
-              fontSize: isOwn ? "82px" : "84px",
+              fontSize: isOwn ? "78px" : "56px",
               lineHeight: 1.15,
               fontWeight: 900,
               letterSpacing: "-0.5px",
@@ -292,62 +288,31 @@ export async function GET(req: NextRequest) {
             <div
               style={{
                 display: "flex",
-                marginTop: "14px",
-                fontSize: "40px",
+                marginTop: "10px",
+                fontSize: "28px",
                 color: "#cbd5e1",
                 fontWeight: 400,
-                lineHeight: 1.35,
+                lineHeight: 1.3,
               }}
             >
               {subtitle}
             </div>
           )}
 
-          {/* 3 key bullets — only for curated (Tim's own = minimal) */}
-          {!isOwn && bullets.length > 0 && (
+          {/* Hook copy — eye-catching teaser line, replaces bullets */}
+          {!isOwn && hook && (
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
-                marginTop: "20px",
-                gap: "10px",
+                marginTop: "16px",
+                fontSize: "30px",
+                color: "#5eead4",
+                fontWeight: 700,
+                lineHeight: 1.3,
+                letterSpacing: "-0.2px",
               }}
             >
-              {bullets.map((b, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "flex-start",
-                    fontSize: "36px",
-                    color: "#e2e8f0",
-                    lineHeight: 1.3,
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "44px",
-                      height: "44px",
-                      borderRadius: "999px",
-                      background: "rgba(94, 234, 212, 0.15)",
-                      border: "1.5px solid rgba(94, 234, 212, 0.4)",
-                      color: "#5eead4",
-                      fontSize: "24px",
-                      fontWeight: 700,
-                      flexShrink: 0,
-                      marginTop: "4px",
-                      marginRight: "16px",
-                    }}
-                  >
-                    {i + 1}
-                  </div>
-                  <div style={{ flexGrow: 1, flexShrink: 1, flexBasis: "0%" }}>{b}</div>
-                </div>
-              ))}
+              {hook}
             </div>
           )}
 

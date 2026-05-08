@@ -188,6 +188,7 @@ export function LatestRowCard({ post }: { post: PostRecord }) {
 
 /** Numbered ranking row — for "On Trending" sidebar */
 export function TrendingRow({ post, rank }: { post: PostRecord; rank: number }) {
+  const mins = Number.isFinite(post.reading_minutes as number) ? (post.reading_minutes as number) : null;
   return (
     <Link
       href={`/ai/${post.category}/${post.slug}`}
