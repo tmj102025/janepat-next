@@ -7,7 +7,6 @@ import {
   jsonLdScriptProps,
 } from "@/lib/schema";
 import { listPublishedPosts } from "@/lib/pocketbase";
-import { MOCK_POSTS } from "@/lib/mockPosts";
 import { PostCard } from "@/components/PostCard";
 
 // Always render at request time
@@ -21,8 +20,7 @@ export const metadata = buildMetadata({
 });
 
 export default async function BlogPage() {
-  const real = await listPublishedPosts({ limit: 100 });
-  const posts = real.length > 0 ? real : MOCK_POSTS;
+  const posts = await listPublishedPosts({ limit: 100 });
   const sorted = posts
     .slice()
     .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());

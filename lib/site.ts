@@ -13,7 +13,7 @@ export const SITE = {
     role: "AI Expert & Digital Marketing Strategist",
     bio: "ผู้เชี่ยวชาญด้าน AI และการตลาดดิจิทัลของไทย — สอน AI ภาษาไทยให้คนไทยใช้ AI สร้างรายได้จริง",
     avatar: "/images/tim-janepat.jpg",
-    email: "hello@janepat.com",
+    email: "tim@janepat.com",
   },
   social: {
     youtube: "https://www.youtube.com/@TimJanepat",

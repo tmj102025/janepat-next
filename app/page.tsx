@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { listPublishedPosts } from "@/lib/pocketbase";
-import { MOCK_POSTS } from "@/lib/mockPosts";
 import { LatestVideos } from "@/components/LatestVideos";
 import { HeroFeaturedCard, SideListCard, LatestRowCard } from "@/components/PostCard";
 import { InstructorSection } from "@/components/InstructorSection";
@@ -9,8 +8,7 @@ import { InstructorSection } from "@/components/InstructorSection";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const real = await listPublishedPosts({ limit: 20 });
-  const posts = real.length > 0 ? real : MOCK_POSTS;
+  const posts = await listPublishedPosts({ limit: 20 });
   const sorted = posts
     .slice()
     .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime());

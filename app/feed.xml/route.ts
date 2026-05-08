@@ -1,6 +1,5 @@
 import { SITE } from "@/lib/site";
 import { listPublishedPosts } from "@/lib/pocketbase";
-import { MOCK_POSTS } from "@/lib/mockPosts";
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
@@ -15,8 +14,7 @@ function escapeXml(s: string): string {
 }
 
 export async function GET() {
-  const real = await listPublishedPosts({ limit: 30 });
-  const posts = real.length > 0 ? real : MOCK_POSTS;
+  const posts = await listPublishedPosts({ limit: 30 });
   const sorted = posts
     .slice()
     .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())

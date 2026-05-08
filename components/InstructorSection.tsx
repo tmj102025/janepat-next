@@ -24,7 +24,7 @@ export function InstructorSection() {
               เกี่ยวกับวิทยากร
             </div>
             <h2 className="font-display text-[32px] md:text-[40px] leading-[1.15] tracking-[-0.6px] text-[#141413] mb-2">
-              อ.ทิม เจนพัฒน์
+              อ.ทิม เจนพัฒน
             </h2>
             <p className="font-sans text-[15px] text-[#6c6a64] mb-5">
               Timothy Janepat · ผู้ก่อตั้ง AiCEO Academy · ผู้เชี่ยวชาญด้าน AI

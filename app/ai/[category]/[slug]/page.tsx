@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import { AI_CATEGORIES, SITE } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo";
 import { articleSchema, breadcrumbSchema, faqSchema, howToSchema, jsonLdScriptProps } from "@/lib/schema";
-import { getPostBySlug } from "@/lib/pocketbase";
-import { findMockPost, MOCK_POSTS } from "@/lib/mockPosts";
+import { getPostBySlug, listPublishedPosts } from "@/lib/pocketbase";
 import { renderMarkdown } from "@/lib/markdown";
 import { PostCard } from "@/components/PostCard";
 import { AuthorByline } from "@/components/AuthorByline";
@@ -12,9 +11,7 @@ import { AuthorByline } from "@/components/AuthorByline";
 type Params = Promise<{ category: string; slug: string }>;
 
 async function resolvePost(slug: string) {
-  const real = await getPostBySlug(slug);
-  if (real) return real;
-  return findMockPost(slug);
+  return getPostBySlug(slug);
 }
 
 export async function generateMetadata({ params }: { params: Params }) {
@@ -65,11 +62,21 @@ export default async function PostPage({ params }: { params: Params }) {
     year: "numeric", month: "long", day: "numeric",
   });
 
-  // Related — same category, exclude current
-  const allPosts = MOCK_POSTS;
-  const related = allPosts
-    .filter((p) => p.category === post.category && p.slug !== post.slug)
-    .slice(0, 3);
+  // Related — same category from PB, exclude current; fallback to recent across categories
+  const sameCategory = await listPublishedPosts({ category: post.category, limit: 6 });
+  let related = sameCategory.filter((p) => p.slug !== post.slug).slice(0, 3);
+  if (related.length < 3) {
+    const recent = await listPublishedPosts({ limit: 8 });
+    const seen = new Set(related.map((p) => p.id));
+    seen.add(post.id);
+    for (const p of recent) {
+      if (related.length >= 3) break;
+      if (!seen.has(p.id)) {
+        related.push(p);
+        seen.add(p.id);
+      }
+    }
+  }
 
   return (
     <>

@@ -14,9 +14,8 @@ export function Header() {
       <nav className="bg-[#faf9f5]/90 backdrop-blur border-b border-[#e6dfd8]">
         <div className="mx-auto flex max-w-[1200px] h-16 items-center justify-between px-6">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
-            <span className="spike-mark text-[#141413]" aria-hidden />
-            <span className="font-display text-[22px] tracking-[-0.01em] text-[#141413] leading-none">
+          <Link href="/" className="flex items-center flex-shrink-0">
+            <span className="font-display text-[28px] font-bold tracking-[-0.02em] text-[#141413] leading-none">
               Janepat
             </span>
           </Link>
