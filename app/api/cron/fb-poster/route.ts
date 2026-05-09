@@ -197,17 +197,21 @@ export async function GET(req: NextRequest) {
 
   // How many to post in this run (default 1 — drip-feed)
   const max = Math.min(5, Number(req.nextUrl.searchParams.get("max") ?? 1));
+  // urgent=1 → pick NEWEST unposted (live events, just-published articles)
+  const urgent = req.nextUrl.searchParams.get("urgent") === "1";
   const results: Result[] = [];
 
   for (let i = 0; i < max; i++) {
-    // Find oldest unposted: published=true && (fb_post_id="" OR fb_post_id=null)
+    // Find unposted: published=true && fb_post_id=""
     let post: PostRecord | null = null;
     try {
       const list = await pb().collection("janepat_posts").getList<PostRecord>(1, 50, {
         filter: `published = true && fb_post_id = ""`,
       });
-      // JS-side sort by id (PB id is roughly chronological) — pick oldest
-      const sorted = list.items.slice().sort((a, b) => a.id.localeCompare(b.id));
+      // PB id is roughly chronological — oldest by default, newest when urgent
+      const sorted = list.items
+        .slice()
+        .sort((a, b) => (urgent ? b.id.localeCompare(a.id) : a.id.localeCompare(b.id)));
       post = sorted[0] ?? null;
     } catch (err) {
       results.push({ status: "error", error: `PB list: ${(err as Error).message}` });

@@ -1,0 +1,48 @@
+name: FB poster (drip-feed)
+
+on:
+  schedule:
+    # 12:00 TH = 05:00 UTC, 18:00 TH = 11:00 UTC
+    - cron: "0 5 * * *"
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+    inputs:
+      max:
+        description: "Posts to publish in this run (default 1, max 5)"
+        required: false
+        default: "1"
+      urgent:
+        description: "Post NEWEST unposted (live events) instead of oldest"
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Drip-feed one queued post to FB
+        run: |
+          set -e
+          MAX="${{ github.event.inputs.max || '1' }}"
+          URL="https://janepat.com/api/cron/fb-poster?secret=${{ secrets.CRON_SECRET }}&max=$MAX"
+          if [ "${{ github.event.inputs.urgent }}" = "true" ]; then
+            URL="$URL&urgent=1"
+          fi
+
+          # max-time 95 = below Cloudflare 100s timeout (route has maxDuration=120 internally)
+          HTTP_BODY=$(curl -sS --max-time 95 -w "\nHTTP_STATUS:%{http_code}" "$URL" || echo "HTTP_STATUS:000")
+          STATUS=$(echo "$HTTP_BODY" | grep "HTTP_STATUS" | tail -1 | cut -d':' -f2)
+          BODY=$(echo "$HTTP_BODY" | sed '/HTTP_STATUS:/d')
+          echo "Status: $STATUS"
+          echo "Body: $BODY"
+
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::fb-poster failed (HTTP $STATUS)"
+            exit 1
+          fi
+
+          # Surface "no-pending" as warning, not failure (queue empty is normal)
+          if echo "$BODY" | grep -q '"no-pending"'; then
+            echo "::warning::No pending posts in queue"
+          fi
