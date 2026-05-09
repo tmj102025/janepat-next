@@ -111,11 +111,13 @@ async function renderOgImage(post: PostRecord, isOwn: boolean, creator: string |
 
   // Hook copy — short eye-catching line for curated layout
   if (!isOwn) {
-    const hook = post.fb_hook_line
-      ? truncate(post.fb_hook_line, 70)
-      : post.excerpt
-        ? truncate(post.excerpt.split(/[—–.]/)[0], 70)
-        : "";
+    let hook = "";
+    if (post.fb_hook_line) {
+      hook = truncate(post.fb_hook_line, 70);
+    } else if (post.excerpt) {
+      // Don't split on "." — would break "2.0" / "v3.5" etc. Just truncate.
+      hook = truncate(post.excerpt, 70);
+    }
     if (hook) params.set("hook", hook);
   }
 
