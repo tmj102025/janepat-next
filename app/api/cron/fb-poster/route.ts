@@ -28,57 +28,70 @@ function isTimsOwn(citations: PostRecord["citations"]): boolean {
   return /Tim\s*Janepat|@TimJanepat/i.test(creator);
 }
 
-/** Strip markdown to plain text for caption use */
+/** Strip markdown to plain text but preserve line breaks + bullet markers */
 function mdToText(md: string): string {
   return md
     .replace(/```[\s\S]*?```/g, "")
     .replace(/`([^`]+)`/g, "$1")
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-    .replace(/^\s*#{1,6}\s+/gm, "")
     .replace(/\*\*([^*]+)\*\*/g, "$1")
-    .replace(/\*([^*]+)\*/g, "$1");
+    .replace(/\*([^*]+)\*/g, "$1")
+    .replace(/^\s*[-*]\s+/gm, "✅ ")
+    .replace(/^\s*\d+\.\s+/gm, "✅ ");
 }
 
-/** Build FB caption from article — ~80% of article, bullets + functional emoji, no hype */
-function buildCaption(post: PostRecord, isOwn: boolean, creator: string | null): string {
-  // Prefer LLM-provided fb_caption when available
-  if (post.fb_caption && post.fb_caption.trim().length > 100) {
-    return post.fb_caption;
-  }
-
-  // Fallback: derive from content_md
+/** Convert content_md → mobile-readable FB caption with sections + functional emoji */
+function captionFromContent(post: PostRecord, isOwn: boolean, creator: string | null): string {
   const md = post.content_md ?? "";
-  const text = mdToText(md);
+  const sections = md.split(/(?=\n#{2,3}\s+)/);
 
-  // Split into sections by H2 (## heading)
-  const sections = md.split(/\n#{2,3}\s+/).slice(0, 8);
-  const intro = sections[0] ? mdToText(sections[0]).trim().slice(0, 280) : post.excerpt;
-
-  // Extract H2 titles + first sentence of each section as bullets
-  const bullets: string[] = [];
-  for (let i = 1; i < sections.length && bullets.length < 5; i++) {
-    const sec = sections[i];
-    const heading = sec.split("\n")[0].trim().slice(0, 70);
-    if (!heading || /^(สรุป|ขั้นตอนต่อไป|ทำตามนี้|เริ่มต้น)/.test(heading)) continue;
-    bullets.push(`✅ ${heading}`);
-  }
-
+  const lines: string[] = [];
   const emoji = isOwn ? "🎬" : "🤖";
-  const lines: string[] = [`${emoji} ${post.title_th}`, ""];
+  lines.push(`${emoji} ${post.title_th}`);
+  lines.push("");
   if (creator && !isOwn) {
     lines.push(`📌 จากคลิปล่าสุดของ ${creator}`);
     lines.push("");
   }
-  lines.push(intro);
-  if (bullets.length > 0) {
+
+  for (const sec of sections) {
+    const trimmed = sec.trim();
+    if (!trimmed) continue;
+    if (trimmed.startsWith("#")) {
+      // H2/H3 section
+      const lineEnd = trimmed.indexOf("\n");
+      const heading = trimmed.slice(0, lineEnd === -1 ? undefined : lineEnd).replace(/^#{2,3}\s+/, "").trim();
+      const body = lineEnd === -1 ? "" : trimmed.slice(lineEnd + 1).trim();
+      // Skip generic "สรุป" headings → just inline content
+      const isClosing = /^(สรุป|ขั้นตอนต่อไป|ทำตามนี้|เริ่มต้น)/.test(heading);
+      if (heading && !isClosing) {
+        lines.push(`📌 ${heading}`);
+      }
+      if (body) {
+        lines.push(mdToText(body));
+      }
+    } else {
+      // Lead paragraph (no heading)
+      lines.push(mdToText(trimmed));
+    }
     lines.push("");
-    lines.push(...bullets);
   }
-  lines.push("");
-  lines.push("📝 อ่านเต็มในบทความ — ลิงก์ใน comment");
-  lines.push("");
-  lines.push(isOwn ? "#AI #TimJanepat" : "#AI #ClaudeAI #AITips");
-  return lines.join("\n");
+
+  // Hashtags — derive from tags or default
+  const tags = (post.tags ?? []).slice(0, 5).map((t) => `#${t.replace(/\s+/g, "")}`);
+  if (tags.length === 0) tags.push("#AI", isOwn ? "#TimJanepat" : "#ClaudeAI", "#AITips");
+  lines.push(tags.join(" "));
+
+  // Collapse 3+ newlines, trim
+  return lines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+/** Pick best caption — prefer LLM-generated fb_caption, else build from content_md */
+function buildCaption(post: PostRecord, isOwn: boolean, creator: string | null): string {
+  if (post.fb_caption && post.fb_caption.trim().length > 500) {
+    return post.fb_caption;
+  }
+  return captionFromContent(post, isOwn, creator);
 }
 
 /** Truncate to N chars on word boundary (Thai-aware: don't break in middle of word) */
@@ -146,16 +159,22 @@ async function postPhotoToFb(image: Buffer, caption: string, pageId: string, tok
   }
 }
 
-async function postFirstComment(postId: string, articleUrl: string, ytUrl: string | null, token: string): Promise<void> {
-  const lines = [`📖 อ่านเต็ม → ${articleUrl}`];
-  if (ytUrl) lines.push("", `🎬 ดูคลิปเต็ม → ${ytUrl}`);
-  const message = lines.join("\n");
-  await new Promise((r) => setTimeout(r, 3000));
+async function postComment(postId: string, message: string, token: string): Promise<void> {
   await fetch(`${FB_GRAPH}/${postId}/comments`, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({ message, access_token: token }),
   });
+}
+
+/** Comment 1 = website article, Comment 2 = original YouTube source */
+async function postSourceComments(postId: string, articleUrl: string, ytUrl: string | null, token: string): Promise<void> {
+  await new Promise((r) => setTimeout(r, 3000));
+  await postComment(postId, `🔗 บทความฉบับเต็ม → ${articleUrl}`, token);
+  if (ytUrl) {
+    await new Promise((r) => setTimeout(r, 2000));
+    await postComment(postId, `🎬 วิดีโอต้นฉบับที่อ้างอิง → ${ytUrl}`, token);
+  }
 }
 
 export async function GET(req: NextRequest) {
@@ -223,8 +242,8 @@ export async function GET(req: NextRequest) {
       continue;
     }
 
-    // First comment
-    await postFirstComment(fb.postId, articleUrl, isOwn ? ytUrl : null, token);
+    // Source comments — 1) article URL  2) YouTube source video
+    await postSourceComments(fb.postId, articleUrl, ytUrl, token);
 
     // Save fb_post_id
     try {
