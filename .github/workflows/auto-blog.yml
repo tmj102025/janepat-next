@@ -1,27 +1,31 @@
-name: Auto-blog from YouTube
+name: Daily article + FB post
 
 on:
   schedule:
-    # ทุก 6 ชม. (00:17, 06:17, 12:17, 18:17 UTC)
-    - cron: "17 */6 * * *"
+    # 18:00 TH (UTC+7) = 11:00 UTC — once a day
+    - cron: "0 11 * * *"
   workflow_dispatch:
     inputs:
-      limit:
-        description: "Videos per channel to check (default 1)"
+      channel:
+        description: "Force specific channel (e.g. @TimJanepat) — overrides daily rotation"
         required: false
-        default: "1"
+      skip_fb:
+        description: "Skip FB post step (article gen only)"
+        required: false
+        type: boolean
+        default: false
 
 jobs:
-  trigger:
+  daily:
     runs-on: ubuntu-latest
     steps:
-      - name: Run cron per-channel (avoid Cloudflare 100s timeout)
+      - name: Generate 1 article (rotate channels)
+        id: gen
         run: |
           set -e
-          LIMIT="${{ github.event.inputs.limit || '1' }}"
-          BASE="https://janepat.com/api/cron/auto-blog?secret=${{ secrets.CRON_SECRET }}&limit=$LIMIT"
+          BASE="https://janepat.com/api/cron/auto-blog?secret=${{ secrets.CRON_SECRET }}&limit=1"
 
-          # All curated source channels — keep in sync with lib/channels.ts
+          # Keep in sync with lib/channels.ts
           CHANNELS=(
             "@TimJanepat"
             "@zinhoautomates"
@@ -38,17 +42,41 @@ jobs:
             "@aiadvantage"
           )
 
-          TOTAL_CREATED=0
-          TOTAL_SKIPPED=0
-          TOTAL_ERRORS=0
-          FAILED_CHANNELS=()
+          FORCED="${{ github.event.inputs.channel }}"
 
-          for ch in "${CHANNELS[@]}"; do
+          # Rotate by day-of-year (force decimal with 10# to avoid octal on 008/009)
+          DOY=$(date -u +%j)
+          START=$(( 10#$DOY % ${#CHANNELS[@]} ))
+
+          if [ -n "$FORCED" ]; then
+            CHANNELS_TO_TRY=("$FORCED")
+            echo "Manual override → only trying $FORCED"
+          else
+            # Build rotated list starting at today's index — gives every channel a turn
+            CHANNELS_TO_TRY=()
+            for i in $(seq 0 $((${#CHANNELS[@]} - 1))); do
+              IDX=$(( (START + i) % ${#CHANNELS[@]} ))
+              CHANNELS_TO_TRY+=("${CHANNELS[$IDX]}")
+            done
+            echo "Today's rotation order (start index $START): ${CHANNELS_TO_TRY[*]}"
+          fi
+
+          # Cap attempts so we don't waste an entire run when most channels have no new video
+          MAX_ATTEMPTS=5
+          ATTEMPTS=0
+          CREATED_ANY=0
+          USED_CHANNEL=""
+
+          for ch in "${CHANNELS_TO_TRY[@]}"; do
+            ATTEMPTS=$((ATTEMPTS + 1))
+            if [ $ATTEMPTS -gt $MAX_ATTEMPTS ]; then
+              echo "::warning::reached max attempts ($MAX_ATTEMPTS) — no new article today"
+              break
+            fi
+
             echo ""
-            echo "=== $ch ==="
-            # urlencode @ → %40
+            echo "=== attempt $ATTEMPTS: $ch ==="
             CH_ENC=$(echo -n "$ch" | sed 's/@/%40/g')
-            # max-time 95 = below CF 100s
             HTTP_BODY=$(curl -sS --max-time 95 -w "\nHTTP_STATUS:%{http_code}" "$BASE&channel=$CH_ENC" || echo "HTTP_STATUS:000")
             STATUS=$(echo "$HTTP_BODY" | grep "HTTP_STATUS" | tail -1 | cut -d':' -f2)
             BODY=$(echo "$HTTP_BODY" | sed '/HTTP_STATUS:/d')
@@ -56,29 +84,40 @@ jobs:
             echo "Body: $BODY"
 
             if [ "$STATUS" != "200" ]; then
-              echo "::warning::$ch failed (HTTP $STATUS)"
-              FAILED_CHANNELS+=("$ch:$STATUS")
+              echo "::warning::$ch failed (HTTP $STATUS) — try next"
               continue
             fi
 
             CREATED=$(echo "$BODY" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('summary',{}).get('created',0))" 2>/dev/null || echo 0)
-            SKIPPED=$(echo "$BODY" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('summary',{}).get('skipped',0))" 2>/dev/null || echo 0)
-            ERRORS=$(echo "$BODY" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('summary',{}).get('errors',0))" 2>/dev/null || echo 0)
-            TOTAL_CREATED=$((TOTAL_CREATED + CREATED))
-            TOTAL_SKIPPED=$((TOTAL_SKIPPED + SKIPPED))
-            TOTAL_ERRORS=$((TOTAL_ERRORS + ERRORS))
+            if [ "$CREATED" -gt 0 ]; then
+              echo "✓ created $CREATED article(s) from $ch"
+              CREATED_ANY=1
+              USED_CHANNEL="$ch"
+              break
+            else
+              echo "  no new video from $ch — try next"
+            fi
           done
 
-          echo ""
-          echo "=========================================="
-          echo "TOTAL: created=$TOTAL_CREATED skipped=$TOTAL_SKIPPED errors=$TOTAL_ERRORS"
-          if [ ${#FAILED_CHANNELS[@]} -gt 0 ]; then
-            echo "Failed channels: ${FAILED_CHANNELS[*]}"
-          fi
-          echo "=========================================="
+          echo "created_any=$CREATED_ANY" >> $GITHUB_OUTPUT
+          echo "used_channel=$USED_CHANNEL" >> $GITHUB_OUTPUT
 
-          # Treat as failure only if all channels errored (some channels failing is acceptable)
-          if [ ${#FAILED_CHANNELS[@]} -ge 7 ]; then
-            echo "::error::More than half of channels failed"
+          if [ "$CREATED_ANY" = "0" ]; then
+            echo "::warning::No new articles created today (tried $ATTEMPTS channels)"
+          fi
+
+      - name: Post new article to FB immediately
+        if: ${{ steps.gen.outputs.created_any == '1' && github.event.inputs.skip_fb != 'true' }}
+        run: |
+          set -e
+          URL="https://janepat.com/api/cron/fb-poster?secret=${{ secrets.CRON_SECRET }}&max=1&urgent=1"
+          HTTP_BODY=$(curl -sS --max-time 95 -w "\nHTTP_STATUS:%{http_code}" "$URL" || echo "HTTP_STATUS:000")
+          STATUS=$(echo "$HTTP_BODY" | grep "HTTP_STATUS" | tail -1 | cut -d':' -f2)
+          BODY=$(echo "$HTTP_BODY" | sed '/HTTP_STATUS:/d')
+          echo "Status: $STATUS"
+          echo "Body: $BODY"
+
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::FB post failed (HTTP $STATUS)"
             exit 1
           fi

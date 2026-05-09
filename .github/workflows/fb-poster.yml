@@ -1,10 +1,9 @@
-name: FB poster (drip-feed)
+name: FB poster (manual / catch-up)
+
+# Scheduled FB posts now run inside auto-blog.yml at 18:00 TH (one article + one post per day).
+# This workflow is kept for manual catch-up of the backlog or live-event escape hatch.
 
 on:
-  schedule:
-    # 12:00 TH = 05:00 UTC, 18:00 TH = 11:00 UTC
-    - cron: "0 5 * * *"
-    - cron: "0 11 * * *"
   workflow_dispatch:
     inputs:
       max:
@@ -21,7 +20,7 @@ jobs:
   post:
     runs-on: ubuntu-latest
     steps:
-      - name: Drip-feed one queued post to FB
+      - name: Trigger fb-poster endpoint
         run: |
           set -e
           MAX="${{ github.event.inputs.max || '1' }}"
@@ -30,7 +29,6 @@ jobs:
             URL="$URL&urgent=1"
           fi
 
-          # max-time 95 = below Cloudflare 100s timeout (route has maxDuration=120 internally)
           HTTP_BODY=$(curl -sS --max-time 95 -w "\nHTTP_STATUS:%{http_code}" "$URL" || echo "HTTP_STATUS:000")
           STATUS=$(echo "$HTTP_BODY" | grep "HTTP_STATUS" | tail -1 | cut -d':' -f2)
           BODY=$(echo "$HTTP_BODY" | sed '/HTTP_STATUS:/d')
@@ -42,7 +40,6 @@ jobs:
             exit 1
           fi
 
-          # Surface "no-pending" as warning, not failure (queue empty is normal)
           if echo "$BODY" | grep -q '"no-pending"'; then
             echo "::warning::No pending posts in queue"
           fi
