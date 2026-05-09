@@ -31,6 +31,10 @@ export type PostRecord = {
   howto_jsonld?: { name: string; steps: Array<{ name: string; text: string }> };
   citations?: Array<{ label: string; url: string }>;
   video_id?: string; // YouTube videoId — used for dedup, not in URL
+  fb_post_id?: string; // FB post id once posted (empty = pending in queue)
+  fb_caption?: string; // LLM-generated FB caption (~80% of article, bullets+emoji)
+  fb_hook_line?: string; // Short hook copy for OG image (50-70 chars)
+  fb_subtitle?: string; // Short subtitle for OG image (40-60 chars)
   created: string;
   updated: string;
 };

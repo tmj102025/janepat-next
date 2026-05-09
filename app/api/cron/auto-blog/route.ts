@@ -127,6 +127,9 @@ export async function GET(req: NextRequest) {
           seo_title: post.title_th,
           seo_description: post.excerpt,
           faq_jsonld: post.faq_jsonld,
+          fb_caption: post.fb_caption,
+          fb_hook_line: post.fb_hook_line,
+          fb_subtitle: post.fb_subtitle,
           citations: isAuto
             ? [{ label: `วิดีโอต้นฉบับ — ${channel.name}`, url: videoUrl }]
             : [

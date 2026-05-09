@@ -28,50 +28,95 @@ function isTimsOwn(citations: PostRecord["citations"]): boolean {
   return /Tim\s*Janepat|@TimJanepat/i.test(creator);
 }
 
+/** Strip markdown to plain text for caption use */
+function mdToText(md: string): string {
+  return md
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/^\s*#{1,6}\s+/gm, "")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\*([^*]+)\*/g, "$1");
+}
+
+/** Build FB caption from article — ~80% of article, bullets + functional emoji, no hype */
 function buildCaption(post: PostRecord, isOwn: boolean, creator: string | null): string {
-  if (isOwn) {
-    // Tim's own — short hook
-    return [
-      `🎬 ${post.title_th}`,
-      "",
-      post.excerpt,
-      "",
-      "ดูเต็ม + ลิงก์คลิปใน comment 📝",
-      "",
-      "#AI #TimJanepat",
-    ].join("\n");
+  // Prefer LLM-provided fb_caption when available
+  if (post.fb_caption && post.fb_caption.trim().length > 100) {
+    return post.fb_caption;
   }
-  // Curated — longer article-preview
-  const lines = [
-    `🤖 ${post.title_th}`,
-    "",
-  ];
-  if (creator) lines.push(`ฟีเจอร์ใหม่ที่ ${creator} แชร์ในคลิปล่าสุด`);
+
+  // Fallback: derive from content_md
+  const md = post.content_md ?? "";
+  const text = mdToText(md);
+
+  // Split into sections by H2 (## heading)
+  const sections = md.split(/\n#{2,3}\s+/).slice(0, 8);
+  const intro = sections[0] ? mdToText(sections[0]).trim().slice(0, 280) : post.excerpt;
+
+  // Extract H2 titles + first sentence of each section as bullets
+  const bullets: string[] = [];
+  for (let i = 1; i < sections.length && bullets.length < 5; i++) {
+    const sec = sections[i];
+    const heading = sec.split("\n")[0].trim().slice(0, 70);
+    if (!heading || /^(สรุป|ขั้นตอนต่อไป|ทำตามนี้|เริ่มต้น)/.test(heading)) continue;
+    bullets.push(`✅ ${heading}`);
+  }
+
+  const emoji = isOwn ? "🎬" : "🤖";
+  const lines: string[] = [`${emoji} ${post.title_th}`, ""];
+  if (creator && !isOwn) {
+    lines.push(`📌 จากคลิปล่าสุดของ ${creator}`);
+    lines.push("");
+  }
+  lines.push(intro);
+  if (bullets.length > 0) {
+    lines.push("");
+    lines.push(...bullets);
+  }
   lines.push("");
-  lines.push(post.excerpt);
+  lines.push("📝 อ่านเต็มในบทความ — ลิงก์ใน comment");
   lines.push("");
-  lines.push("ผมลองแล้ว — workflow เปลี่ยนจริง 🔥");
-  lines.push("");
-  lines.push("อยากดูทุก step + setup");
-  lines.push("อ่านเต็มในบทความ — ลิงก์ใน comment 📝");
-  lines.push("");
-  lines.push("#AI #ClaudeAI");
+  lines.push(isOwn ? "#AI #TimJanepat" : "#AI #ClaudeAI #AITips");
   return lines.join("\n");
 }
 
+/** Truncate to N chars on word boundary (Thai-aware: don't break in middle of word) */
+function truncate(s: string, max: number): string {
+  if (s.length <= max) return s;
+  const cut = s.slice(0, max);
+  const lastSpace = cut.lastIndexOf(" ");
+  return lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut;
+}
+
 async function renderOgImage(post: PostRecord, isOwn: boolean, creator: string | null): Promise<Buffer | null> {
+  // Cap text lengths so they fit in the image without ugly clipping
+  const titleForOg = truncate(post.title_th, 50);
   const params = new URLSearchParams({
-    title: post.title_th,
+    title: titleForOg,
     category: post.category,
     cover: post.cover ?? "",
   });
-  if (post.excerpt) params.set("subtitle", post.excerpt.slice(0, 80));
-  if (creator && !isOwn) params.set("creator", creator);
+
+  // Prefer LLM-provided short copy fields if available
+  const subtitle = post.fb_subtitle && post.fb_subtitle.length > 0
+    ? truncate(post.fb_subtitle, 50)
+    : post.excerpt
+      ? truncate(post.excerpt, 45)
+      : "";
+  if (subtitle) params.set("subtitle", subtitle);
+
+  if (creator && !isOwn) params.set("creator", truncate(creator, 25));
   if (isOwn) params.set("own", "1");
-  // Build hook: short value-driven sentence from excerpt
-  if (!isOwn && post.excerpt) {
-    const hook = post.excerpt.split(/[—–.]/)[0].slice(0, 100);
-    params.set("hook", hook);
+
+  // Hook copy — short eye-catching line for curated layout
+  if (!isOwn) {
+    const hook = post.fb_hook_line
+      ? truncate(post.fb_hook_line, 70)
+      : post.excerpt
+        ? truncate(post.excerpt.split(/[—–.]/)[0], 70)
+        : "";
+    if (hook) params.set("hook", hook);
   }
 
   try {
